@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/lms_service_db
+    username: postgres
+    password: 8585
+  liquibase:
+    enabled: true
+    change-log: 'classpath:db/changelog/db.changelog-master.yml'
+    contexts: dev
+    drop-first: false
+    default-schema: public
+    liquibase-schema: public
+    database-change-log-lock-table: 'databasechangeloglock'
+    database-change-log-table: 'databasechangelog'
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  banner:
+    location: classpath:dev-banner.txt
