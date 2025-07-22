@@ -4,8 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.*;
-import lombok.experimental.FieldNameConstants;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,32 +20,42 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * Created by Avazbek on 20/07/25 21:46
+ */
+@Entity(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
-@Entity(name = "users")
-@FieldNameConstants
-@Builder
-@SQLDelete(sql = "update users set deleted=true where id=?")
 @SQLRestriction(value = "deleted=false")
+@SQLDelete(sql = "UPDATE users SET deleted = false WHERE id = ?")
 public class User extends AbsLongEntity implements UserDetails {
 
+    @Column(nullable = false)
+    private String name;
 
-    @Column(nullable = false, name = "username")
-    private String username;//(email) written as username because of spring security (UserDetails)
+    @Column(nullable = false)
+    private String surname;
 
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (Objects.isNull(role))
-            return List.of();
-        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+        if (Objects.isNull(role)) return List.of();
+
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
+
 }

@@ -4,23 +4,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.*;
-import lombok.experimental.FieldNameConstants;
+import lombok.Getter;
 
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+/**
+ * Created by Avazbek on 20/07/25 21:47
+ */
 @MappedSuperclass
-@FieldNameConstants
-public abstract class AbsLongEntity{
+@Getter
+public abstract class AbsLongEntity extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean deleted = false;
+
 
 }
