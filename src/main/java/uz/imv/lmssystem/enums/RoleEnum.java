@@ -7,7 +7,7 @@ public enum RoleEnum {
 
     ADMIN,
 
-    CASHIER;
+    CASHIER
 
 
 }

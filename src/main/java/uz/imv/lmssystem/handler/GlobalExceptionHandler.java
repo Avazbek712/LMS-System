@@ -89,7 +89,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<ErrorDTO> handle(Exception e) {
+    public ResponseEntity<ErrorDTO> handle() {
         ErrorDTO errorDTO = new ErrorDTO(
                 500,
                 "Server error please try again later"
