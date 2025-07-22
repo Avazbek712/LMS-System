@@ -1,7 +1,6 @@
 package uz.imv.lmssystem.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
@@ -17,8 +16,8 @@ public class SecurityAccessExceptionHandler implements AccessDeniedHandler {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException{
         ErrorDTO errorDTO = new ErrorDTO(
                 403,
                 accessDeniedException.getMessage()
