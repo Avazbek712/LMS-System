@@ -4,18 +4,18 @@ spring:
     url: jdbc:postgresql://localhost:5432/lms_service_db
     username: postgres
     password: 8585
-  liquibase:
-    enabled: true
-    change-log: 'classpath:db/changelog/db.changelog-master.yml'
-    contexts: product
-    drop-first: false
-    default-schema: public
-    liquibase-schema: public
-    database-change-log-lock-table: 'databasechangeloglock'
-    database-change-log-table: 'databasechangelog'
+#  liquibase:
+#    enabled: true
+#    change-log: 'classpath:db/changelog/db.changelog-master.yml'
+#    contexts: product
+#    drop-first: false
+#    default-schema: public
+#    liquibase-schema: public
+#    database-change-log-lock-table: 'databasechangeloglock'
+#    database-change-log-table: 'databasechangelog'
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
