@@ -13,6 +13,7 @@ import uz.imv.lmssystem.dto.fildErrors.FieldErrorDTO;
 import uz.imv.lmssystem.exceptions.EntityNotDeleteException;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.exceptions.EntityUniqueException;
+import uz.imv.lmssystem.exceptions.UserAlreadyExistException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,17 @@ import java.util.List;
 
 @RestControllerAdvice(basePackages = "uz.imv")
 public class GlobalExceptionHandler {
+
+
+
+    @ExceptionHandler(value = UserAlreadyExistException.class)
+    public ResponseEntity<ErrorDTO> handle(UserAlreadyExistException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
 
 
     @ExceptionHandler(value = EntityUniqueException.class)
