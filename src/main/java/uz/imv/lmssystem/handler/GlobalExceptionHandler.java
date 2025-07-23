@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.imv.lmssystem.dto.ErrorDTO;
 import uz.imv.lmssystem.dto.fildErrors.ErrorFieldsKeeperDTO;
 import uz.imv.lmssystem.dto.fildErrors.FieldErrorDTO;
-import uz.imv.lmssystem.exceptions.EntityNotDeleteException;
-import uz.imv.lmssystem.exceptions.EntityNotFoundException;
-import uz.imv.lmssystem.exceptions.EntityUniqueException;
-import uz.imv.lmssystem.exceptions.UserAlreadyExistException;
+import uz.imv.lmssystem.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +19,15 @@ import java.util.List;
 @RestControllerAdvice(basePackages = "uz.imv")
 public class GlobalExceptionHandler {
 
+
+    @ExceptionHandler(value = UnknownRoleException.class)
+    public ResponseEntity<ErrorDTO> handle(UnknownRoleException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
 
 
     @ExceptionHandler(value = UserAlreadyExistException.class)

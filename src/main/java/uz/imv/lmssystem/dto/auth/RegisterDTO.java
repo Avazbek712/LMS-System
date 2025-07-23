@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.imv.lmssystem.enums.RoleEnum;
+import uz.imv.lmssystem.entity.Role;
 
 import java.io.Serializable;
 
@@ -30,6 +30,5 @@ public class RegisterDTO implements Serializable {
     @Size(min = 8, max = 64, message = "Password must be between {min} and {max} characters")
     private String password;
 
-    private RoleEnum role;
-
+    private String roleName;
 }

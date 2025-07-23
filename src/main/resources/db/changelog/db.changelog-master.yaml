@@ -1,5 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: /db/changelog/changeset/0001_user_table_create.yaml
-
-
