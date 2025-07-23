@@ -2,8 +2,8 @@ package uz.imv.lmssystem.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
-import uz.imv.lmssystem.enums.RoleEnum;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @SQLRestriction(value = "deleted=false")
-@SQLDelete(sql = "UPDATE users SET deleted = false WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
 public class User extends AbsLongEntity implements UserDetails {
 
     @Column(nullable = false)
@@ -47,15 +46,14 @@ public class User extends AbsLongEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private RoleEnum role;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (Objects.isNull(role)) return List.of();
 
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.getName()));
     }
 
 }
