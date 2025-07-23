@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uz.imv.lmssystem.dto.NewEmployeeResponse;
+import uz.imv.lmssystem.dto.fildErrors.response.NewEmployeeResponse;
 import uz.imv.lmssystem.dto.auth.LoginDTO;
 import uz.imv.lmssystem.dto.auth.RegisterDTO;
 import uz.imv.lmssystem.dto.auth.TokenDTO;

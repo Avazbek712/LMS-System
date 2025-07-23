@@ -7,9 +7,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import uz.imv.lmssystem.dto.ErrorDTO;
-import uz.imv.lmssystem.dto.fildErrors.ErrorFieldsKeeperDTO;
-import uz.imv.lmssystem.dto.fildErrors.FieldErrorDTO;
+import uz.imv.lmssystem.dto.fildErrors.error.ErrorDTO;
+import uz.imv.lmssystem.dto.fildErrors.error.ErrorFieldsKeeperDTO;
+import uz.imv.lmssystem.dto.fildErrors.error.FieldErrorDTO;
 import uz.imv.lmssystem.exceptions.*;
 
 import java.util.ArrayList;

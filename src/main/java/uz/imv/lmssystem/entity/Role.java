@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.PermissionsEnum;
 
@@ -18,6 +20,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@SQLRestriction("deleted=false")
+@SQLDelete(sql = "update roles set deleted=true where id=?")
 public class Role extends AbsLongEntity {
 
     @Column(unique = true, nullable = false)
