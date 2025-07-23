@@ -1,0 +1,57 @@
+package uz.imv.lmssystem.controller;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import uz.imv.lmssystem.dto.ChangeRoleDTO;
+import uz.imv.lmssystem.dto.UserDTO;
+import uz.imv.lmssystem.dto.UserUpdateDTO;
+import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.service.UserService;
+
+/**
+ * Created by Avazbek on 23/07/25 14:51
+ */
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/user")
+public class UserController {
+
+
+    private final UserService userService;
+
+    @GetMapping("about-me")
+    public ResponseEntity<UserDTO> aboutMe(@AuthenticationPrincipal User currentUser) {
+
+        return ResponseEntity.ok(userService.getAboutMe(currentUser));
+
+    }
+
+
+    @PatchMapping("change-role/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> changeRole(@PathVariable Long id, @Valid @RequestBody ChangeRoleDTO role) {
+
+        return ResponseEntity.ok(userService.changeRole(id, role));
+    }
+
+    @PutMapping("update-user")
+    public ResponseEntity<?> updateUser(@AuthenticationPrincipal User currentUser, @Valid @RequestBody UserUpdateDTO dto) {
+
+        return ResponseEntity.ok(userService.updateUser(currentUser, dto));
+    }
+
+
+    @DeleteMapping("delete-employee/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+
+        userService.deleteById(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+}

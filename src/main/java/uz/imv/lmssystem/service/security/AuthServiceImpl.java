@@ -11,11 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uz.imv.lmssystem.dto.NewEmployeeResponse;
 import uz.imv.lmssystem.dto.auth.LoginDTO;
 import uz.imv.lmssystem.dto.auth.RegisterDTO;
 import uz.imv.lmssystem.dto.auth.TokenDTO;
+import uz.imv.lmssystem.entity.Role;
 import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserAlreadyExistException;
+import uz.imv.lmssystem.repository.RoleRepository;
 import uz.imv.lmssystem.repository.UserRepository;
 
 
@@ -34,11 +38,14 @@ public class AuthServiceImpl implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthServiceImpl(UserRepository userRepository, @Lazy AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder) {
+    private final RoleRepository roleRepository;
+
+    public AuthServiceImpl(UserRepository userRepository, @Lazy AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -80,13 +87,18 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
-    public TokenDTO createEmployee(RegisterDTO dto) {
+    public NewEmployeeResponse createEmployee(RegisterDTO dto) {
 
         if (userRepository.existsByUsername(dto.getUsername())) {
             log.warn("Email :  '{}' already exists", dto.getUsername());
             throw new UserAlreadyExistException(dto.getUsername());
         }
+
+
+        Role role = roleRepository
+                .findByName(dto.getRoleName())
+                .orElseThrow(() -> new UnknownRoleException(dto.getRoleName()));
+
 
         User user = new User();
         user.setName(dto.getName());
@@ -94,7 +106,7 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(dto.getUsername());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setRole(dto.getRole());
+        user.setRole(role);
 
         userRepository.save(user);
 
@@ -102,11 +114,14 @@ public class AuthServiceImpl implements AuthService {
 
         long expiration = jwtService.extractExpiration(token);
 
-        log.info("User '{}' is registered successfully with role '{}' ", user.getUsername(), dto.getRole());
+        log.info("User '{}' is registered successfully with role '{}' ", user.getUsername(), role.getName());
 
-        return new TokenDTO(
-                token,
-                expiration
+
+        return new NewEmployeeResponse(
+                user.getUsername(),
+                user.getPassword()
         );
+
+
     }
 }
