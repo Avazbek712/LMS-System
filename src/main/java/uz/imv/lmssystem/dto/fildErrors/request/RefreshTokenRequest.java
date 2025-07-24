@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.dto;
+package uz.imv.lmssystem.dto.fildErrors.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

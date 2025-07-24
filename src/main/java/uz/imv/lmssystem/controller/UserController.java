@@ -30,22 +30,22 @@ public class UserController {
 
     }
 
-
     @PatchMapping("change-role/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_MANAGE')")
     public ResponseEntity<?> changeRole(@PathVariable Long id, @Valid @RequestBody ChangeRoleDTO role) {
 
         return ResponseEntity.ok(userService.changeRole(id, role));
     }
 
     @PutMapping("update-user")
-    public ResponseEntity<?> updateUser(@AuthenticationPrincipal User currentUser, @Valid @RequestBody UserUpdateDTO dto) {
+    public ResponseEntity<?> updateInfoAboutMe(@AuthenticationPrincipal User currentUser, @Valid @RequestBody UserUpdateDTO dto) {
 
         return ResponseEntity.ok(userService.updateUser(currentUser, dto));
     }
 
 
     @DeleteMapping("delete-employee/{id}")
+    @PreAuthorize("hasAuthority('STUDENT_DELETE')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
 
         userService.deleteById(id);

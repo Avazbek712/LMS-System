@@ -16,8 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by Avazbek on 20/07/25 21:46
@@ -51,9 +53,16 @@ public class User extends AbsLongEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (Objects.isNull(role)) return List.of();
+        if (Objects.isNull(role) || Objects.isNull(role.getPermissions())) {
+            return Collections.emptySet();
+        }
 
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        // 1. Взять разрешения из ОДНОЙ роли (this.role.getPermissions())
+        // 2. Превратить каждое разрешение (Enum) в объект SimpleGrantedAuthority
+        // 3. Собрать все в коллекцию (Set)
+        return role.getPermissions().stream()
+                .map(permissionEnum -> new SimpleGrantedAuthority(permissionEnum.name()))
+                .collect(Collectors.toSet());
     }
 
 }

@@ -1,6 +1,8 @@
 package uz.imv.lmssystem.service;
 
 import uz.imv.lmssystem.dto.*;
+import uz.imv.lmssystem.dto.fildErrors.response.ChangedRoleResponse;
+import uz.imv.lmssystem.dto.fildErrors.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.User;
 
 /**

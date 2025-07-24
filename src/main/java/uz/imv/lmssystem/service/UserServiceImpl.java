@@ -3,6 +3,8 @@ package uz.imv.lmssystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.*;
+import uz.imv.lmssystem.dto.fildErrors.response.ChangedRoleResponse;
+import uz.imv.lmssystem.dto.fildErrors.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.Role;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
