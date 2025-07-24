@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.CourseDTO;
 import uz.imv.lmssystem.dto.response.CourseResponseDTO;
-import uz.imv.lmssystem.enums.PermissionsEnum;
 import uz.imv.lmssystem.service.CourseService;
 
 import java.util.List;
