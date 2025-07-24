@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uz.imv.lmssystem.dto.fildErrors.response.NewEmployeeResponse;
+import uz.imv.lmssystem.dto.response.NewEmployeeResponse;
 import uz.imv.lmssystem.dto.auth.LoginDTO;
 import uz.imv.lmssystem.dto.auth.RegisterDTO;
 import uz.imv.lmssystem.dto.auth.TokenDTO;
