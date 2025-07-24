@@ -18,7 +18,7 @@ import uz.imv.lmssystem.entity.template.AbsLongEntity;
 @Setter
 public class Course extends AbsLongEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
