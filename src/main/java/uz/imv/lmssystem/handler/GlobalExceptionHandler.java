@@ -20,6 +20,16 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
 
+    @ExceptionHandler(value = EntityAlreadyExistsException.class)
+    public ResponseEntity<ErrorDTO> handle(EntityAlreadyExistsException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+
     @ExceptionHandler(value = UnknownRoleException.class)
     public ResponseEntity<ErrorDTO> handle(UnknownRoleException e) {
         ErrorDTO errorDTO = new ErrorDTO(
