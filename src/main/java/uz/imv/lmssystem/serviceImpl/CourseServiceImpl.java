@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,13 +9,12 @@ import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
 import uz.imv.lmssystem.mapper.CourseMapper;
 import uz.imv.lmssystem.exceptions.CourseNotFoundException;
 import uz.imv.lmssystem.repository.CourseRepository;
+import uz.imv.lmssystem.service.CourseService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Avazbek on 24/07/25 10:42
- */
+
 @Service
 @RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {

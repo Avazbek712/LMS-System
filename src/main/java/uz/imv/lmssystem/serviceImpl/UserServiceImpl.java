@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,7 @@ import uz.imv.lmssystem.exceptions.UserNotFoundException;
 import uz.imv.lmssystem.mapper.UserMapper;
 import uz.imv.lmssystem.repository.RoleRepository;
 import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.service.UserService;
 
 /**
  * Created by Avazbek on 23/07/25 12:51

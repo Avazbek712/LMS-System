@@ -15,9 +15,7 @@ import uz.imv.lmssystem.dto.auth.RegisterDTO;
 import uz.imv.lmssystem.dto.auth.TokenDTO;
 import uz.imv.lmssystem.service.security.AuthService;
 
-/**
- * Created by Avazbek on 22/07/25 11:47
- */
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")

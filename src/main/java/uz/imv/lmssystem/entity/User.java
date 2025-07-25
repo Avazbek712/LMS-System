@@ -18,9 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/**
- * Created by Avazbek on 20/07/25 21:46
- */
+
 @Entity(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -63,7 +61,6 @@ public class User extends AbsLongEntity implements UserDetails {
         if (Objects.isNull(role) || Objects.isNull(role.getPermissions())) {
             return Collections.emptySet();
         }
-
         // 1. Взять разрешения из ОДНОЙ роли (this.role.getPermissions())
         // 2. Превратить каждое разрешение (Enum) в объект SimpleGrantedAuthority
         // 3. Собрать все в коллекцию (Set)

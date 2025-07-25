@@ -1,20 +1,25 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.RoomDTO;
+import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.dto.response.RoomResponseDTO;
 import uz.imv.lmssystem.entity.Room;
+import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.RoomMapper;
 import uz.imv.lmssystem.repository.RoomRepository;
+import uz.imv.lmssystem.service.RoomService;
 
 import java.util.List;
 
-/**
- * Created by Avazbek on 24/07/25 11:53
- */
+
 @Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
@@ -23,12 +28,22 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
 
+
     @Override
-    public List<RoomDTO> getAll() {
-        List<Room> rooms = roomRepository.findAll();
-
-        return rooms.stream().map(roomMapper::toDto).toList();
-
+    public PageableDTO getAll(Integer page, Integer size) {
+        Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Room> roomPage = roomRepository.findAll(pageable);
+        List<Room> rooms = roomPage.getContent();
+        List<RoomDTO> roomDTOS = roomMapper.toDTO(rooms);
+        return new PageableDTO(
+                roomPage.getSize(),
+                roomPage.getTotalElements(),
+                roomPage.getTotalPages(),
+                !roomPage.isLast(),
+                !roomPage.isFirst(),
+                roomDTOS
+        );
     }
 
     @Override
@@ -38,20 +53,20 @@ public class RoomServiceImpl implements RoomService {
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Room with id : " + id + " not found!"));
 
-        return roomMapper.toDto(room);
+        return roomMapper.toDTO(room);
     }
 
     @Override
-    public void deleteById(Long id) {
+    public Long deleteById(Long id) {
 
         roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room with id : " + id + " not found!"));
 
         roomRepository.deleteById(id);
+        return id;
     }
 
     @Override
     public RoomResponseDTO save(RoomDTO roomDTO) {
-
         roomRepository.findByName(roomDTO.getName()).ifPresent(r -> {
             throw new EntityAlreadyExistsException("Room with name : " + roomDTO.getName() + " already exist!");
         });
@@ -60,19 +75,11 @@ public class RoomServiceImpl implements RoomService {
             throw new EntityAlreadyExistsException("Room with number : " + roomDTO.getRoomNumber() + " already exist!");
         });
 
-
         if (roomDTO.getChairs() < roomDTO.getCapacity() && roomDTO.getDesks() < roomDTO.getCapacity() / 2) {
             throw new IllegalArgumentException("The number of chairs and desks cannot be less than the capacity!");
         }
 
-        Room room = new Room();
-
-        room.setName(roomDTO.getName().toUpperCase());
-        room.setRoomNumber(roomDTO.getRoomNumber());
-        room.setCapacity(roomDTO.getCapacity());
-        room.setDesks(roomDTO.getDesks());
-        room.setChairs(roomDTO.getChairs());
-
+        Room room = roomMapper.toEntity(roomDTO);
         roomRepository.save(room);
 
         return roomMapper.toResponse(room);
@@ -95,14 +102,13 @@ public class RoomServiceImpl implements RoomService {
                 findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Room with id : " + id + " not found!"));
 
-        room.setName(roomDTO.getName().toUpperCase());
-        room.setRoomNumber(roomDTO.getRoomNumber());
-        room.setCapacity(roomDTO.getCapacity());
-        room.setDesks(roomDTO.getDesks());
-        room.setChairs(roomDTO.getChairs());
+        if (roomDTO.getChairs() < roomDTO.getCapacity() && roomDTO.getDesks() < roomDTO.getCapacity() / 2) {
+            throw new IllegalArgumentException("The number of chairs and desks cannot be less than the capacity!");
+        } else {
 
-        roomRepository.save(room);
-
-        return roomMapper.toResponse(room);
+            roomMapper.updateEntity(roomDTO, room);
+            roomRepository.save(room);
+            return roomMapper.toResponse(room);
+        }
     }
 }
