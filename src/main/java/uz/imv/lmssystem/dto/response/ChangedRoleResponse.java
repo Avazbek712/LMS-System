@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.dto.fildErrors.response;
+package uz.imv.lmssystem.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

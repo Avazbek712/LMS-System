@@ -9,18 +9,24 @@ import lombok.Setter;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
 /**
- * Created by Avazbek on 22/07/25 14:42
+ * Created by Avazbek on 24/07/25 11:18
  */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Course extends AbsLongEntity {
+public class Room extends AbsLongEntity {
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Long price;
+    @Column(unique = true, nullable = false)
+    private Short roomNumber;
+
+    private int capacity;
+
+    private Integer desks;
+
+    private Integer chairs;
 }

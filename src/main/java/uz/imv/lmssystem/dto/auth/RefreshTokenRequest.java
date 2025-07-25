@@ -1,11 +1,11 @@
-package uz.imv.lmssystem.dto.fildErrors.request;
+package uz.imv.lmssystem.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Avazbek on 23/07/25 15:47
+ * Created by Avazbek on 24/07/25 14:24
  */
 @Data
 @AllArgsConstructor
@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class RefreshTokenRequest {
 
     private String refreshToken;
+
 }

@@ -11,4 +11,9 @@ public class UserNotFoundException extends RuntimeException {
         super("User with id : " + id +  " not found");
         this.status = HttpStatus.NOT_FOUND;
     }
+
+    public UserNotFoundException(String username)  {
+        super("User with username : " + username +  " not found");
+        this.status = HttpStatus.NOT_FOUND;
+    }
 }

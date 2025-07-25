@@ -16,10 +16,9 @@ public class SecurityAccessExceptionHandler implements AccessDeniedHandler {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException{
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         ErrorDTO errorDTO = new ErrorDTO(
-                403,
+                401,
                 accessDeniedException.getMessage()
         );
 
@@ -28,6 +27,5 @@ public class SecurityAccessExceptionHandler implements AccessDeniedHandler {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.getWriter().write(json);
-
     }
 }

@@ -1,9 +1,6 @@
 package uz.imv.lmssystem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +47,16 @@ public class User extends AbsLongEntity implements UserDetails {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
+
+    @Column(length = 1024)
+    private String refreshToken;
+
+    @OneToMany(
+            mappedBy = "teacher",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<TeacherInfo> teacherInfos;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

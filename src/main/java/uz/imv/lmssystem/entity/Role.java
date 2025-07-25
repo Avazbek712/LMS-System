@@ -27,7 +27,8 @@ public class Role extends AbsLongEntity {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @ElementCollection(targetClass = PermissionsEnum.class)
+    @ElementCollection(targetClass = PermissionsEnum.class,
+    fetch = FetchType.EAGER)
     @CollectionTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"))
     @Column(name = "permission", nullable = false)
     @Enumerated(EnumType.STRING)
