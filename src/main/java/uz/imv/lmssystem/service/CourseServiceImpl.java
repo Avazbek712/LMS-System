@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.response.CourseResponseDTO;
 import uz.imv.lmssystem.entity.Course;
 import uz.imv.lmssystem.dto.CourseDTO;
+import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
 import uz.imv.lmssystem.mapper.CourseMapper;
 import uz.imv.lmssystem.exceptions.CourseNotFoundException;
 import uz.imv.lmssystem.repository.CourseRepository;
@@ -40,8 +41,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseResponseDTO save(CourseDTO dto) {
 
-        courseRepository.getByName(dto.getName())
-                .orElseThrow(() -> new CourseNotFoundException(dto.getName()));
+        courseRepository.findByName(dto.getName()).ifPresent(c -> {
+            throw new EntityAlreadyExistsException("Course with name : " + dto.getName() + " already exist!");
+        });
+
+
 
         Course course = new Course();
 
@@ -55,6 +59,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseResponseDTO update(Long id, CourseDTO dto) {
+
+        courseRepository.findByName(dto.getName()).ifPresent(c -> {
+            if (!c.getId().equals(id))
+                throw new EntityAlreadyExistsException("Course with name : " + dto.getName() + " already exist!");
+        });
 
         Course course = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
 
