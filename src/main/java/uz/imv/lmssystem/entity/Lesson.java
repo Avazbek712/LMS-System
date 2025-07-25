@@ -1,7 +1,6 @@
 package uz.imv.lmssystem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +10,11 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 /**
- * Created by Avazbek on 24/07/25 11:18
+ * Created by Avazbek on 25/07/25 10:26
  */
 @Entity
 @AllArgsConstructor
@@ -20,21 +22,23 @@ import uz.imv.lmssystem.entity.template.AbsLongEntity;
 @Getter
 @Setter
 @SQLRestriction("deleted=false")
-@SQLDelete(sql = "update room set deleted=true where id=?")
-public class Room extends AbsLongEntity {
-
-    @Column(unique = true, nullable = false)
-    private String name;
-
-    @Column(unique = true, nullable = false)
-    private Short roomNumber;
-
-    @Column( nullable = false)
-    private Integer capacity;
+@SQLDelete(sql = "update lesson set deleted=true where id=?")
+public class Lesson extends AbsLongEntity {
 
     @Column(nullable = false)
-    private Integer desks;
+    private String theme;
 
     @Column(nullable = false)
-    private Integer chairs;
+    private LocalDate date;
+
+    @Column(nullable = false)
+    private LocalTime startTime;
+
+    @Column(nullable = false)
+    private LocalTime endTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
+    private Group group;
+
 }

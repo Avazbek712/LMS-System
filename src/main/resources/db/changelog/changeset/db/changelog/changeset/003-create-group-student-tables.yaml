@@ -1,0 +1,82 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6-create-groups-table
+      author: Avazbek
+      changes:
+        - createTable:
+            tableName: groups
+            remarks: "Таблица учебных групп"
+            columns:
+              - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: name, type: varchar(255), constraints: { unique: true, nullable: false } }
+              - column: { name: schedule, type: varchar(50) }
+              - column: { name: start_date, type: date }
+              - column: { name: end_date, type: date }
+              - column: { name: status, type: varchar(50) }
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints: { nullable: false, foreignKeyName: fk_groups_course, references: course(id) }
+              - column:
+                  name: teacher_id
+                  type: bigint
+                  constraints: { nullable: false, foreignKeyName: fk_groups_teacher, references: users(id) }
+              - column:
+                  name: room_id
+                  type: bigint
+                  constraints: { foreignKeyName: fk_groups_room, references: room(id) } # Nullable
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: deleted, type: boolean, defaultValueBoolean: false, constraints: { nullable: false } }
+        - sql:
+            sql: CREATE TRIGGER set_timestamp BEFORE UPDATE ON groups FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
+
+  - changeSet:
+      id: 7-create-students-table
+      author: db_architect
+      changes:
+        - createTable:
+            tableName: student
+            remarks: "Таблица студентов"
+            columns:
+              - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: name, type: varchar(255), constraints: { nullable: false } }
+              - column: { name: surname, type: varchar(255), constraints: { nullable: false } }
+              - column: { name: phone_number, type: varchar(255), constraints: { nullable: false } }
+              - column: { name: balance, type: bigint, defaultValueNumeric: 0, constraints: { nullable: false } }
+              - column:
+                  name: group_id
+                  type: bigint
+                  constraints: { foreignKeyName: fk_student_group, references: groups(id) } # Nullable
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: deleted, type: boolean, defaultValueBoolean: false, constraints: { nullable: false } }
+        - sql:
+            sql: CREATE TRIGGER set_timestamp BEFORE UPDATE ON student FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
+
+  - changeSet:
+      id: 8-create-teacher-info-table
+      author: db_architect
+      changes:
+        - createTable:
+            tableName: teacher_info
+            remarks: "Связующая таблица для курсов, которые может вести преподаватель"
+            columns:
+              - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column:
+                  name: teacher_id
+                  type: bigint
+                  constraints: { foreignKeyName: fk_teacher_info_user, references: users(id) }
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints: { foreignKeyName: fk_teacher_info_course, references: course(id) }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: deleted, type: boolean, defaultValueBoolean: false, constraints: { nullable: false } }
+        - addUniqueConstraint:
+            tableName: teacher_info
+            columnNames: teacher_id, course_id
+            constraintName: uq_teacher_course
+        - sql:
+            sql: CREATE TRIGGER set_timestamp BEFORE UPDATE ON teacher_info FOR EACH ROW EXECUTE PROCEDURE update_timestamp();

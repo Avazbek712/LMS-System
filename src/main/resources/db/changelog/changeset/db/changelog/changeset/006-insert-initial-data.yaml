@@ -1,0 +1,130 @@
+databaseChangeLog:
+  - changeSet:
+      id: 12-insert-initial-roles
+      author: db_architect
+      comment: "Создание базовых ролей в системе"
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column: { name: id, valueNumeric: 1 }
+              - column: { name: name, value: "SUPER_ADMIN" }
+        - insert:
+            tableName: roles
+            columns:
+              - column: { name: id, valueNumeric: 2 }
+              - column: { name: name, value: "ADMIN" }
+        - insert:
+            tableName: roles
+            columns:
+              - column: { name: id, valueNumeric: 3 }
+              - column: { name: name, value: "TEACHER" }
+
+  - changeSet:
+      id: 13-insert-permissions-for-roles
+      author: db_architect
+      comment: "Назначение разрешений для созданных ролей"
+      changes:
+        # --- PERMISSIONS FOR SUPER_ADMIN (role_id=1) ---
+        # Супер-админ получает абсолютно все права
+        - sql:
+            comment: "Назначение всех существующих прав роли SUPER_ADMIN"
+            sql: |
+              INSERT INTO role_permissions (role_id, permission)
+              VALUES
+                (1, 'STUDENT_CREATE'),
+                (1, 'STUDENT_READ'),
+                (1, 'STUDENT_READ_DETAILS'),
+                (1, 'STUDENT_UPDATE'),
+                (1, 'STUDENT_DELETE'),
+                (1, 'STUDENT_MANAGE_BALANCE'),
+                (1, 'EMPLOYEE_CREATE'),
+                (1, 'EMPLOYEE_READ'),
+                (1, 'EMPLOYEE_UPDATE'),
+                (1, 'EMPLOYEE_UPDATE_ROLE'),
+                (1, 'EMPLOYEE_DELETE'),
+                (1, 'GROUP_CREATE'),
+                (1, 'GROUP_READ'),
+                (1, 'GROUP_READ_OWN'),
+                (1, 'GROUP_UPDATE'),
+                (1, 'GROUP_DELETE'),
+                (1, 'GROUP_ASSIGN_STUDENT'),
+                (1, 'GROUP_REMOVE_STUDENT'),
+                (1, 'COURSE_CREATE'),
+                (1, 'COURSE_READ'),
+                (1, 'COURSE_UPDATE'),
+                (1, 'COURSE_DELETE'),
+                (1, 'ROOM_CREATE'),
+                (1, 'ROOM_READ'),
+                (1, 'ROOM_UPDATE'),
+                (1, 'ROOM_DELETE'),
+                (1, 'ATTENDANCE_MARK'),
+                (1, 'ATTENDANCE_READ_OWN'),
+                (1, 'ATTENDANCE_READ_ALL'),
+                (1, 'ATTENDANCE_UPDATE'),
+                (1, 'PAYMENT_CREATE'),
+                (1, 'PAYMENT_READ'),
+                (1, 'PAYMENT_DELETE'),
+                (1, 'EXPENSE_CREATE'),
+                (1, 'EXPENSE_READ'),
+                (1, 'EXPENSE_UPDATE'),
+                (1, 'EXPENSE_DELETE'),
+                (1, 'SALARY_CONFIG_MANAGE'),
+                (1, 'SALARY_PAY'),
+                (1, 'DASHBOARD_VIEW_STATS'),
+                (1, 'REPORT_VIEW_FINANCIAL'),
+                (1, 'REPORT_VIEW_DEBTORS'),
+                (1, 'ROLE_MANAGE');
+
+        # --- PERMISSIONS FOR ADMIN (role_id=2) ---
+        # Администратор управляет всем, кроме ролей и других сотрудников
+        - sql:
+            comment: "Назначение прав для роли ADMIN"
+            sql: |
+              INSERT INTO role_permissions (role_id, permission)
+              VALUES
+                (2, 'STUDENT_CREATE'),
+                (2, 'STUDENT_READ'),
+                (2, 'STUDENT_READ_DETAILS'),
+                (2, 'STUDENT_UPDATE'),
+                (2, 'STUDENT_DELETE'),
+                (2, 'STUDENT_MANAGE_BALANCE'),
+                (2, 'GROUP_CREATE'),
+                (2, 'GROUP_READ'),
+                (2, 'GROUP_UPDATE'),
+                (2, 'GROUP_DELETE'),
+                (2, 'GROUP_ASSIGN_STUDENT'),
+                (2, 'GROUP_REMOVE_STUDENT'),
+                (2, 'COURSE_READ'),
+                (2, 'ROOM_READ'),
+                (2, 'ATTENDANCE_READ_ALL'),
+                (2, 'ATTENDANCE_UPDATE'),
+                (2, 'PAYMENT_CREATE'),
+                (2, 'PAYMENT_READ'),
+                (2, 'EXPENSE_CREATE'),
+                (2, 'EXPENSE_READ'),
+                (2, 'DASHBOARD_VIEW_STATS'),
+                (2, 'REPORT_VIEW_FINANCIAL'),
+                (2, 'REPORT_VIEW_DEBTORS');
+
+        # --- PERMISSIONS FOR TEACHER (role_id=3) ---
+        # Преподаватель работает только со своими группами и студентами
+        - sql:
+            comment: "Назначение прав для роли TEACHER"
+            sql: |
+              INSERT INTO role_permissions (role_id, permission)
+              VALUES
+                (3, 'STUDENT_READ'),
+                (3, 'GROUP_READ_OWN'),
+                (3, 'ATTENDANCE_MARK'),
+                (3, 'ATTENDANCE_READ_OWN');
+
+  - changeSet:
+      id: 15-update-sequences
+      author: db_architect
+      comment: "Обновление sequence для таблиц, в которые вставлялись данные с явным ID"
+      changes:
+        - sql:
+            # Обновляем sequence только для таблицы roles, так как только в нее мы вставляли данные с явным ID.
+            sql: |
+              SELECT setval('roles_id_seq', (SELECT MAX(id) FROM roles), true);

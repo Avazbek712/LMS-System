@@ -1,7 +1,6 @@
 package uz.imv.lmssystem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import org.hibernate.annotations.SQLRestriction;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
 /**
- * Created by Avazbek on 22/07/25 14:42
+ * Created by Avazbek on 24/07/25 15:21
  */
 @Entity
 @AllArgsConstructor
@@ -19,12 +18,13 @@ import uz.imv.lmssystem.entity.template.AbsLongEntity;
 @Getter
 @Setter
 @SQLRestriction("deleted=false")
-@SQLDelete(sql = "update course set deleted=true where id=?")
-public class Course extends AbsLongEntity {
+@SQLDelete(sql = "update teacher_info set deleted=true where id=?")
+public class TeacherInfo extends AbsLongEntity {
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User teacher;
 
-    @Column(nullable = false)
-    private Long price;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Course course;
+
 }
