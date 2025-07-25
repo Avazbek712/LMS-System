@@ -5,16 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Avazbek on 18/07/25 12:20
+ * Created by Avazbek on 24/07/25 14:24
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenDTO {
+public class RefreshTokenRequest {
 
-    private String accessToken;
-
-  private String refreshToken;
-
+    private String refreshToken;
 
 }

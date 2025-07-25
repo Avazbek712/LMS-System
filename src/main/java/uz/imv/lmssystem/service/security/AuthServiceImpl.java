@@ -2,7 +2,6 @@ package uz.imv.lmssystem.service.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,14 +10,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uz.imv.lmssystem.dto.response.NewEmployeeResponse;
 import uz.imv.lmssystem.dto.auth.LoginDTO;
+import uz.imv.lmssystem.dto.auth.RefreshTokenRequest;
 import uz.imv.lmssystem.dto.auth.RegisterDTO;
 import uz.imv.lmssystem.dto.auth.TokenDTO;
+import uz.imv.lmssystem.dto.response.NewEmployeeResponse;
 import uz.imv.lmssystem.entity.Role;
 import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.exceptions.InvalidTokenException;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserAlreadyExistException;
+import uz.imv.lmssystem.exceptions.UserNotFoundException;
 import uz.imv.lmssystem.repository.RoleRepository;
 import uz.imv.lmssystem.repository.UserRepository;
 
@@ -56,8 +58,6 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-
-    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public TokenDTO login(LoginDTO dto) {
         log.info("User '{}' attempting to log in", dto.getUsername());
@@ -74,15 +74,19 @@ public class AuthServiceImpl implements AuthService {
 
         User user = (User) authenticate.getPrincipal();
 
-        String token = jwtService.generateToken(user);
+        String accessToken = jwtService.generateToken(user);
 
-        long expiration = jwtService.extractExpiration(token);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+        user.setRefreshToken(refreshToken);
+
+        userRepository.save(user);
 
         log.info("User with email '{}' successfully signed in", email);
 
         return new TokenDTO(
-                token,
-                expiration
+                accessToken,
+                refreshToken
         );
     }
 
@@ -112,8 +116,6 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtService.generateToken(user);
 
-        long expiration = jwtService.extractExpiration(token);
-
         log.info("User '{}' is registered successfully with role '{}' ", user.getUsername(), role.getName());
 
 
@@ -121,7 +123,30 @@ public class AuthServiceImpl implements AuthService {
                 user.getUsername(),
                 user.getPassword()
         );
+    }
 
+    @Override
+    public TokenDTO refresh(RefreshTokenRequest token) {
+        String refreshToken = token.getRefreshToken();
 
+        String username = jwtService.extractUsernameFromRefreshToken(refreshToken);
+
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+
+        if (!user.getRefreshToken().equals(refreshToken) || !jwtService.isRefreshTokenValid(refreshToken, user)) {
+            throw new InvalidTokenException("Invalid or expired refresh token");
+        }
+        String newAccessToken = jwtService.generateToken(user);
+        String newRefreshToken = jwtService.generateRefreshToken(user);
+
+        user.setRefreshToken(refreshToken);
+        userRepository.save(user);
+
+        return new TokenDTO(
+                newAccessToken,
+                newRefreshToken
+        );
     }
 }
