@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 12-insert-initial-roles
-      author: db_architect
+      author: Avazbek
       comment: "Создание базовых ролей в системе"
       changes:
         - insert:
