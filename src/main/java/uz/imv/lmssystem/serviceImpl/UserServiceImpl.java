@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getAboutMe(User currentUser) {
-        return userMapper.toDto(currentUser);
+        return userMapper.toDTO(currentUser);
 
     }
 
