@@ -50,7 +50,7 @@ public class RoomController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('ROOM_DELETE')")
-    public ResponseEntity<Long> deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable("id") Long id) {
         roomService.deleteById(id);
 
         return ResponseEntity.noContent().build();

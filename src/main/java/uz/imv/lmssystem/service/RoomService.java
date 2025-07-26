@@ -13,7 +13,7 @@ public interface RoomService {
     RoomDTO getById(Long id);
 
 
-    Long deleteById(Long id);
+    void deleteById(Long id);
 
     RoomResponseDTO save(RoomDTO roomDTO);
 

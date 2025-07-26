@@ -52,7 +52,7 @@ public class CourseController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('COURSE_DELETE')")
-    public ResponseEntity<Long> deleteCourse(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
         courseService.deleteById(id);
 
         return ResponseEntity.noContent().build();

@@ -57,12 +57,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Long deleteById(Long id) {
+    public void deleteById(Long id) {
 
         roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room with id : " + id + " not found!"));
 
         roomRepository.deleteById(id);
-        return id;
     }
 
     @Override

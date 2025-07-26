@@ -89,11 +89,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Long deleteById(Long id) {
+    public void deleteById(Long id) {
 
         courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
 
         courseRepository.deleteById(id);
-        return id;
     }
 }
