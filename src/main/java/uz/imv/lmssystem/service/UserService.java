@@ -5,13 +5,11 @@ import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
 import uz.imv.lmssystem.dto.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.User;
 
-/**
- * Created by Avazbek on 23/07/25 12:49
- */
+
 public interface UserService {
 
 
-    ChangedRoleResponse changeRole(Long id, ChangeRoleDTO role);
+    ChangedRoleResponse changeRole(Long userId, Long roleId);
 
     void deleteById(long id);
 

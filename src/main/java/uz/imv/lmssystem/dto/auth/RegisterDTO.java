@@ -30,5 +30,5 @@ public class RegisterDTO implements Serializable {
     @Size(min = 8, max = 64, message = "Password must be between {min} and {max} characters")
     private String password;
 
-    private String roleName;
+    private Long roleId;
 }

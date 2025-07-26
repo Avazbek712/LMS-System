@@ -10,11 +10,7 @@ import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.dto.response.RoomResponseDTO;
 import uz.imv.lmssystem.service.RoomService;
 
-import java.util.List;
 
-/**
- * Created by Avazbek on 24/07/25 12:27
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/rooms")

@@ -6,15 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import uz.imv.lmssystem.dto.ChangeRoleDTO;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.service.UserService;
 
-/**
- * Created by Avazbek on 23/07/25 14:51
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -32,9 +28,9 @@ public class UserController {
 
     @PatchMapping("change-role/{id}")
     @PreAuthorize("hasAuthority('ROLE_MANAGE')")
-    public ResponseEntity<?> changeRole(@PathVariable Long id, @Valid @RequestBody ChangeRoleDTO role) {
+    public ResponseEntity<?> changeRole(@PathVariable Long id, @Valid @RequestBody Long roleId) {
 
-        return ResponseEntity.ok(userService.changeRole(id, role));
+        return ResponseEntity.ok(userService.changeRole(id, roleId));
     }
 
     @PutMapping("update-user")

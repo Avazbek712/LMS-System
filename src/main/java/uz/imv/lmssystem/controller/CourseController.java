@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -7,13 +8,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.CourseDTO;
 import uz.imv.lmssystem.dto.response.CourseResponseDTO;
+import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.service.CourseService;
 
 import java.util.List;
 
-/**
- * Created by Avazbek on 24/07/25 10:58
- */
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/courses")
@@ -23,9 +23,10 @@ public class CourseController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('COURSE_READ')")
-    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+    public PageableDTO getAll(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
+                              @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
 
-        return ResponseEntity.ok(courseService.getAll());
+        return courseService.getAll(page, size);
     }
 
     @GetMapping("{id}")
@@ -51,7 +52,7 @@ public class CourseController {
 
     @DeleteMapping("{id}")
     @PreAuthorize("hasAuthority('COURSE_DELETE')")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
+    public ResponseEntity<Long> deleteCourse(@PathVariable Long id) {
         courseService.deleteById(id);
 
         return ResponseEntity.noContent().build();

@@ -14,9 +14,7 @@ import uz.imv.lmssystem.repository.RoleRepository;
 import uz.imv.lmssystem.repository.UserRepository;
 import uz.imv.lmssystem.service.UserService;
 
-/**
- * Created by Avazbek on 23/07/25 12:51
- */
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -25,13 +23,13 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
-    public ChangedRoleResponse changeRole(Long id, ChangeRoleDTO role) {
+    public ChangedRoleResponse changeRole(Long userId, Long roleId) {
 
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         String oldRole = user.getRole().getName();
 
-        Role newRole = roleRepository.findByName(role.getRoleName()).orElseThrow(() -> new UnknownRoleException(role.getRoleName()));
+        Role newRole = roleRepository.findById(roleId).orElseThrow(() -> new UnknownRoleException(roleId));
 
         user.setRole(newRole);
 
