@@ -1,0 +1,41 @@
+package uz.imv.lmssystem.dto.response;
+
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import uz.imv.lmssystem.entity.Course;
+import uz.imv.lmssystem.enums.GroupStatus;
+import uz.imv.lmssystem.enums.Schedule;
+
+import java.time.LocalDate;
+
+/**
+ * Created by Avazbek on 24/07/25 15:04
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class GroupCreateResponse {
+
+
+    private String name;
+
+    private Schedule schedule;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private GroupStatus status;
+
+    private String courseName;
+
+    private String teacherName;
+
+    private String teacherSurname;
+
+    private Long roomId;
+
+}
