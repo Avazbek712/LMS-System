@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.*;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
+    @Transactional
     public ChangedRoleResponse changeRole(Long userId, Long roleId) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public void deleteById(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
@@ -52,6 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserInfoUpdateResponse updateUser(User currentUser, UserUpdateDTO dto) {
 
         Long id = currentUser.getId();

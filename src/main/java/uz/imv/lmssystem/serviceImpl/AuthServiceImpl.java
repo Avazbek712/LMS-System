@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -91,6 +92,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public NewEmployeeResponse createEmployee(RegisterDTO dto) {
 
         if (userRepository.existsByUsername(dto.getUsername())) {

@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,6 +58,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
 
         roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room with id : " + id + " not found!"));
@@ -65,6 +67,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
     public RoomResponseDTO save(RoomDTO roomDTO) {
         roomRepository.findByName(roomDTO.getName()).ifPresent(r -> {
             throw new EntityAlreadyExistsException("Room with name : " + roomDTO.getName() + " already exist!");
@@ -85,6 +88,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
     public RoomResponseDTO update(Long id, RoomDTO roomDTO) {
 
         roomRepository.findByName(roomDTO.getName()).ifPresent(r -> {

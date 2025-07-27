@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +55,7 @@ public class CourseServiceImpl implements CourseService {
 
 
     @Override
+    @Transactional
     public CourseResponseDTO save(CourseDTO dto) {
 
         courseRepository.findByName(dto.getName()).ifPresent(c -> {
@@ -72,6 +74,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public CourseResponseDTO update(Long id, CourseDTO dto) {
 
         courseRepository.findByName(dto.getName()).ifPresent(c -> {
@@ -89,6 +92,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
 
         courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
