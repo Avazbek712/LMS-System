@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 9-create-lesson-table
+      author: Avazbek
+      changes:
+        - createTable:
+            tableName: lesson
+
+            columns:
+              - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: theme, type: varchar(255), constraints: { nullable: false } }
+              - column: { name: date, type: date, constraints: { nullable: false } }
+              - column: { name: start_time, type: time, constraints: { nullable: false } }
+              - column: { name: end_time, type: time, constraints: { nullable: false } }
+              - column:
+                  name: group_id
+                  type: bigint
+                  constraints: { nullable: false, foreignKeyName: fk_lesson_group, references: groups(id) }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: deleted, type: boolean, defaultValueBoolean: false, constraints: { nullable: false } }
+        - sql:
+            sql: CREATE TRIGGER set_timestamp BEFORE UPDATE ON lesson FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
+
+  - changeSet:
+      id: 10-create-attendance-table
+      author: Avazbek
+      changes:
+        - createTable:
+            tableName: attendance
+            columns:
+              - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: status, type: varchar(50) }
+              - column:
+                  name: student_id
+                  type: bigint
+                  constraints: { nullable: false, foreignKeyName: fk_attendance_student, references: student(id) }
+              - column:
+                  name: lesson_id
+                  type: bigint
+                  constraints: { nullable: false, foreignKeyName: fk_attendance_lesson, references: lesson(id) }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: "now()", constraints: { nullable: false } }
+              - column: { name: deleted, type: boolean, defaultValueBoolean: false, constraints: { nullable: false } }
+        - addUniqueConstraint:
+            tableName: attendance
+            columnNames: student_id, lesson_id
+            constraintName: uq_student_lesson_attendance
+        - sql:
+            sql: CREATE TRIGGER set_timestamp BEFORE UPDATE ON attendance FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
