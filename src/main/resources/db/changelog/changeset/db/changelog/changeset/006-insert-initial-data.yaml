@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 12-insert-initial-roles
       author: Avazbek
-      comment: "Создание базовых ролей в системе"
+
       changes:
         - insert:
             tableName: roles
@@ -22,13 +22,9 @@ databaseChangeLog:
 
   - changeSet:
       id: 13-insert-permissions-for-roles
-      author: db_architect
-      comment: "Назначение разрешений для созданных ролей"
+      author: Avazbek
       changes:
-        # --- PERMISSIONS FOR SUPER_ADMIN (role_id=1) ---
-        # Супер-админ получает абсолютно все права
         - sql:
-            comment: "Назначение всех существующих прав роли SUPER_ADMIN"
             sql: |
               INSERT INTO role_permissions (role_id, permission)
               VALUES
@@ -75,9 +71,6 @@ databaseChangeLog:
                 (1, 'REPORT_VIEW_FINANCIAL'),
                 (1, 'REPORT_VIEW_DEBTORS'),
                 (1, 'ROLE_MANAGE');
-
-        # --- PERMISSIONS FOR ADMIN (role_id=2) ---
-        # Администратор управляет всем, кроме ролей и других сотрудников
         - sql:
             comment: "Назначение прав для роли ADMIN"
             sql: |
@@ -107,10 +100,7 @@ databaseChangeLog:
                 (2, 'REPORT_VIEW_FINANCIAL'),
                 (2, 'REPORT_VIEW_DEBTORS');
 
-        # --- PERMISSIONS FOR TEACHER (role_id=3) ---
-        # Преподаватель работает только со своими группами и студентами
         - sql:
-            comment: "Назначение прав для роли TEACHER"
             sql: |
               INSERT INTO role_permissions (role_id, permission)
               VALUES
@@ -121,10 +111,8 @@ databaseChangeLog:
 
   - changeSet:
       id: 15-update-sequences
-      author: db_architect
-      comment: "Обновление sequence для таблиц, в которые вставлялись данные с явным ID"
+      author: Avazbek
       changes:
         - sql:
-            # Обновляем sequence только для таблицы roles, так как только в нее мы вставляли данные с явным ID.
             sql: |
               SELECT setval('roles_id_seq', (SELECT MAX(id) FROM roles), true);

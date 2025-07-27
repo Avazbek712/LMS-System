@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/api/rooms")
 public class RoomController {
 
-
     private final RoomService roomService;
 
     @GetMapping

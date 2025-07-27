@@ -24,11 +24,10 @@ databaseChangeLog:
 
   - changeSet:
       id: 10-create-attendance-table
-      author: db_architect
+      author: Avazbek
       changes:
         - createTable:
             tableName: attendance
-
             columns:
               - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
               - column: { name: status, type: varchar(50) }

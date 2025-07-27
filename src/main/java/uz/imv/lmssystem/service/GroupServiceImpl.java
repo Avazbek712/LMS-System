@@ -2,12 +2,19 @@ package uz.imv.lmssystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.imv.lmssystem.dto.request.GroupCreateRequestDTO;
+import uz.imv.lmssystem.dto.request.GroupCreateRequest;
 import uz.imv.lmssystem.dto.response.GroupCreateResponse;
-import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
+import uz.imv.lmssystem.entity.Course;
+import uz.imv.lmssystem.entity.Group;
+import uz.imv.lmssystem.entity.Room;
+import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.enums.GroupStatus;
+import uz.imv.lmssystem.exceptions.EntityNotFoundException;
+import uz.imv.lmssystem.mapper.GroupMapper;
+import uz.imv.lmssystem.repository.CourseRepository;
 import uz.imv.lmssystem.repository.GroupRepository;
-
-import java.util.Objects;
+import uz.imv.lmssystem.repository.RoomRepository;
+import uz.imv.lmssystem.repository.UserRepository;
 
 /**
  * Created by Avazbek on 24/07/25 15:07
@@ -16,15 +23,46 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
+    private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
+    private final GroupMapper groupMapper;
 
     @Override
-    public GroupCreateResponse create(GroupCreateRequestDTO group) {
+    public GroupCreateResponse create(GroupCreateRequest dto) {
 
-        groupRepository
-                .findByName(group.getName())
-                .orElseThrow(()
-                        -> new EntityAlreadyExistsException("Group with name : " + group.getName() + " is already exist"));
-        return null;
+        Course course = courseRepository
+                .findById(dto
+                        .getCourseId())
+                .orElseThrow(() -> new EntityNotFoundException("Course with id : " + dto.getCourseId() + "not found!"));
 
+
+        User teacher = userRepository
+                .findById(dto.getTeacherId())
+                .orElseThrow(() -> new EntityNotFoundException("Teacher with id : " + dto.getTeacherId() + "not found!"));
+
+        Room room = roomRepository
+                .findById(dto.getRoomId())
+                .orElseThrow(() -> new EntityNotFoundException("Room with id : " + dto.getRoomId() + "not found!"));
+
+
+        Group group = new Group();
+
+        group.setName(dto.getName());
+        group.setStartDate(dto.getStartDate());
+        group.setEndDate(dto.getEndDate());
+        group.setStatus(GroupStatus.OPEN);
+        group.setCourse(course);
+        group.setTeacher(teacher);
+        group.setRoom(room);
+        group.setSchedule(dto.getSchedule());
+        group.setStartDate(dto.getStartDate());
+        group.setEndDate(dto.getEndDate());
+        group.setLessonStartTime(dto.getLessonStartTime());
+        group.setLessonEndTime(dto.getLessonEndTime());
+
+        groupRepository.save(group);
+
+        return groupMapper.groupToCreateResponse(group);
     }
 }

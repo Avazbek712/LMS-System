@@ -12,6 +12,11 @@ import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.enums.Schedule;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Avazbek on 24/07/25 14:46
@@ -29,7 +34,7 @@ public class Group extends AbsLongEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Schedule schedule;
+    private Set<Schedule> schedule = new HashSet<>();
 
     private LocalDate startDate;
 
@@ -48,4 +53,13 @@ public class Group extends AbsLongEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Room room;
+
+    private LocalTime lessonStartTime;
+
+    private LocalTime lessonEndTime;
+
+//    @OneToMany(mappedBy = "group",
+//            fetch = FetchType.LAZY,
+//            cascade = CascadeType.ALL)
+//    private List<Lesson> lessons = new ArrayList<>();
 }

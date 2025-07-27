@@ -5,7 +5,6 @@ databaseChangeLog:
       changes:
         - createTable:
             tableName: groups
-            remarks: "Таблица учебных групп"
             columns:
               - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
               - column: { name: name, type: varchar(255), constraints: { unique: true, nullable: false } }
@@ -33,11 +32,10 @@ databaseChangeLog:
 
   - changeSet:
       id: 7-create-students-table
-      author: db_architect
+      author: Avazbek
       changes:
         - createTable:
             tableName: student
-            remarks: "Таблица студентов"
             columns:
               - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
               - column: { name: name, type: varchar(255), constraints: { nullable: false } }
@@ -56,11 +54,10 @@ databaseChangeLog:
 
   - changeSet:
       id: 8-create-teacher-info-table
-      author: db_architect
+      author: Avazbek
       changes:
         - createTable:
             tableName: teacher_info
-            remarks: "Связующая таблица для курсов, которые может вести преподаватель"
             columns:
               - column: { name: id, type: BIGSERIAL, autoIncrement: true, constraints: { primaryKey: true, nullable: false } }
               - column:
