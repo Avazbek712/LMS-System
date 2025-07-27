@@ -1,5 +1,6 @@
-package uz.imv.lmssystem.service.security;
+package uz.imv.lmssystem.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +24,11 @@ import uz.imv.lmssystem.exceptions.UserAlreadyExistException;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
 import uz.imv.lmssystem.repository.RoleRepository;
 import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.service.security.AuthService;
+import uz.imv.lmssystem.service.security.JwtService;
 
 
-/**
- * Created by Avazbek on 18/07/25 12:07
- */
+
 @Service
 @Slf4j
 public class AuthServiceImpl implements AuthService {
@@ -91,17 +92,18 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public NewEmployeeResponse createEmployee(RegisterDTO dto) {
 
         if (userRepository.existsByUsername(dto.getUsername())) {
-            log.warn("Email :  '{}' already exists", dto.getUsername());
+            log.warn("Username :  '{}' already exists", dto.getUsername());
             throw new UserAlreadyExistException(dto.getUsername());
         }
 
 
         Role role = roleRepository
-                .findByName(dto.getRoleName())
-                .orElseThrow(() -> new UnknownRoleException(dto.getRoleName()));
+                .findById(dto.getRoleId())
+                .orElseThrow(() -> new UnknownRoleException(dto.getRoleId()));
 
 
         User user = new User();

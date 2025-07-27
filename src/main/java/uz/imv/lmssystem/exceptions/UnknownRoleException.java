@@ -8,8 +8,8 @@ public class UnknownRoleException extends RuntimeException {
 
     private final HttpStatus status;
 
-    public UnknownRoleException(String roleName) {
-        super("Role with name : " + roleName + " does not exist!");
+    public UnknownRoleException(Long roleName) {
+        super("Role with id : " + roleName + "not found!");
         this.status = HttpStatus.NOT_FOUND;
     }
 }

@@ -1,5 +1,6 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.serviceImpl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.*;
@@ -12,10 +13,9 @@ import uz.imv.lmssystem.exceptions.UserNotFoundException;
 import uz.imv.lmssystem.mapper.UserMapper;
 import uz.imv.lmssystem.repository.RoleRepository;
 import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.service.UserService;
 
-/**
- * Created by Avazbek on 23/07/25 12:51
- */
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -24,13 +24,14 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
-    public ChangedRoleResponse changeRole(Long id, ChangeRoleDTO role) {
+    @Transactional
+    public ChangedRoleResponse changeRole(Long userId, Long roleId) {
 
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         String oldRole = user.getRole().getName();
 
-        Role newRole = roleRepository.findByName(role.getRoleName()).orElseThrow(() -> new UnknownRoleException(role.getRoleName()));
+        Role newRole = roleRepository.findById(roleId).orElseThrow(() -> new UnknownRoleException(roleId));
 
         user.setRole(newRole);
 
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public void deleteById(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
@@ -53,6 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserInfoUpdateResponse updateUser(User currentUser, UserUpdateDTO dto) {
 
         Long id = currentUser.getId();
@@ -75,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getAboutMe(User currentUser) {
-        return userMapper.toDto(currentUser);
+        return userMapper.toDTO(currentUser);
 
     }
 

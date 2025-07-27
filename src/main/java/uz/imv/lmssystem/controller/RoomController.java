@@ -1,18 +1,16 @@
 package uz.imv.lmssystem.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.RoomDTO;
+import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.dto.response.RoomResponseDTO;
 import uz.imv.lmssystem.service.RoomService;
 
-import java.util.List;
 
-/**
- * Created by Avazbek on 24/07/25 12:27
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/rooms")
@@ -22,9 +20,10 @@ public class RoomController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ROOM_READ')")
-    public ResponseEntity<List<RoomDTO>> getAll() {
+    public PageableDTO getAll(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
+                              @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
 
-        return ResponseEntity.ok(roomService.getAll());
+        return roomService.getAll(page, size);
     }
 
 

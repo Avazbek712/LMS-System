@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChangedRoleResponse {
 
+
     private String username;
 
     private String oldRole;

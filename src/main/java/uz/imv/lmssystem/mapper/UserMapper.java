@@ -11,7 +11,7 @@ import uz.imv.lmssystem.entity.User;
 public interface UserMapper {
 
     @Mapping(source = "role", target = "role", qualifiedByName = "roleToString")
-    UserDTO toDto(User user);
+    UserDTO toDTO(User user);
 
     @Named("roleToString")
     static String roleToString(Role role) {
