@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import uz.imv.lmssystem.entity.Student;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Long, Student> {
+public interface StudentRepository extends JpaRepository<Student, Long> {
 
 
 

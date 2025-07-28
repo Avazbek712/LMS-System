@@ -11,7 +11,6 @@ import uz.imv.lmssystem.dto.CourseDTO;
 import uz.imv.lmssystem.dto.response.CourseResponseDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Course;
-import uz.imv.lmssystem.entity.Room;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.CourseNotFoundException;
 import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
@@ -42,6 +41,11 @@ public class CourseServiceImpl implements CourseService {
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Course> coursePage = courseRepository.findAll(pageable);
         List<Course> courses = coursePage.getContent();
+
+        if (courses.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, null);
+        }
+
         List<CourseDTO> courseDTOS = courseMapper.toDTO(courses);
         return new PageableDTO(
                 coursePage.getSize(),
