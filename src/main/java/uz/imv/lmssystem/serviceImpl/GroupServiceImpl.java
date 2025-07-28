@@ -18,10 +18,7 @@ import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.GroupMapper;
-import uz.imv.lmssystem.repository.CourseRepository;
-import uz.imv.lmssystem.repository.GroupRepository;
-import uz.imv.lmssystem.repository.RoomRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.*;
 import uz.imv.lmssystem.service.GroupService;
 
 import java.util.List;
@@ -37,6 +34,7 @@ public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final GroupMapper groupMapper;
+    private final StudentRepository studentRepository;
 
     @Override
     public GroupCreateResponse create(GroupCreateRequest dto) {

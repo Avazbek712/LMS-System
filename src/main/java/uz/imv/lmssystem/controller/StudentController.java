@@ -19,7 +19,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('STUDENT_READ')")
+      @PreAuthorize("hasAuthority('STUDENT_READ')")
     public PageableDTO getAll(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
                               @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
 
