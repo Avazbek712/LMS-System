@@ -19,6 +19,15 @@ import java.util.List;
 @RestControllerAdvice(basePackages = "uz.imv")
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(value = ScheduleConflictException.class)
+    public ResponseEntity<ErrorDTO> handle(ScheduleConflictException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
 
     @ExceptionHandler(value = EntityAlreadyExistsException.class)
     public ResponseEntity<ErrorDTO> handle(EntityAlreadyExistsException e) {

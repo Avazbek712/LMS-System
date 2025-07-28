@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/changeset/006-insert-initial-data.yaml
   - include:
       file: db/changelog/changeset/007-add-group-scheduling-constraint.yaml
+  - include:
+      file: db/changelog/changeset/007-add-group-scheduling-constraint.yaml
