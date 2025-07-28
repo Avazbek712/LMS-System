@@ -132,8 +132,8 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .orElseThrow(() -> new EntityNotFoundException("Attendance with id : " + id + " not found!"));
 
         attendance.setStatus(dto.getStatus());
-        attendanceRepository.save(attendance);
         checkTeacherAccessToAttendance(attendance);
+        attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(attendance);
     }
 

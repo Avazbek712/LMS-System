@@ -19,7 +19,7 @@ public class AttendanceController {
     private final AttendanceService attendanceService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ATTENDANCE_READ_ALL')")
+    @PreAuthorize("hasAnyAuthority()('ATTENDANCE_READ_ALL', 'ATTENDANCE_READ_OWN')")
     public PageableDTO getAll(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
                               @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
         return attendanceService.getAll(page, size);
