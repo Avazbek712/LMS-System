@@ -8,8 +8,8 @@ public class EntityUniqueException extends RuntimeException {
 
     private final HttpStatus status;
 
-    public EntityUniqueException(String message, HttpStatus status) {
+    public EntityUniqueException(String message) {
         super(message);
-        this.status = status;
+        this.status = HttpStatus.CONFLICT;
     }
 }

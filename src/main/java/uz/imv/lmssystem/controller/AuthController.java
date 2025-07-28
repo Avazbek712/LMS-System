@@ -26,16 +26,13 @@ public class AuthController {
 
     @PostMapping("register")
     @PreAuthorize("hasPermission('EMPLOYEE_CREATE')")
-    public ResponseEntity<NewEmployeeResponse> createEmployee(@Valid @RequestBody
-                                                              RegisterDTO dto) {
+    public ResponseEntity<NewEmployeeResponse> createEmployee(@Valid @RequestBody RegisterDTO dto) {
 
         return ResponseEntity.ok(authService.createEmployee(dto));
     }
 
     @PostMapping("login")
-    public ResponseEntity<TokenDTO> login(@Valid @RequestBody
-                                          LoginDTO dto) {
-
+    public ResponseEntity<TokenDTO> login(@Valid @RequestBody LoginDTO dto) {
         return ResponseEntity.ok(authService.login(dto));
     }
 

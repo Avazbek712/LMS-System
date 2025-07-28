@@ -31,7 +31,7 @@ public class Student extends AbsLongEntity {
     @Column(nullable = false)
     private String surname;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String phoneNumber;
 
     @Column(nullable = false)

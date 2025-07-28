@@ -18,6 +18,7 @@ import uz.imv.lmssystem.dto.auth.TokenDTO;
 import uz.imv.lmssystem.dto.response.NewEmployeeResponse;
 import uz.imv.lmssystem.entity.Role;
 import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.enums.PermissionsEnum;
 import uz.imv.lmssystem.exceptions.InvalidTokenException;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserAlreadyExistException;
@@ -27,6 +28,7 @@ import uz.imv.lmssystem.repository.UserRepository;
 import uz.imv.lmssystem.service.security.AuthService;
 import uz.imv.lmssystem.service.security.JwtService;
 
+import java.security.Permission;
 
 
 @Service
@@ -151,4 +153,13 @@ public class AuthServiceImpl implements AuthService {
                 newRefreshToken
         );
     }
+
+    @Override
+    public boolean hasPermission(PermissionsEnum permission, User user) {
+        return user.getRole().getPermissions()
+                .stream()
+                .anyMatch(p -> p.name().equals(permission.name()));
+
+    }
+
 }
