@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ import uz.imv.lmssystem.repository.CourseRepository;
 import uz.imv.lmssystem.repository.GroupRepository;
 import uz.imv.lmssystem.repository.RoomRepository;
 import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.service.GroupService;
 
 /**
  * Created by Avazbek on 24/07/25 15:07

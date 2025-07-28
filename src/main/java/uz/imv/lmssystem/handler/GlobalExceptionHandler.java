@@ -2,14 +2,17 @@ package uz.imv.lmssystem.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import uz.imv.lmssystem.dto.fildErrors.error.ErrorDTO;
 import uz.imv.lmssystem.dto.fildErrors.error.ErrorFieldsKeeperDTO;
 import uz.imv.lmssystem.dto.fildErrors.error.FieldErrorDTO;
+import uz.imv.lmssystem.enums.AttendanceStatus;
 import uz.imv.lmssystem.exceptions.*;
 
 import java.util.ArrayList;
@@ -74,6 +77,25 @@ public class GlobalExceptionHandler {
                 e.getMessage()
         );
         return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorDTO> handleInvalidEnum(HttpMessageNotReadableException ex) {
+        String message = ex.getMessage();
+
+        if (message != null && message.contains("AttendanceStatus")) {
+            ErrorDTO errorDTO = new ErrorDTO(
+                    HttpStatus.BAD_REQUEST.value(),
+                    "Invalid attendance status provided. Allowed values: PRESENT, ABSENT, LATE, SICK"
+            );
+            return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
+        }
+
+        ErrorDTO fallback = new ErrorDTO(
+                HttpStatus.BAD_REQUEST.value(),
+                "Invalid request body."
+        );
+        return new ResponseEntity<>(fallback, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

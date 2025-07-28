@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uz.imv.lmssystem.entity.Group;
 import uz.imv.lmssystem.repository.LessonRepository;
+import uz.imv.lmssystem.service.LessonService;
 
 import java.time.LocalDate;
 
