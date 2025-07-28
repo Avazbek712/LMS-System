@@ -58,8 +58,15 @@ public class Group extends AbsLongEntity {
 
     private LocalTime lessonEndTime;
 
-//    @OneToMany(mappedBy = "group",
-//            fetch = FetchType.LAZY,
-//            cascade = CascadeType.ALL)
-//    private List<Lesson> lessons = new ArrayList<>();
+    @OneToMany(mappedBy = "group",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Lesson> lessons = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Student> students = new ArrayList<>();
+
+
 }

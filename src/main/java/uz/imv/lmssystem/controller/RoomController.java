@@ -21,7 +21,7 @@ public class RoomController {
     @GetMapping
     @PreAuthorize("hasAuthority('ROOM_READ')")
     public PageableDTO getAll(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
-                              @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
+                                 @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
 
         return roomService.getAll(page, size);
     }

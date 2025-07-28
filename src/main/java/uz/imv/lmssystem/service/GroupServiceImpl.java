@@ -1,13 +1,20 @@
 package uz.imv.lmssystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import uz.imv.lmssystem.dto.GroupDTO;
 import uz.imv.lmssystem.dto.request.GroupCreateRequest;
 import uz.imv.lmssystem.dto.response.GroupCreateResponse;
+import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Course;
 import uz.imv.lmssystem.entity.Group;
 import uz.imv.lmssystem.entity.Room;
 import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.GroupMapper;
@@ -15,6 +22,8 @@ import uz.imv.lmssystem.repository.CourseRepository;
 import uz.imv.lmssystem.repository.GroupRepository;
 import uz.imv.lmssystem.repository.RoomRepository;
 import uz.imv.lmssystem.repository.UserRepository;
+
+import java.util.List;
 
 /**
  * Created by Avazbek on 24/07/25 15:07
@@ -64,5 +73,74 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.save(group);
 
         return groupMapper.groupToCreateResponse(group);
+    }
+
+    @Override
+    public GroupDTO getById(Long id) {
+        Group group = groupRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Group with id : " + id + "not found!"));
+
+        return groupMapper.toDTO(group);
+
+    }
+
+    @Override
+    public PageableDTO getAll(Integer page, Integer size) {
+
+        Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Group> groups = groupRepository.findAll(pageable);
+        List<Group> content = groups.getContent();
+
+        if (content.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, null);
+        }
+
+
+        List<GroupDTO> courseDTOS = content.stream().map(groupMapper::toDTO).toList();
+
+        return new PageableDTO(
+                groups.getSize(),
+                groups.getTotalElements(),
+                groups.getTotalPages(),
+                !groups.isLast(),
+                !groups.isFirst(),
+                courseDTOS
+        );
+    }
+
+
+    @Override
+    public void deleteById(Long id) {
+
+        if (!groupRepository.existsById(id)) throw new EntityNotFoundException("Group with id : " + id + " not found!");
+
+        groupRepository.deleteById(id);
+    }
+
+
+    @Override
+    public PageableDTO getMyGroups(User user, Integer page, Integer size) {
+
+        Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Group> groups = groupRepository.findAllByTeacherId(user.getId(), pageable);
+        List<Group> content = groups.getContent();
+
+        if (content.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, null);
+        }
+
+
+        List<GroupDTO> groupDTOs = content.stream().map(groupMapper::toDTO).toList();
+
+
+        return new PageableDTO(
+                groups.getSize(),
+                groups.getTotalElements(),
+                groups.getTotalPages(),
+                !groups.isLast(),
+                !groups.isFirst(),
+                groupDTOs
+        );
     }
 }
