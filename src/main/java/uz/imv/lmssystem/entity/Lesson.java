@@ -25,8 +25,6 @@ import java.time.LocalTime;
 @SQLDelete(sql = "update lesson set deleted=true where id=?")
 public class Lesson extends AbsLongEntity {
 
-    @Column(nullable = false)
-    private String theme;
 
     @Column(nullable = false)
     private LocalDate date;

@@ -11,8 +11,6 @@ import uz.imv.lmssystem.dto.response.CourseResponseDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.service.CourseService;
 
-import java.util.List;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +21,10 @@ public class CourseController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('COURSE_READ')")
-    public PageableDTO getAll(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
-                              @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
+    public ResponseEntity<PageableDTO> getAll(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
+                                              @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
 
-        return courseService.getAll(page, size);
+        return ResponseEntity.ok(courseService.getAll(page, size));
     }
 
     @GetMapping("{id}")
