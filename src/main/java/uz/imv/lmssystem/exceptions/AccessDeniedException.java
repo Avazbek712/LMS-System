@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 @Setter
 public class AccessDeniedException extends RuntimeException {
 
+    private HttpStatus status = HttpStatus.FORBIDDEN;
+
     public AccessDeniedException(String message) {
         super(message);
-        HttpStatus status = HttpStatus.FORBIDDEN;
+        HttpStatus status = this.status;
     }
 }

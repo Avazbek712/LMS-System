@@ -79,6 +79,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDTO, e.getStatus());
     }
 
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<ErrorDTO> handle(AccessDeniedException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorDTO> handleInvalidEnum(HttpMessageNotReadableException ex) {
         String message = ex.getMessage();
