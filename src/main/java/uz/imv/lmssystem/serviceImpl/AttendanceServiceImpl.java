@@ -118,8 +118,8 @@ public class AttendanceServiceImpl implements AttendanceService {
                                             + " and lesson with id : " + dto.getLessonId() + " already exists!");
         }
 
-        attendanceMapper.updateEntity(dto, attendance, studentResolver, lessonResolver);
         checkTeacherAccessToAttendance(attendance);
+        attendanceMapper.updateEntity(dto, attendance, studentResolver, lessonResolver);
         Attendance updatedAttendance = attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(updatedAttendance);
 
@@ -152,14 +152,34 @@ public class AttendanceServiceImpl implements AttendanceService {
     private void checkTeacherAccessToAttendance(Attendance attendance) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = (User) authService.loadUserByUsername(username);
-        if (authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_ALL, currentUser)) {
+
+        boolean canReadAll = authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_ALL, currentUser);
+        boolean canReadOwn = authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_OWN, currentUser);
+
+        if (canReadAll) {
             return;
-        } if (authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_OWN, currentUser)) {
-            if (!attendance.getLesson().getGroup().getTeacher().getId().equals(currentUser.getId())) {
-                throw new AccessDeniedException("You are not allowed to access this attendance with id: " + attendance.getId());
-            }
-        } else {
-            throw new AccessDeniedException("You are not allowed to access this attendance with id: " + attendance.getId());
         }
+
+        if (canReadOwn) {
+
+            Long teacherId = attendance.getLesson().getGroup().getTeacher().getId();
+            Long currentUserId = currentUser.getId();
+            Long lessonGroupId = attendance.getLesson().getGroup().getId();
+            Long studentGroupId = attendance.getStudent().getGroup().getId();
+
+            if (!teacherId.equals(currentUserId)) {
+                throw new AccessDeniedException("You are not allowed to access this attendance. You are not the teacher of group id: " + lessonGroupId);
+            }
+
+            if (!lessonGroupId.equals(studentGroupId)) {
+                throw new AccessDeniedException("This attendance is invalid: Student with id " + attendance.getStudent().getId() +
+                                                " does not belong to the same group as the lesson (group id: " + lessonGroupId + ")");
+            }
+
+            return;
+        }
+
+        throw new AccessDeniedException("You are not allowed to access this attendance");
     }
+
 }
