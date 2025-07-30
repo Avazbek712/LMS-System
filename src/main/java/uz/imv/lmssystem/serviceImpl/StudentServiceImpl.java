@@ -19,6 +19,7 @@ import uz.imv.lmssystem.repository.GroupRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
 import uz.imv.lmssystem.service.StudentService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -74,7 +75,7 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new EntityNotFoundException("Student with id : " + id + " not found!"));
 
         if (!student.getPhoneNumber().equals(dto.getPhoneNumber())
-            && studentRepository.existsByPhoneNumber(dto.getPhoneNumber())) {
+                && studentRepository.existsByPhoneNumber(dto.getPhoneNumber())) {
             throw new EntityAlreadyExistsException("Student with phone number : " + dto.getPhoneNumber() + " already exists!");
         }
 
@@ -97,5 +98,14 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Student with id : " + id + " not found!"));
 
         studentRepository.deleteById(id);
+    }
+
+    @Transactional
+    @Override
+    public int resetExpiredPaymentStatuses() {
+
+        final LocalDate today = LocalDate.now();
+
+        return studentRepository.resetStatusForExpiredPayments(today);
     }
 }
