@@ -12,6 +12,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
+import java.time.LocalDate;
+
 /**
  * Created by Avazbek on 25/07/25 10:42
  */
@@ -40,5 +42,6 @@ public class Student extends AbsLongEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
-
+    @Column(nullable = false)
+    private LocalDate paidUntilDate;
 }

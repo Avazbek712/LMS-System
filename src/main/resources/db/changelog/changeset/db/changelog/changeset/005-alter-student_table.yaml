@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-alter-student_table
+      author: Avazbek
+      changes:
+        - update:
+            tableName: student
+            columns:
+              - column:
+                  name: paid_until_date
+                  type: date
+                  constraints:
+                    nullable: false

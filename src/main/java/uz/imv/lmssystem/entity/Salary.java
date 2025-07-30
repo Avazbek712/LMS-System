@@ -1,9 +1,6 @@
 package uz.imv.lmssystem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,29 +12,28 @@ import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
- * Created by Avazbek on 28/07/25 16:29
+ * Created by Avazbek on 30/07/25 09:28
  */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@SQLRestriction(value = "deleted=false")
-@SQLDelete(sql = "UPDATE payment SET deleted = true WHERE id = ?")
-public class Payment extends AbsLongEntity {
+@SQLRestriction("deleted=false")
+@SQLDelete(sql = "update salary set deleted=true where id=?")
+public class Salary extends AbsLongEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Student student;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User cashier;
+    @JoinColumn(nullable = false)
+    private User employee;
 
     @Column(nullable = false)
     private BigDecimal amount;
 
+    private String description;
+
     @CreationTimestamp
-    private LocalDateTime paymentDate;
+    private LocalDate date;
 }

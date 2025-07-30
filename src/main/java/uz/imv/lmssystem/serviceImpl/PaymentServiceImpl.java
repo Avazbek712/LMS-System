@@ -23,6 +23,8 @@ import uz.imv.lmssystem.repository.StudentRepository;
 import uz.imv.lmssystem.repository.UserRepository;
 import uz.imv.lmssystem.service.PaymentService;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -58,8 +60,11 @@ public class PaymentServiceImpl implements PaymentService {
             throw new IllegalArgumentException("The amount is less than the price of the course!");
         }
 
-        if (student.getPaymentStatus()) {
-            throw new IllegalArgumentException("This student has already paid for this course!");
+        LocalDate paidUntil = student.getPaidUntilDate();
+        YearMonth requestedMonth = request.getPaymentFor();
+
+        if (paidUntil != null && (YearMonth.from(paidUntil).isAfter(requestedMonth) || YearMonth.from(paidUntil).equals(requestedMonth))) {
+            throw new IllegalArgumentException("This period (" + requestedMonth + ") or more later period already has been paid. Paid until : " + paidUntil);
         }
 
         Payment payment = new Payment();
@@ -67,14 +72,18 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setAmount(request.getAmount());
         payment.setCashier(employee);
 
+
         paymentRepository.save(payment);
 
+        LocalDate newPaidUntilDate = request.getPaymentFor().atEndOfMonth();
+        student.setPaidUntilDate(newPaidUntilDate);
         student.setPaymentStatus(true);
 
         return new PaymentCreateResponse(
                 student.getName(),
                 student.getSurname(),
-                request.getAmount()
+                request.getAmount(),
+                request.getPaymentFor()
         );
     }
 
@@ -131,6 +140,4 @@ public class PaymentServiceImpl implements PaymentService {
 
         return paymentMapper.toDto(payment);
     }
-
-
 }

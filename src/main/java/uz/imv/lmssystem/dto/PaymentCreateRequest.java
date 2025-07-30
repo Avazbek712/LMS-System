@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 /**
  * Created by Avazbek on 29/07/25 11:11
@@ -29,5 +30,7 @@ public class PaymentCreateRequest {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime paymentDate;
+
+    private YearMonth paymentFor;
 
 }
