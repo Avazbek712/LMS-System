@@ -8,40 +8,36 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
- * Created by Avazbek on 25/07/25 10:42
+ * Created by Avazbek on 28/07/25 16:29
  */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@SQLRestriction("deleted=false")
-@SQLDelete(sql = "update student set deleted=true where id=?")
-public class Student extends AbsLongEntity {
-
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String surname;
-
-    @Column(nullable = false, unique = true)
-    private String phoneNumber;
-
-    @Column(nullable = false)
-    private Boolean paymentStatus = false; //true -> paid | false -> not paid
+@SQLRestriction(value = "deleted=false")
+@SQLDelete(sql = "UPDATE payment SET deleted = true WHERE id = ?")
+public class Payment extends AbsLongEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Group group;
+    private Student student;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User cashier;
 
     @Column(nullable = false)
-    private LocalDate paidUntilDate;
+    private BigDecimal amount;
+
+    @CreationTimestamp
+    private LocalDateTime paymentDate;
 }

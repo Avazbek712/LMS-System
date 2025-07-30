@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-install-btree-gist-extension
+      author: db_architect
+      preConditions:
+        - not:
+            - sqlCheck:
+                sql: "SELECT 1 FROM pg_extension WHERE extname = 'btree_gist'"
+      changes:
+        - sql:
+            comment: "Установка расширения btree_gist для использования в exclusion constraint"
+            sql: CREATE EXTENSION btree_gist;
+
+  - changeSet:
+      id: 003-create-get-room-id-for-lesson-function
+      author: db_architect
+      changes:
+        - sql:
+            sql: |
+              CREATE OR REPLACE FUNCTION get_room_id_for_lesson(p_group_id BIGINT)
+              RETURNS BIGINT AS $$
+              BEGIN
+                RETURN (SELECT room_id FROM groups WHERE id = p_group_id);
+              END;
+              $$ LANGUAGE plpgsql IMMUTABLE;
+
+  - changeSet:
+      id: 003-create-get-teacher-id-for-lesson-function
+      author: db_architect
+      changes:
+        - sql:
+            sql: |
+              CREATE OR REPLACE FUNCTION get_teacher_id_for_lesson(p_group_id BIGINT)
+              RETURNS BIGINT AS $$
+              BEGIN
+                RETURN (SELECT teacher_id FROM groups WHERE id = p_group_id);
+              END;
+              $$ LANGUAGE plpgsql IMMUTABLE;
+
+  - changeSet:
+      id: 003-add-room-exclusion-constraint-to-lesson
+      author: db_architect
+      comment: "Запрет пересечения уроков в ОДНОЙ КОМНАТЕ в одно и то же время"
+      changes:
+        - sql:
+            sql: |
+              ALTER TABLE lesson
+              ADD CONSTRAINT lesson_room_time_overlap_excl
+              EXCLUDE USING GIST (
+                get_room_id_for_lesson(group_id) WITH =,
+                tsrange((date + start_time), (date + end_time), '[)') WITH &&
+              )
+              WHERE (deleted = false AND get_room_id_for_lesson(group_id) IS NOT NULL);
+
+  - changeSet:
+      id: 003-add-teacher-exclusion-constraint-to-lesson
+      author: db_architect
+      comment: "Запрет пересечения уроков у ОДНОГО ПРЕПОДАВАТЕЛЯ в одно и то же время"
+      changes:
+        - sql:
+            sql: |
+              ALTER TABLE lesson
+              ADD CONSTRAINT lesson_teacher_time_overlap_excl
+              EXCLUDE USING GIST (
+                get_teacher_id_for_lesson(group_id) WITH =,
+                tsrange((date + start_time), (date + end_time), '[)') WITH &&
+              )
+              WHERE (deleted = false AND get_teacher_id_for_lesson(group_id) IS NOT NULL);
