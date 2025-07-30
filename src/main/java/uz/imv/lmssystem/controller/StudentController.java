@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.StudentDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
+import uz.imv.lmssystem.service.PaymentService;
 import uz.imv.lmssystem.service.StudentService;
 
 
@@ -17,9 +18,10 @@ import uz.imv.lmssystem.service.StudentService;
 public class StudentController {
 
     private final StudentService studentService;
+    private final PaymentService paymentService;
 
     @GetMapping
-      @PreAuthorize("hasAuthority('STUDENT_READ')")
+    @PreAuthorize("hasAuthority('STUDENT_READ')")
     public PageableDTO getAll(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
                               @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size) {
 
@@ -50,6 +52,13 @@ public class StudentController {
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         studentService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("balance/{id}")
+    @PreAuthorize("hasAuthority('STUDENT_BALANCE')")
+    public ResponseEntity<?> checkStatus(@PathVariable Long id) {
+
+        return ResponseEntity.ok(paymentService.checkPaymentStatus(id));
     }
 
 }

@@ -5,15 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 /**
- * Created by Avazbek on 25/07/25 10:26
+ * Created by Avazbek on 30/07/25 09:28
  */
 @Entity
 @AllArgsConstructor
@@ -21,21 +22,18 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @SQLRestriction("deleted=false")
-@SQLDelete(sql = "update lesson set deleted=true where id=?")
-public class Lesson extends AbsLongEntity {
-
-
-    @Column(nullable = false)
-    private LocalDate date;
-
-    @Column(nullable = false)
-    private LocalTime startTime;
-
-    @Column(nullable = false)
-    private LocalTime endTime;
+@SQLDelete(sql = "update salary set deleted=true where id=?")
+public class Salary extends AbsLongEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private Group group;
+    private User employee;
 
+    @Column(nullable = false)
+    private BigDecimal amount;
+
+    private String description;
+
+    @CreationTimestamp
+    private LocalDate date;
 }

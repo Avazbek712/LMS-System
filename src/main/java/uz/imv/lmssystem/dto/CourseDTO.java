@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import uz.imv.lmssystem.entity.Course;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * DTO for {@link Course}
@@ -22,5 +23,5 @@ public class CourseDTO implements Serializable {
 
     @NotNull(message = "price cannot be null")
     @PositiveOrZero(message = "price must be positive or zero")
-    private Long price;
+    private BigDecimal price;
 }

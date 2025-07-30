@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.service;
 
+import jakarta.transaction.Transactional;
 import uz.imv.lmssystem.dto.StudentDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 
@@ -16,4 +17,6 @@ public interface StudentService {
     void deleteById(Long id);
 
 
+    @Transactional
+    int resetExpiredPaymentStatuses();
 }

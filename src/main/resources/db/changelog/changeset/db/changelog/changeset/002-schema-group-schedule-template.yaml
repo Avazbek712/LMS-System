@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-add-schedule-template-fields-to-groups
+      author: db_architect
+      comment: "Добавление полей для шаблона времени урока в таблицу групп"
+      changes:
+        - addColumn:
+            tableName: groups
+            columns:
+              - column:
+                  name: lesson_start_time
+                  type: time
+                  remarks: "Время начала уроков по умолчанию для этой группы"
+              - column:
+                  name: lesson_end_time
+                  type: time
+                  remarks: "Время окончания уроков по умолчанию для этой группы"
+
+  - changeSet:
+      id: 002-create-group-schedule-table
+      author: db_architect
+      comment: "Создание таблицы для хранения дней недели группы (реализация Set<Schedule>)"
+      changes:
+        - createTable:
+            tableName: group_schedule
+            remarks: "Связующая таблица для дней недели, по которым занимается группа"
+            columns:
+              - column:
+                  name: group_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    foreignKeyName: fk_group_schedule_group
+                    references: groups(id)
+                    onDelete: CASCADE
+              - column:
+                  name: schedule
+                  type: varchar(20)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
