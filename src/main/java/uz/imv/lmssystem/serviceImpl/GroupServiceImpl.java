@@ -34,7 +34,7 @@ public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final GroupMapper groupMapper;
-    private final StudentRepository studentRepository;
+
 
     @Override
     public GroupCreateResponse create(GroupCreateRequest dto) {

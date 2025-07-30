@@ -80,7 +80,6 @@ public class LessonServiceImpl implements LessonService {
         Set<DayOfWeek> daysOfWeek = scheduleEnums.stream().map(s ->
                 DayOfWeek.valueOf(s.name())).collect(Collectors.toSet());
 
-
         LocalDate currentDate = startDate;
 
         while (!currentDate.isAfter(endDate)) {

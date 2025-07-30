@@ -31,11 +31,11 @@ public class Student extends AbsLongEntity {
     @Column(nullable = false)
     private String surname;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
 
     @Column(nullable = false)
-    private Long balance = 0L;
+    private Boolean paymentStatus = false; //true -> paid | false -> not paid
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
