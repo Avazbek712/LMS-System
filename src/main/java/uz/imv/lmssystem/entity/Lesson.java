@@ -1,7 +1,6 @@
 package uz.imv.lmssystem.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +24,6 @@ import java.time.LocalTime;
 @SQLDelete(sql = "update lesson set deleted=true where id=?")
 public class Lesson extends AbsLongEntity {
 
-    @Column(nullable = false)
-    private String theme;
 
     @Column(nullable = false)
     private LocalDate date;

@@ -1,12 +1,23 @@
 package uz.imv.lmssystem.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import uz.imv.lmssystem.entity.Student;
 
-@Repository
+import java.time.LocalDate;
+import java.util.List;
+
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
+    boolean existsByPhoneNumber(String phoneNumber);
 
 
+    @Modifying
+    @Query("UPDATE Student s " +
+            "SET s.paymentStatus = false " +
+            "WHERE s.paymentStatus = true " +
+            "AND s.paidUntilDate < :currentDate")
+    int resetStatusForExpiredPayments(@Param("currentDate") LocalDate currentDate);
 }

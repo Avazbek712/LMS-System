@@ -1,15 +1,9 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/changeset/db/changelog/changeset/001-create-trigger-function.yaml
+      file: db/changelog/001-schema-base-tables.yaml
   - include:
-      file: db/changelog/changeset/db/changelog/changeset/002-create-core-tables.yaml
+      file: db/changelog/002-schema-group-schedule-template.yaml
   - include:
-      file: db/changelog/changeset/db/changelog/changeset/003-create-group-student-tables.yaml
+      file: db/changelog/003-schema-constraints-and-functions.yaml
   - include:
-      file: db/changelog/changeset/004-create-lms-logic-tables.yaml
-  - include:
-      file: db/changelog/changeset/005-create-join-tables.yaml
-  - include:
-      file: db/changelog/changeset/006-insert-initial-data.yaml
-  - include:
-      file: db/changelog/changeset/007-add-group-scheduling-constraint.yaml
+      file: db/changelog/004-initial-data.yaml

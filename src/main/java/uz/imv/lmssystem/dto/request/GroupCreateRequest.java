@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.imv.lmssystem.enums.Schedule;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
@@ -35,15 +35,19 @@ public class GroupCreateRequest {
 
     @NotNull(message = "start date must not be null")
     @FutureOrPresent(message = "start date should be present or future")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
     @NotNull(message = "end date must not be null")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @NotNull(message = "lesson start time must not be null")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime lessonStartTime;
 
     @NotNull(message = "lesson start time must not be null")
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime lessonEndTime;
 
     @NotEmpty(message = "schedule must not be empty")

@@ -1,44 +1,53 @@
 package uz.imv.lmssystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import uz.imv.lmssystem.dto.CreateExpenseRequest;
+import uz.imv.lmssystem.dto.CreateExpenseResponse;
 import uz.imv.lmssystem.dto.ExpenseDTO;
+import uz.imv.lmssystem.dto.response.PageableDTO;
+import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.service.ExpenseService;
 
-import java.util.List;
-
+/**
+ * Created by Avazbek on 29/07/25 12:45
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/expenses")
 public class ExpenseController {
 
+
     private final ExpenseService expenseService;
 
     @GetMapping
-    public ResponseEntity<List<ExpenseDTO>> getAll() {
-        return ResponseEntity.ok(expenseService.getAll());
+    @PreAuthorize("hasAuthority('EXPENSE_READ')")
+    public ResponseEntity<PageableDTO> getAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                              @RequestParam(value = "size", defaultValue = "10") Integer size) {
+
+        return ResponseEntity.ok(expenseService.getAll(page, size));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ExpenseDTO> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(expenseService.getById(id));
+    @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('EXPENSE_READ')")
+    public ResponseEntity<ExpenseDTO> getById(@PathVariable("id") Long id) {
+
+        return ResponseEntity.ok(expenseService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<ExpenseDTO> create(@RequestBody ExpenseDTO dto) {
-        return new ResponseEntity<>(expenseService.save(dto), HttpStatus.CREATED);
+    @PreAuthorize("hasAuthority('EXPENSE_CREATE')")
+    public ResponseEntity<CreateExpenseResponse> create(@RequestBody CreateExpenseRequest request, @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(expenseService.create(request, currentUser));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ExpenseDTO> update(@PathVariable Long id, @RequestBody ExpenseDTO dto) {
-        return ResponseEntity.ok(expenseService.update(id, dto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        expenseService.deleteById(id);
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('EXPENSE_DELETE')")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        expenseService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

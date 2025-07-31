@@ -1,18 +1,18 @@
 package uz.imv.lmssystem.service;
 
+import uz.imv.lmssystem.dto.CreateExpenseRequest;
+import uz.imv.lmssystem.dto.CreateExpenseResponse;
 import uz.imv.lmssystem.dto.ExpenseDTO;
-
-import java.util.List;
+import uz.imv.lmssystem.dto.response.PageableDTO;
+import uz.imv.lmssystem.entity.User;
 
 public interface ExpenseService {
 
-    List<ExpenseDTO> getAll();
+    CreateExpenseResponse create(CreateExpenseRequest request , User currentUser);
 
-    ExpenseDTO getById(Long id);
+    void delete(Long id);
 
-    void deleteById(Long id);
+    ExpenseDTO findById(Long id);
 
-    ExpenseDTO save(ExpenseDTO expenseDTO);
-
-    ExpenseDTO update(Long id, ExpenseDTO expenseDTO);
+    PageableDTO getAll(Integer page, Integer size);
 }

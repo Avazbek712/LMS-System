@@ -12,6 +12,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
+import java.time.LocalDate;
+
 /**
  * Created by Avazbek on 25/07/25 10:42
  */
@@ -31,14 +33,15 @@ public class Student extends AbsLongEntity {
     @Column(nullable = false)
     private String surname;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
 
     @Column(nullable = false)
-    private Long balance = 0L;
+    private Boolean paymentStatus = false; //true -> paid | false -> not paid
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
-
+    @Column(nullable = false)
+    private LocalDate paidUntilDate;
 }

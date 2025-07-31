@@ -5,37 +5,42 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
-import uz.imv.lmssystem.enums.CategoryEnum;
+import uz.imv.lmssystem.enums.ExpenseCategoryEnum;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Created by Avazbek on 28/07/25 14:52
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@SQLRestriction("deleted=false")
-@SQLDelete(sql = "update expense set deleted=true where id=?")
+@SQLRestriction(value = "deleted=false")
+@SQLDelete(sql = "UPDATE expense SET deleted = true WHERE id = ?")
 public class Expense extends AbsLongEntity {
 
     @Column(columnDefinition = "text")
     private String description;
 
+    @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private User employee;
 
     @Column(nullable = false)
-    private BigInteger amount;
+    private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CategoryEnum category;
-
+    private ExpenseCategoryEnum category;
 }

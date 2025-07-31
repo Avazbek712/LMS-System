@@ -1,15 +1,12 @@
 package uz.imv.lmssystem.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.imv.lmssystem.enums.CategoryEnum;
+import uz.imv.lmssystem.enums.ExpenseCategoryEnum;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -20,20 +17,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ExpenseDTO implements Serializable {
 
-    private Long id;
-
     private String description;
 
-    @NotBlank(message = "date can not be blank")
+    private BigDecimal amount;
+
+    private ExpenseCategoryEnum category;
+
     private LocalDateTime date;
 
-    private Long employeeId;
+    private String employeeName;
 
-    @NotNull(message = "amount cannot be null")
-    @Positive(message = "amount must be more then zero")
-    private BigInteger amount;
-
-    @NotBlank(message = "category can not be blank")
-    private String category;
+    private String employeeSurname;
 
 }
