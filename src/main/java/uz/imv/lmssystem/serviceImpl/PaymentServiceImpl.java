@@ -12,7 +12,7 @@ import uz.imv.lmssystem.dto.PaymentCreateResponse;
 import uz.imv.lmssystem.dto.PaymentStatusResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Payment;
-import uz.imv.lmssystem.entity.PaymentDTO;
+import uz.imv.lmssystem.dto.PaymentDTO;
 import uz.imv.lmssystem.entity.Student;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;

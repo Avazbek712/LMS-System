@@ -2,10 +2,7 @@ package uz.imv.lmssystem.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.imv.lmssystem.repository.CompanyBalanceRepository;
-import uz.imv.lmssystem.repository.ExpenseRepository;
-import uz.imv.lmssystem.repository.IncomeRepository;
-import uz.imv.lmssystem.repository.PaymentRepository;
+import uz.imv.lmssystem.repository.*;
 import uz.imv.lmssystem.service.BalanceService;
 
 import java.math.BigDecimal;
@@ -16,10 +13,12 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class BalanceServiceImpl implements BalanceService {
+
     private final CompanyBalanceRepository companyBalanceRepository;
     private final ExpenseRepository expenseRepository;
     private final PaymentRepository paymentRepository;
     private final IncomeRepository incomeRepository;
+    private final SalaryRepository salaryRepository;
 
     @Override
     public BigDecimal getCurrentBalance() {
@@ -27,12 +26,14 @@ public class BalanceServiceImpl implements BalanceService {
         BigDecimal initialBalance = companyBalanceRepository.getInitialBalance()
                 .orElse(BigDecimal.ZERO);
 
-        BigDecimal studentIncome = paymentRepository.getTotalPayments();
+        BigDecimal studentPayments = paymentRepository.getTotalPayments();
 
         BigDecimal totalIncome = incomeRepository.getTotalIncome();
 
         BigDecimal totalExpense = expenseRepository.getTotalExpense();
 
-        return initialBalance.add(studentIncome).add(totalIncome).subtract(totalExpense);
+        BigDecimal totalSalaries = salaryRepository.getTotalSalaries();
+
+        return initialBalance.add(studentPayments).add(totalIncome).subtract(totalExpense).subtract(totalSalaries);
     }
 }

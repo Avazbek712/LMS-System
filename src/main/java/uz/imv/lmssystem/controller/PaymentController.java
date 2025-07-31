@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,12 +17,11 @@ import uz.imv.lmssystem.service.PaymentService;
 @RequestMapping("/api/payments")
 public class PaymentController {
 
-
     private final PaymentService paymentService;
 
     @PostMapping
     @PreAuthorize("hasAuthority('PAYMENT_CREATE')")
-    public ResponseEntity<PaymentCreateResponse> create(@RequestBody PaymentCreateRequest request) {
+    public ResponseEntity<PaymentCreateResponse> create(@Valid @RequestBody PaymentCreateRequest request) {
 
         return ResponseEntity.ok(paymentService.create(request));
     }

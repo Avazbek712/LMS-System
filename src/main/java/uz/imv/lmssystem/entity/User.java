@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 
 
 @Entity(name = "users")
+@Audited
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -44,6 +47,7 @@ public class User extends AbsLongEntity implements UserDetails {
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Role role;
 
     @Column(length = 1024)
@@ -55,6 +59,8 @@ public class User extends AbsLongEntity implements UserDetails {
             orphanRemoval = true
     )
     private List<TeacherInfo> teacherInfos;
+
+    private String photoUrl;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -61,4 +61,11 @@ public class StudentController {
         return ResponseEntity.ok(paymentService.checkPaymentStatus(id));
     }
 
+    @GetMapping("debtors")
+    @PreAuthorize("hasAuthority('STUDENT_DEBTORS')")
+    public ResponseEntity<PageableDTO> getDebtors(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
+                                                  @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size){
+        return ResponseEntity.ok(studentService.getDebtors(page,size));
+    }
+
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.StudentDTO;
+import uz.imv.lmssystem.dto.StudentDebtors;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Student;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
@@ -49,7 +50,13 @@ public class StudentServiceImpl implements StudentService {
         if (students.isEmpty()) {
             return new PageableDTO(size, 0L, 0, false, false, null);
         }
-        return new PageableDTO(studentPage.getSize(), studentPage.getTotalElements(), studentPage.getTotalPages(), !studentPage.isLast(), !studentPage.isFirst(), studentDTOS);
+        return new PageableDTO(
+                studentPage.getSize(),
+                studentPage.getTotalElements(),
+                studentPage.getTotalPages(),
+                !studentPage.isLast(),
+                !studentPage.isFirst(),
+                studentDTOS);
     }
 
 
@@ -107,5 +114,29 @@ public class StudentServiceImpl implements StudentService {
         final LocalDate today = LocalDate.now();
 
         return studentRepository.resetStatusForExpiredPayments(today);
+    }
+
+    @Override
+    public PageableDTO getDebtors(Integer page, Integer size) {
+
+        Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Student> debtors = studentRepository.findByPaymentStatus(false, pageable);
+        List<Student> content = debtors.getContent();
+
+        if (debtors.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, null);
+        }
+        List<StudentDebtors> studentDTOS = content.stream()
+                .map(studentMapper::toDebtors)
+                .toList();
+
+        return new PageableDTO(
+                debtors.getSize(),
+                debtors.getTotalElements(),
+                debtors.getTotalPages(),
+                !debtors.isLast(),
+                !debtors.isFirst(),
+                studentDTOS);
     }
 }
