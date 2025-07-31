@@ -97,6 +97,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
         Attendance attendance = attendanceMapper.toEntity(dto, studentResolver, lessonResolver);
         attendanceValidate.checkTeacherAccessToAttendance(attendance, currentUser);
+        attendanceValidate.validateLessonTiming(attendance, false);
         Attendance savedAttendance = attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(savedAttendance);
     }
@@ -120,6 +121,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendanceValidate.checkTeacherAccessToAttendance(attendance, currentUser);
         attendanceMapper.updateEntity(dto, attendance, studentResolver, lessonResolver);
         Attendance updatedAttendance = attendanceRepository.save(attendance);
+        attendanceValidate.validateLessonTiming(updatedAttendance, true);
         return attendanceMapper.toDTO(updatedAttendance);
 
     }
@@ -132,6 +134,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         attendance.setStatus(dto.getStatus());
         attendanceValidate.checkTeacherAccessToAttendance(attendance, currentUser);
+        attendanceValidate.validateLessonTiming(attendance, true);
         attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(attendance);
     }
@@ -145,6 +148,7 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new EntityNotFoundException("Attendance with id : " + id + " not found!");
         }
         attendanceValidate.checkTeacherAccessToAttendance(attendance.get(), currentUser);
+        attendanceValidate.checkDeleteAccess(attendance.get(), currentUser);
         attendanceRepository.deleteById(id);
     }
 

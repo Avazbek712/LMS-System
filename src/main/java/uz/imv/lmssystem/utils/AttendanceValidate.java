@@ -17,29 +17,21 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class AttendanceValidate {
 
-
     private final AuthService authService;
 
-    public void checkTeacherAccessToAttendance(Attendance attendance,User currentUser) {
+    public void checkTeacherAccessToAttendance(Attendance attendance, User currentUser) {
+        if (hasReadAllPermission(currentUser)) return;
 
-        boolean canReadAll = authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_ALL, currentUser);
-        boolean canReadOwn = authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_OWN, currentUser);
-
-        if (canReadAll) return;
-
-        if (canReadOwn) {
-            Long teacherId = attendance.getLesson().getGroup().getTeacher().getId();
-            Long currentUserId = currentUser.getId();
-            Long lessonGroupId = attendance.getLesson().getGroup().getId();
-            Long studentGroupId = attendance.getStudent().getGroup().getId();
-
-            if (!teacherId.equals(currentUserId)) {
-                throw new AccessDeniedException("You are not the teacher of group id: " + lessonGroupId);
+        if (hasReadOwnPermission(currentUser)) {
+            if (!isTeacherOfAttendanceGroup(attendance, currentUser)) {
+                throw new AccessDeniedException("You are not the teacher of group id: " +
+                                                attendance.getLesson().getGroup().getId());
             }
 
-            if (!lessonGroupId.equals(studentGroupId)) {
+            if (!isStudentInSameGroup(attendance)) {
                 throw new AccessDeniedException("Student with id " + attendance.getStudent().getId() +
-                                                " does not belong to the same group as the lesson (group id: " + lessonGroupId + ")");
+                                                " does not belong to the same group as the lesson (group id: " +
+                                                attendance.getLesson().getGroup().getId() + ")");
             }
 
             return;
@@ -71,21 +63,11 @@ public class AttendanceValidate {
         }
     }
 
+    public void checkDeleteAccess(Attendance attendance, User currentUser) {
+        if (hasReadAllPermission(currentUser)) return;
 
-    private void checkDeleteAccess(Attendance attendance,User currentUser) {
-
-        boolean isAdmin = authService.hasPermission(PermissionsEnum.ATTENDANCE_DELETE_ALL, currentUser);
-        boolean isTeacher = authService.hasPermission(PermissionsEnum.ATTENDANCE_DELETE_OWN, currentUser) &&
-                            isTeacherOfAttendanceGroup(attendance, currentUser);
-
-        if (isAdmin) return;
-
-        if (isTeacher) {
-            LocalDate today = LocalDate.now();
-            LocalDate lessonDate = attendance.getLesson().getStartTime().toLocalDate();
-
-            if (lessonDate.equals(today)) return;
-
+        if (hasReadOwnPermission(currentUser) && isTeacherOfAttendanceGroup(attendance, currentUser)) {
+            if (attendance.getLesson().getDate().equals(LocalDate.now())) return;
             throw new AccessDeniedException("Teachers can only delete attendance on the lesson day.");
         }
 
@@ -93,6 +75,20 @@ public class AttendanceValidate {
     }
 
 
+    private boolean isTeacherOfAttendanceGroup(Attendance attendance, User user) {
+        return attendance.getLesson().getGroup().getTeacher().getId().equals(user.getId());
+    }
 
+    private boolean isStudentInSameGroup(Attendance attendance) {
+        return attendance.getLesson().getGroup().getId()
+                .equals(attendance.getStudent().getGroup().getId());
+    }
 
+    private boolean hasReadAllPermission(User user) {
+        return authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_ALL, user);
+    }
+
+    private boolean hasReadOwnPermission(User user) {
+        return authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_OWN, user);
+    }
 }
