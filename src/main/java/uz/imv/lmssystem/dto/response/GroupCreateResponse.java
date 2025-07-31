@@ -10,6 +10,7 @@ import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.enums.Schedule;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * Created by Avazbek on 24/07/25 15:04
@@ -22,7 +23,7 @@ public class GroupCreateResponse {
 
     private String name;
 
-    private Schedule schedule;
+    private Set<Schedule> schedule;
 
     private LocalDate startDate;
 
