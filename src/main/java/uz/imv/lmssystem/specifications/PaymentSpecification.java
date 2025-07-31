@@ -1,7 +1,9 @@
 package uz.imv.lmssystem.specifications;
 
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.jpa.domain.Specification;
 import uz.imv.lmssystem.dto.filter.PaymentFilterDTO;
+import uz.imv.lmssystem.entity.Payment;
 
 import java.util.ArrayList;
 import java.util.List;

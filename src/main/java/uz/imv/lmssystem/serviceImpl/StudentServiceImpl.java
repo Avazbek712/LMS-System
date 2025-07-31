@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.StudentDTO;
+import uz.imv.lmssystem.dto.filter.StudentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Student;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
@@ -18,6 +20,8 @@ import uz.imv.lmssystem.mapper.resolvers.GroupResolver;
 import uz.imv.lmssystem.repository.GroupRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
 import uz.imv.lmssystem.service.StudentService;
+import uz.imv.lmssystem.specifications.StudentSpecification;
+import uz.imv.lmssystem.utils.PageableUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -107,5 +111,19 @@ public class StudentServiceImpl implements StudentService {
         final LocalDate today = LocalDate.now();
 
         return studentRepository.resetStatusForExpiredPayments(today);
+    }
+
+    @Override
+    public Page<StudentDTO> getFilteredStudents(StudentFilterDTO filter, Pageable pageable) {
+        Specification<Student> spec = StudentSpecification.filterBy(filter);
+        return studentRepository.findAll(spec, pageable)
+                .map(studentMapper::toDTO);
+    }
+
+    @Override
+    public PageableDTO getFilteredStudentsAsPageableDTO(StudentFilterDTO filter, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<StudentDTO> studentPage = getFilteredStudents(filter, pageable);
+        return PageableUtil.mapToDTO(studentPage);
     }
 }

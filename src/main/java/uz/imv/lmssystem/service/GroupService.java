@@ -1,6 +1,7 @@
 package uz.imv.lmssystem.service;
 
 import uz.imv.lmssystem.dto.GroupDTO;
+import uz.imv.lmssystem.dto.filter.GroupFilterDTO;
 import uz.imv.lmssystem.dto.request.GroupCreateRequest;
 import uz.imv.lmssystem.dto.response.GroupCreateResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
@@ -13,8 +14,8 @@ public interface GroupService {
 
     PageableDTO getAll(Integer page, Integer size);
 
-
     void deleteById(Long id);
 
     PageableDTO getMyGroups(User user, Integer page, Integer size);
-}
+
+    PageableDTO getFilteredGroups(GroupFilterDTO filter, int page, int size);}

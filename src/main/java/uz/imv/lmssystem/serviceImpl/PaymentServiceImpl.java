@@ -5,11 +5,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.imv.lmssystem.dto.PaymentCreateRequest;
 import uz.imv.lmssystem.dto.PaymentCreateResponse;
 import uz.imv.lmssystem.dto.PaymentStatusResponse;
+import uz.imv.lmssystem.dto.filter.PaymentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Payment;
 import uz.imv.lmssystem.entity.PaymentDTO;
@@ -22,6 +24,7 @@ import uz.imv.lmssystem.repository.PaymentRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
 import uz.imv.lmssystem.repository.UserRepository;
 import uz.imv.lmssystem.service.PaymentService;
+import uz.imv.lmssystem.specifications.PaymentSpecification;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -139,5 +142,26 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Payment with ID : " + id + " not found!"));
 
         return paymentMapper.toDto(payment);
+    }
+
+    @Override
+    public PageableDTO getFilteredPayments(PaymentFilterDTO filter, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Payment> spec = PaymentSpecification.filterBy(filter);
+        Page<Payment> payments = paymentRepository.findAll(spec, pageable);
+        List<PaymentDTO> dtos = paymentMapper.toDTO(payments.getContent());
+
+        if (dtos.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, null);
+        }
+
+        return new PageableDTO(
+                payments.getSize(),
+                payments.getTotalElements(),
+                payments.getTotalPages(),
+                !payments.isLast(),
+                !payments.isFirst(),
+                dtos
+        );
     }
 }
