@@ -26,6 +26,7 @@ import uz.imv.lmssystem.repository.LessonRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
 import uz.imv.lmssystem.service.AttendanceService;
 import uz.imv.lmssystem.service.security.AuthService;
+import uz.imv.lmssystem.utils.AttendanceValidate;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,12 +44,13 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final StudentResolver studentResolver;
     private final LessonResolver lessonResolver;
     private final AuthService authService;
+    private final AttendanceValidate attendanceValidate;
 
 
     @Override
     public AttendanceDTO getById(Long id) {
         Attendance attendance = attendanceRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Attendance with id : " + id + " not found!"));
-        checkTeacherAccessToAttendance(attendance);
+        attendanceValidate.checkTeacherAccessToAttendance(attendance);
         return attendanceMapper.toDTO(attendance);
 
     }
@@ -97,7 +99,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                                             + " and lesson with id : " + dto.getLessonId() + " already exists!");
         }
         Attendance attendance = attendanceMapper.toEntity(dto, studentResolver, lessonResolver);
-        checkTeacherAccessToAttendance(attendance);
+        attendanceValidate.checkTeacherAccessToAttendance(attendance);
         Attendance savedAttendance = attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(savedAttendance);
     }
@@ -118,7 +120,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                                             + " and lesson with id : " + dto.getLessonId() + " already exists!");
         }
 
-        checkTeacherAccessToAttendance(attendance);
+        attendanceValidate.checkTeacherAccessToAttendance(attendance);
         attendanceMapper.updateEntity(dto, attendance, studentResolver, lessonResolver);
         Attendance updatedAttendance = attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(updatedAttendance);
@@ -132,7 +134,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .orElseThrow(() -> new EntityNotFoundException("Attendance with id : " + id + " not found!"));
 
         attendance.setStatus(dto.getStatus());
-        checkTeacherAccessToAttendance(attendance);
+        attendanceValidate.checkTeacherAccessToAttendance(attendance);
         attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(attendance);
     }
@@ -145,41 +147,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         if (attendance.isEmpty()) {
             throw new EntityNotFoundException("Attendance with id : " + id + " not found!");
         }
-        checkTeacherAccessToAttendance(attendance.get());
+        attendanceValidate.checkTeacherAccessToAttendance(attendance.get());
         attendanceRepository.deleteById(id);
     }
 
-    private void checkTeacherAccessToAttendance(Attendance attendance) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = (User) authService.loadUserByUsername(username);
-
-        boolean canReadAll = authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_ALL, currentUser);
-        boolean canReadOwn = authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_OWN, currentUser);
-
-        if (canReadAll) {
-            return;
-        }
-
-        if (canReadOwn) {
-
-            Long teacherId = attendance.getLesson().getGroup().getTeacher().getId();
-            Long currentUserId = currentUser.getId();
-            Long lessonGroupId = attendance.getLesson().getGroup().getId();
-            Long studentGroupId = attendance.getStudent().getGroup().getId();
-
-            if (!teacherId.equals(currentUserId)) {
-                throw new AccessDeniedException("You are not allowed to access this attendance. You are not the teacher of group id: " + lessonGroupId);
-            }
-
-            if (!lessonGroupId.equals(studentGroupId)) {
-                throw new AccessDeniedException("This attendance is invalid: Student with id " + attendance.getStudent().getId() +
-                                                " does not belong to the same group as the lesson (group id: " + lessonGroupId + ")");
-            }
-
-            return;
-        }
-
-        throw new AccessDeniedException("You are not allowed to access this attendance");
-    }
 
 }
