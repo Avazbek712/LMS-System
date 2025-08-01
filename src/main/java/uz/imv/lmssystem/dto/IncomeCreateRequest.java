@@ -24,10 +24,10 @@ public class IncomeCreateRequest {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime date;
 
-    @NotBlank(message = "Employee can not be null")
+    @NotNull(message = "Employee can not be null")
     private Long employeeId;
 
-    @NotBlank(message = "Employee can not be null")
+    @NotNull(message = "Employee can not be null")
     private BigDecimal amount;
 
     @NotNull(message = "Category can not be null")

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.StudentDTO;
+import uz.imv.lmssystem.dto.filter.StudentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.service.PaymentService;
 import uz.imv.lmssystem.service.StudentService;
@@ -59,6 +60,14 @@ public class StudentController {
     public ResponseEntity<?> checkStatus(@PathVariable Long id) {
 
         return ResponseEntity.ok(paymentService.checkPaymentStatus(id));
+    }
+
+    @GetMapping("/filter")
+    @PreAuthorize("hasAuthority('STUDENT_READ')")
+    public ResponseEntity<PageableDTO> filterStudents(@ModelAttribute StudentFilterDTO filter,
+                                                      @RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(studentService.getFilteredStudentsAsPageableDTO(filter, page, size));
     }
 
 }

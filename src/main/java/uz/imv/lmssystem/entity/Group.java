@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.enums.Schedule;
@@ -22,6 +23,7 @@ import java.util.Set;
  * Created by Avazbek on 24/07/25 14:46
  */
 @Entity(name = "groups")
+@Audited
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

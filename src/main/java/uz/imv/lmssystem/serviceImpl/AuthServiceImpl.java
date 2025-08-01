@@ -28,8 +28,6 @@ import uz.imv.lmssystem.repository.UserRepository;
 import uz.imv.lmssystem.service.security.AuthService;
 import uz.imv.lmssystem.service.security.JwtService;
 
-import java.security.Permission;
-
 
 @Service
 @Slf4j
@@ -117,8 +115,6 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(role);
 
         userRepository.save(user);
-
-        String token = jwtService.generateToken(user);
 
         log.info("User '{}' is registered successfully with role '{}' ", user.getUsername(), role.getName());
 

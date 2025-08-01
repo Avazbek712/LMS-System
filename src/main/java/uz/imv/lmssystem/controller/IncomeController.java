@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class IncomeController {
     }
 
     @PostMapping
-    public ResponseEntity<IncomeCreateResponse> create(@RequestBody IncomeCreateRequest request) {
+    public ResponseEntity<IncomeCreateResponse> create(@Valid @RequestBody IncomeCreateRequest request) {
 
         return ResponseEntity.ok(incomeService.create(request));
     }

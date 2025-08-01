@@ -21,7 +21,6 @@ import uz.imv.lmssystem.service.security.AuthService;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-
     private final AuthService authService;
 
     @PostMapping("register")

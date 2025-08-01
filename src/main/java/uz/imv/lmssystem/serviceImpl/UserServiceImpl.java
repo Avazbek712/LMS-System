@@ -2,17 +2,22 @@ package uz.imv.lmssystem.serviceImpl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import uz.imv.lmssystem.dto.*;
+import org.springframework.web.multipart.MultipartFile;
+import uz.imv.lmssystem.dto.UserDTO;
+import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
 import uz.imv.lmssystem.dto.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.Role;
 import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.exceptions.EmptyFileException;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
 import uz.imv.lmssystem.mapper.UserMapper;
 import uz.imv.lmssystem.repository.RoleRepository;
 import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.service.FileStorageService;
 import uz.imv.lmssystem.service.UserService;
 
 
@@ -20,8 +25,12 @@ import uz.imv.lmssystem.service.UserService;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
     private final RoleRepository roleRepository;
+    private final UserMapper userMapper;
+    private final FileStorageService fileStorageService;
+
+    @Value("${minio.bucket.name}")
+    private String bucketName;
 
     @Override
     @Transactional
@@ -78,9 +87,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getAboutMe(User currentUser) {
-        return userMapper.toDTO(currentUser);
 
+        return new UserDTO(
+                currentUser.getName(),
+                currentUser.getSurname(),
+                currentUser.getPhoneNumber(),
+                currentUser.getUsername(),
+                currentUser.getRole().getName(),
+                bucketName + currentUser.getPhotoUrl()
+        );
     }
 
+    @Transactional
+    @Override
+    public void uploadAvatar(Long userId, MultipartFile file) {
+        if (file.isEmpty())
+            throw new EmptyFileException();
+
+        User employee = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+
+        String destinationPath = employee.getId().toString();
+
+        String avatarFileName = fileStorageService.uploadFile(file, destinationPath);
+
+        employee.setPhotoUrl(avatarFileName);
+
+        userRepository.save(employee);
+    }
 
 }

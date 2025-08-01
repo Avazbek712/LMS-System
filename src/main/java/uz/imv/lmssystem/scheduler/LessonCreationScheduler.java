@@ -30,7 +30,6 @@ public class LessonCreationScheduler {
 
         final LocalDate generationCutoffDate = LocalDate.now().plusWeeks(1);
 
-
         List<Group> activeGroups = groupRepository.findAllByStatusAndEndDateAfter(GroupStatus.OPEN, LocalDate.now());
 
         log.info("Найдено {} активных групп для обработки.", activeGroups.size());
@@ -43,9 +42,5 @@ public class LessonCreationScheduler {
                 log.error("Критическая ошибка при обработке группы ID {}: {}", group.getId(), e.getMessage());
             }
         }
-
-
     }
-
-
 }

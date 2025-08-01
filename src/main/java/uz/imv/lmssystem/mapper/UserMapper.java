@@ -17,6 +17,5 @@ public interface UserMapper {
     static String roleToString(Role role) {
         return role != null ? role.getName() : null;
     }
-
-
 }
+

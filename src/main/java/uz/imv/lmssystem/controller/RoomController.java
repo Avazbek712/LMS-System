@@ -1,6 +1,7 @@
 package uz.imv.lmssystem.controller;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +36,7 @@ public class RoomController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROOM_CREATE')")
-    public ResponseEntity<RoomResponseDTO> save(@RequestBody RoomDTO roomDTO) {
+    public ResponseEntity<RoomResponseDTO> save(@Valid @RequestBody RoomDTO roomDTO) {
 
         return ResponseEntity.ok(roomService.save(roomDTO));
     }
@@ -43,7 +44,7 @@ public class RoomController {
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('ROOM_UPDATE')")
     public ResponseEntity<RoomResponseDTO> update(@PathVariable("id") Long id,
-                                                  @RequestBody RoomDTO roomDTO) {
+                                                  @Valid @RequestBody RoomDTO roomDTO) {
         return ResponseEntity.ok(roomService.update(id, roomDTO));
     }
 

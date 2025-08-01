@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.GroupDTO;
+import uz.imv.lmssystem.dto.filter.GroupFilterDTO;
 import uz.imv.lmssystem.dto.request.GroupCreateRequest;
 import uz.imv.lmssystem.dto.response.GroupCreateResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
@@ -20,6 +22,7 @@ import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.GroupMapper;
 import uz.imv.lmssystem.repository.*;
 import uz.imv.lmssystem.service.GroupService;
+import uz.imv.lmssystem.specifications.GroupSpecification;
 
 import java.util.List;
 
@@ -114,6 +117,23 @@ public class GroupServiceImpl implements GroupService {
         if (!groupRepository.existsById(id)) throw new EntityNotFoundException("Group with id : " + id + " not found!");
 
         groupRepository.deleteById(id);
+    }
+
+    @Override
+    public PageableDTO getFilteredGroups(GroupFilterDTO filter, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Group> spec = GroupSpecification.filterBy(filter);
+        Page<Group> groupPage = groupRepository.findAll(spec, pageable);
+        List<GroupDTO> groupDTOS = groupPage.map(groupMapper::toDTO).getContent();
+
+        return new PageableDTO(
+                groupPage.getSize(),
+                groupPage.getTotalElements(),
+                groupPage.getTotalPages(),
+                groupPage.hasNext(),
+                groupPage.hasPrevious(),
+                groupDTOS
+        );
     }
 
 

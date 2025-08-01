@@ -1,8 +1,9 @@
-package uz.imv.lmssystem.entity;
+package uz.imv.lmssystem.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.imv.lmssystem.entity.Payment;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

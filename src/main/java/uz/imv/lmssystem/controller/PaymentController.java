@@ -1,11 +1,14 @@
 package uz.imv.lmssystem.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.PaymentCreateRequest;
 import uz.imv.lmssystem.dto.PaymentCreateResponse;
+import uz.imv.lmssystem.dto.filter.PaymentFilterDTO;
+import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.service.PaymentService;
 
 /**
@@ -54,6 +57,15 @@ public class PaymentController {
             @RequestParam(value = "size", defaultValue = "10") Integer size
     ) {
         return ResponseEntity.ok(paymentService.getAll(page, size));
+    }
+
+    @GetMapping("/filter")
+    @PreAuthorize("hasAuthority('PAYMENT_READ')")
+    public PageableDTO filterPayments(
+            @Parameter(description = "Page number", example = "0") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size", example = "10") @RequestParam(defaultValue = "10") int size,
+            PaymentFilterDTO filter) {
+        return paymentService.getFilteredPayments(filter, page, size);
     }
 
 }

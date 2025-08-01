@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,7 +41,7 @@ public class ExpenseController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('EXPENSE_CREATE')")
-    public ResponseEntity<CreateExpenseResponse> create(@RequestBody CreateExpenseRequest request, @AuthenticationPrincipal User currentUser) {
+    public ResponseEntity<CreateExpenseResponse> create(@Valid @RequestBody CreateExpenseRequest request, @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.ok(expenseService.create(request, currentUser));
     }
 
