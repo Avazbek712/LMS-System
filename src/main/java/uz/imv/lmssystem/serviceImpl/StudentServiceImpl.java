@@ -114,6 +114,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public PageableDTO getDebtors(Integer page, Integer size) {
+
+
+    }
+
+    @Override
     public Page<StudentDTO> getFilteredStudents(StudentFilterDTO filter, Pageable pageable) {
         Specification<Student> spec = StudentSpecification.filterBy(filter);
         return studentRepository.findAll(spec, pageable)
