@@ -19,8 +19,8 @@ public class StudentSpecification {
                 List<Predicate> namePredicates = new ArrayList<>();
                 for (String word : words) {
                     String pattern = "%" + word + "%";
-                    namePredicates.add(cb.like(cb.lower(root.get("firstName")), pattern));
-                    namePredicates.add(cb.like(cb.lower(root.get("lastName")), pattern));
+                    namePredicates.add(cb.like(cb.lower(root.get("name")), pattern));
+                    namePredicates.add(cb.like(cb.lower(root.get("surname")), pattern));
                 }
                 predicates.add(cb.or(namePredicates.toArray(new Predicate[0])));
             }
@@ -30,7 +30,7 @@ public class StudentSpecification {
             }
 
             if (filter.getPaymentStatus() != null) {
-                predicates.add(cb.equal(root.get("hasPaid"), filter.getPaymentStatus())); // поле может быть boolean
+                predicates.add(cb.equal(root.get("paymentStatus"), filter.getPaymentStatus())); // поле может быть boolean
             }
 
             if (filter.getPhoneNumber() != null && !filter.getPhoneNumber().isBlank()) {

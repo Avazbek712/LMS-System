@@ -7,8 +7,8 @@ import uz.imv.lmssystem.entity.Student;
 import uz.imv.lmssystem.mapper.resolvers.GroupResolver;
 
 import java.util.List;
-
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+
 public interface StudentMapper {
 
     @Mapping(source = "group.id", target = "groupId")

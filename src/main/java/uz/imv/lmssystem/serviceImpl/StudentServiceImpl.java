@@ -1,6 +1,5 @@
 package uz.imv.lmssystem.serviceImpl;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,12 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import uz.imv.lmssystem.dto.StudentDTO;
+import uz.imv.lmssystem.dto.StudentDebtors;
 import uz.imv.lmssystem.dto.filter.StudentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Student;
@@ -26,7 +22,6 @@ import uz.imv.lmssystem.repository.GroupRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
 import uz.imv.lmssystem.service.StudentService;
 import uz.imv.lmssystem.specifications.StudentSpecification;
-import uz.imv.lmssystem.utils.PageableUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,7 +36,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentMapper studentMapper;
     private final GroupRepository groupRepository;
     private final GroupResolver groupResolver;
-    private final StudentService studentService;
+
 
     @Override
     public StudentDTO getById(Long id) {
@@ -122,26 +117,54 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public PageableDTO getDebtors(Integer page, Integer size) {
 
+        Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Student> debtors = studentRepository.findByPaymentStatus(false, pageable);
+        List<Student> content = debtors.getContent();
+
+        if (debtors.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, null);
+        }
+        List<StudentDebtors> studentDTOS = content.stream()
+                .map(studentMapper::toDebtors)
+                .toList();
+
+        return new PageableDTO(
+                debtors.getSize(),
+                debtors.getTotalElements(),
+                debtors.getTotalPages(),
+                !debtors.isLast(),
+                !debtors.isFirst(),
+                studentDTOS);
     }
 
-    @GetMapping("debtors")
-    @PreAuthorize("hasAuthority('STUDENT_DEBTORS')")
-    public ResponseEntity<PageableDTO> getDebtors(@Parameter(description = "Page number", example = "0") @RequestParam(value = "page", defaultValue = "0") int page,
-                                                  @Parameter(description = "Page size", example = "10") @RequestParam(value = "size", defaultValue = "10") int size){
-        return ResponseEntity.ok(studentService.getDebtors(page,size));
-    }
 
     @Override
-    public Page<StudentDTO> getFilteredStudents(StudentFilterDTO filter, Pageable pageable) {
+    public PageableDTO getFilteredStudents(StudentFilterDTO filter, int page, int size) {
+        Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
         Specification<Student> spec = StudentSpecification.filterBy(filter);
-        return studentRepository.findAll(spec, pageable)
-                .map(studentMapper::toDTO);
+        Page<Student> studentPage = studentRepository.findAll(spec, pageable);
+        List<Student> students = studentPage.getContent();
+
+        if (students.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, List.of());
+        }
+        List<StudentDTO> studentDTOs = students.stream().map(studentMapper::toDTO).toList();
+
+        return new PageableDTO(
+                studentPage.getSize(),
+                studentPage.getTotalElements(),
+                studentPage.getTotalPages(),
+                !studentPage.isLast(),
+                !studentPage.isFirst(),
+                studentDTOs
+        );
+
     }
 
     @Override
     public PageableDTO getFilteredStudentsAsPageableDTO(StudentFilterDTO filter, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<StudentDTO> studentPage = getFilteredStudents(filter, pageable);
-        return PageableUtil.mapToDTO(studentPage);
+        return getFilteredStudents(filter, page, size);
     }
 }

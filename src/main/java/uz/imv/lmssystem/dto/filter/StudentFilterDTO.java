@@ -10,6 +10,8 @@ public class StudentFilterDTO {
     @Parameter(description = "Full name or partial match (first name or last name)")
     private String fullName;
 
+
+
     @Parameter(description = "Group ID")
     private Long groupId;
 
