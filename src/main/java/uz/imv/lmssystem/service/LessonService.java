@@ -7,6 +7,4 @@ import java.time.LocalDate;
 public interface LessonService {
 
     void generateAndSaveLessonsForGroup(Group group, LocalDate generationCutoffDate);
-
-
 }

@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
  * Created by Avazbek on 28/07/25 16:29
  */
 @Entity
+@Audited
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

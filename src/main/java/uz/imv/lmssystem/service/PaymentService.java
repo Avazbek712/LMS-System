@@ -5,7 +5,7 @@ import uz.imv.lmssystem.dto.PaymentCreateResponse;
 import uz.imv.lmssystem.dto.PaymentStatusResponse;
 import uz.imv.lmssystem.dto.filter.PaymentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
-import uz.imv.lmssystem.entity.PaymentDTO;
+import uz.imv.lmssystem.dto.PaymentDTO;
 
 public interface PaymentService {
 

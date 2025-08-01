@@ -56,7 +56,6 @@ public class LessonServiceImpl implements LessonService {
             return;
         }
 
-
         for (Lesson lesson : newLessons) {
             this.checkForConflicts(lesson);
         }

@@ -20,7 +20,7 @@ public class BalanceController {
     private final BalanceService balanceService;
 
     @GetMapping("current")
-//    @PreAuthorize("hasAuthority('BALANCE_SEE')")
+    @PreAuthorize("hasAuthority('BALANCE_SEE')")
     public ResponseEntity<?> getCurrentBalance() {
         return ResponseEntity.ok(balanceService.getCurrentBalance());
     }

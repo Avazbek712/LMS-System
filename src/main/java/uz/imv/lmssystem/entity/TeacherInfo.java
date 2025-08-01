@@ -7,12 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 /**
  * Created by Avazbek on 24/07/25 15:21
  */
 @Entity
+@Audited
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

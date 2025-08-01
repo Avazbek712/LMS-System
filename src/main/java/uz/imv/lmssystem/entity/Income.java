@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.ExpenseCategoryEnum;
 import uz.imv.lmssystem.enums.IncomeCategoryEnum;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
  */
 
 @Entity
+@Audited
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

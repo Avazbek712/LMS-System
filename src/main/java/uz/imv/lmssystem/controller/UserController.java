@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.entity.User;
@@ -49,5 +50,12 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("upload-avatar")
+    public ResponseEntity<Void> uploadAvatar(@AuthenticationPrincipal User currentUser, @RequestParam("file") MultipartFile file) {
+
+        userService.uploadAvatar(currentUser.getId(), file);
+
+        return ResponseEntity.ok().build();
+    }
 
 }

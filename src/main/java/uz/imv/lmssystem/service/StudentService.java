@@ -27,4 +27,9 @@ public interface StudentService {
 
     @Transactional
     int resetExpiredPaymentStatuses();
+
+
+    PageableDTO getDebtors(Integer page, Integer size);
+
+
 }

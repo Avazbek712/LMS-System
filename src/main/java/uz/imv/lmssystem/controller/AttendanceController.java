@@ -1,6 +1,7 @@
 package uz.imv.lmssystem.controller;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,7 +35,7 @@ public class AttendanceController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ATTENDANCE_MARK')")
-    public ResponseEntity<AttendanceDTO> save(@RequestBody AttendanceDTO attendanceDTO) {
+    public ResponseEntity<AttendanceDTO> save(@Valid @RequestBody AttendanceDTO attendanceDTO) {
 
         return ResponseEntity.ok(attendanceService.save(attendanceDTO));
     }
@@ -42,7 +43,7 @@ public class AttendanceController {
     @PatchMapping("{id}")
     @PreAuthorize("hasAuthority('ATTENDANCE_UPDATE')")
     public ResponseEntity<AttendanceDTO> update(@PathVariable("id") Long id,
-                                                  @RequestBody AttendanceStatusUpdateDTO attendanceStatusUpdateDTO) {
+                                                 @Valid @RequestBody AttendanceStatusUpdateDTO attendanceStatusUpdateDTO) {
         return ResponseEntity.ok(attendanceService.updateStatus(id, attendanceStatusUpdateDTO));
     }
 

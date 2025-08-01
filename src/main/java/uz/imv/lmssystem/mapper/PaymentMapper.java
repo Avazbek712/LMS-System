@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import uz.imv.lmssystem.entity.Payment;
-import uz.imv.lmssystem.entity.PaymentDTO;
+import uz.imv.lmssystem.dto.PaymentDTO;
 
 import java.util.List;
 

@@ -1,5 +1,7 @@
 package uz.imv.lmssystem.service;
 
+import jakarta.transaction.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import uz.imv.lmssystem.dto.*;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
 import uz.imv.lmssystem.dto.response.UserInfoUpdateResponse;
@@ -16,4 +18,7 @@ public interface UserService {
     UserInfoUpdateResponse updateUser(User currentUser, UserUpdateDTO dto);
 
     UserDTO getAboutMe(User currentUser);
+
+    @Transactional
+    void uploadAvatar(Long userId, MultipartFile file);
 }
