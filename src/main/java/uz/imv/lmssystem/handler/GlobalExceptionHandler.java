@@ -15,12 +15,22 @@ import uz.imv.lmssystem.dto.fildErrors.error.FieldErrorDTO;
 import uz.imv.lmssystem.enums.AttendanceStatus;
 import uz.imv.lmssystem.exceptions.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @RestControllerAdvice(basePackages = "uz.imv")
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(value = FileNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handle(FileNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                HttpStatus.NOT_FOUND.value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(value = ScheduleConflictException.class)
     public ResponseEntity<ErrorDTO> handle(ScheduleConflictException e) {

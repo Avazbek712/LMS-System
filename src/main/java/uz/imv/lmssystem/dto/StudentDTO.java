@@ -14,11 +14,14 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDTO implements Serializable {
+
     @Size(min = 3)
     private String name;
+
     @Size(min = 3)
     private String surname;
+
     private String phoneNumber;
-    private Long balance = 0L;
+
     private Long groupId;
 }

@@ -1,7 +1,7 @@
 package uz.imv.lmssystem.service;
 
-import uz.imv.lmssystem.dto.IncomeCreateRequest;
-import uz.imv.lmssystem.dto.IncomeCreateResponse;
+import uz.imv.lmssystem.dto.request.IncomeCreateRequest;
+import uz.imv.lmssystem.dto.response.IncomeCreateResponse;
 import uz.imv.lmssystem.dto.IncomeDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 

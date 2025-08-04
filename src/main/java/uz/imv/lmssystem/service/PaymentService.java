@@ -1,10 +1,11 @@
 package uz.imv.lmssystem.service;
 
-import uz.imv.lmssystem.dto.PaymentCreateRequest;
-import uz.imv.lmssystem.dto.PaymentCreateResponse;
-import uz.imv.lmssystem.dto.PaymentStatusResponse;
+import uz.imv.lmssystem.dto.PaymentDTO;
+import uz.imv.lmssystem.dto.filter.PaymentFilterDTO;
+import uz.imv.lmssystem.dto.request.PaymentCreateRequest;
 import uz.imv.lmssystem.dto.response.PageableDTO;
-import uz.imv.lmssystem.entity.PaymentDTO;
+import uz.imv.lmssystem.dto.response.PaymentCreateResponse;
+import uz.imv.lmssystem.dto.response.PaymentStatusResponse;
 
 public interface PaymentService {
 
@@ -18,5 +19,5 @@ public interface PaymentService {
 
     PaymentDTO getById(Long id);
 
-
+    PageableDTO getFilteredPayments(PaymentFilterDTO filter, int page, int size);
 }

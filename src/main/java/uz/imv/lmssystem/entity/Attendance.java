@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.envers.Audited;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.AttendanceStatus;
 
@@ -15,6 +16,7 @@ import uz.imv.lmssystem.enums.AttendanceStatus;
  */
 
 @Entity
+@Audited
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

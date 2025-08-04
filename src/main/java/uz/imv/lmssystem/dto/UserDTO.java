@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * Created by Avazbek on 23/07/25 14:42
  */
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private String name;
 
@@ -22,4 +24,6 @@ public class UserDTO {
     private String username;
 
     private String role;
+
+    private String photoUrl;
 }
