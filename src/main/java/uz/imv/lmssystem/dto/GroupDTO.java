@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.imv.lmssystem.enums.GroupStatus;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -14,7 +15,7 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupDTO {
+public class GroupDTO implements Serializable {
 
     private String groupName;
 

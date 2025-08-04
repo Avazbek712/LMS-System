@@ -3,7 +3,7 @@ package uz.imv.lmssystem.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import uz.imv.lmssystem.dto.SalaryPayResponse;
+import uz.imv.lmssystem.dto.response.SalaryPayResponse;
 import uz.imv.lmssystem.entity.Salary;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)

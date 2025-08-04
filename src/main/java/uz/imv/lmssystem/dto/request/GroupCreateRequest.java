@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.imv.lmssystem.enums.Schedule;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupCreateRequest {
+public class GroupCreateRequest implements Serializable {
     @NotBlank(message = "name must not be blank")
     private String name;
 

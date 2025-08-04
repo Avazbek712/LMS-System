@@ -1,7 +1,7 @@
 package uz.imv.lmssystem.service;
 
-import uz.imv.lmssystem.dto.CreateExpenseRequest;
-import uz.imv.lmssystem.dto.CreateExpenseResponse;
+import uz.imv.lmssystem.dto.request.CreateExpenseRequest;
+import uz.imv.lmssystem.dto.response.CreateExpenseResponse;
 import uz.imv.lmssystem.dto.ExpenseDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.User;
