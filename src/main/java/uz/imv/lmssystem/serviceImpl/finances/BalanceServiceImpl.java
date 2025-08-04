@@ -3,7 +3,7 @@ package uz.imv.lmssystem.serviceImpl.finances;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.repository.*;
-import uz.imv.lmssystem.service.BalanceService;
+import uz.imv.lmssystem.service.finances.BalanceService;
 
 import java.math.BigDecimal;
 

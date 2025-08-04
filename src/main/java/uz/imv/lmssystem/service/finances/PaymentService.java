@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.finances;
 
 import uz.imv.lmssystem.dto.PaymentDTO;
 import uz.imv.lmssystem.dto.filter.PaymentFilterDTO;

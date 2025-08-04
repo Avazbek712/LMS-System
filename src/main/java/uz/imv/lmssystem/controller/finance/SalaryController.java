@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.imv.lmssystem.dto.request.SalaryPayRequest;
 import uz.imv.lmssystem.dto.response.SalaryPayResponse;
-import uz.imv.lmssystem.service.SalaryService;
+import uz.imv.lmssystem.service.finances.SalaryService;
 
 /**
  * Created by Avazbek on 30/07/25 12:56

@@ -23,7 +23,7 @@ import uz.imv.lmssystem.mapper.PaymentMapper;
 import uz.imv.lmssystem.repository.PaymentRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
 import uz.imv.lmssystem.repository.UserRepository;
-import uz.imv.lmssystem.service.PaymentService;
+import uz.imv.lmssystem.service.finances.PaymentService;
 import uz.imv.lmssystem.specifications.PaymentSpecification;
 
 import java.time.LocalDate;

@@ -7,10 +7,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.entity.User;
-import uz.imv.lmssystem.service.UserService;
+import uz.imv.lmssystem.service.users.UserService;
 
 @RestController
 @RequiredArgsConstructor
@@ -56,6 +57,12 @@ public class UserController {
         userService.uploadAvatar(currentUser.getId(), file);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("update-password")
+    public ResponseEntity<?> updatePassword(@AuthenticationPrincipal User currentUser, @Valid @RequestBody UpdatePasswordDTO dto) {
+
+        return ResponseEntity.ok(userService.updatePassword(currentUser, dto));
     }
 
 }

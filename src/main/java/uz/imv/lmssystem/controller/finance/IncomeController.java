@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.request.IncomeCreateRequest;
 import uz.imv.lmssystem.dto.response.IncomeCreateResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
-import uz.imv.lmssystem.service.IncomeService;
+import uz.imv.lmssystem.service.finances.IncomeService;
 
 /**
  * Created by Avazbek on 29/07/25 17:39

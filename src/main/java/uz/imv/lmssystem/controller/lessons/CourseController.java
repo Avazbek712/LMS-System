@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.CourseDTO;
 import uz.imv.lmssystem.dto.response.CourseResponseDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
-import uz.imv.lmssystem.service.CourseService;
+import uz.imv.lmssystem.service.lessons.CourseService;
 
 
 @RestController

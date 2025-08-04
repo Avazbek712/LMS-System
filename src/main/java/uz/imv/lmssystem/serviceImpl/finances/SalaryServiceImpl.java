@@ -10,8 +10,8 @@ import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
 import uz.imv.lmssystem.repository.SalaryRepository;
 import uz.imv.lmssystem.repository.UserRepository;
-import uz.imv.lmssystem.service.BalanceService;
-import uz.imv.lmssystem.service.SalaryService;
+import uz.imv.lmssystem.service.finances.BalanceService;
+import uz.imv.lmssystem.service.finances.SalaryService;
 
 import java.math.BigDecimal;
 

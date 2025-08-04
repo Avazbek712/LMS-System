@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.lessons;
 
 import uz.imv.lmssystem.dto.GroupDTO;
 import uz.imv.lmssystem.dto.filter.GroupFilterDTO;

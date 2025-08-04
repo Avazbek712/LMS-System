@@ -19,7 +19,7 @@ import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.RoomMapper;
 import uz.imv.lmssystem.repository.RoomRepository;
-import uz.imv.lmssystem.service.RoomService;
+import uz.imv.lmssystem.service.lessons.RoomService;
 
 import java.util.List;
 

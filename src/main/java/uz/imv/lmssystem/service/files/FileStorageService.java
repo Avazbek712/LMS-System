@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.files;
 
 import org.springframework.web.multipart.MultipartFile;
 

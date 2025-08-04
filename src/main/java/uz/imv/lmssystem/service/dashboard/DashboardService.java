@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.dashboard;
 
 import uz.imv.lmssystem.dto.DashboardDTO;
 

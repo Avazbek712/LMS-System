@@ -9,7 +9,8 @@ import uz.imv.lmssystem.dto.request.PaymentCreateRequest;
 import uz.imv.lmssystem.dto.response.PaymentCreateResponse;
 import uz.imv.lmssystem.dto.filter.PaymentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
-import uz.imv.lmssystem.service.PaymentService;
+import uz.imv.lmssystem.service.finances.PaymentService;
+import uz.imv.lmssystem.service.users.StudentService;
 
 /**
  * Created by Avazbek on 29/07/25 12:07
@@ -21,6 +22,7 @@ public class PaymentController {
 
 
     private final PaymentService paymentService;
+    private final StudentService studentService;
 
     @PostMapping
     @PreAuthorize("hasAuthority('PAYMENT_CREATE')")
@@ -67,5 +69,15 @@ public class PaymentController {
             PaymentFilterDTO filter) {
         return paymentService.getFilteredPayments(filter, page, size);
     }
+
+    @GetMapping("debtors")
+    @PreAuthorize("hasAuthority('PAYMENT_READ')")
+    public PageableDTO getDebtors(
+            @Parameter(description = "Page number", example = "0") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size", example = "10") @RequestParam(defaultValue = "10") int size
+    ) {
+        return studentService.getDebtors(page, size);
+    }
+
 
 }

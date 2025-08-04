@@ -10,7 +10,7 @@ import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.enums.Schedule;
 import uz.imv.lmssystem.exceptions.ScheduleConflictException;
 import uz.imv.lmssystem.repository.LessonRepository;
-import uz.imv.lmssystem.service.LessonService;
+import uz.imv.lmssystem.service.lessons.LessonService;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
