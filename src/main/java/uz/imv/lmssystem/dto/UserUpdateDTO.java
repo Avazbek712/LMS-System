@@ -6,13 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.AnyKeyJavaClass;
 
+import java.io.Serializable;
+
 /**
  * Created by Avazbek on 23/07/25 14:11
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateDTO {
+public class UserUpdateDTO implements Serializable {
 
     @NotBlank(message = "name must not be blank")
     private String name;

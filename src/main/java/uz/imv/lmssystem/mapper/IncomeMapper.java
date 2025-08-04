@@ -2,7 +2,7 @@ package uz.imv.lmssystem.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import uz.imv.lmssystem.dto.IncomeCreateResponse;
+import uz.imv.lmssystem.dto.response.IncomeCreateResponse;
 import uz.imv.lmssystem.dto.IncomeDTO;
 import uz.imv.lmssystem.entity.Income;
 

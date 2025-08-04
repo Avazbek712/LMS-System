@@ -1,7 +1,7 @@
 package uz.imv.lmssystem.service;
 
-import uz.imv.lmssystem.dto.SalaryPayRequest;
-import uz.imv.lmssystem.dto.SalaryPayResponse;
+import uz.imv.lmssystem.dto.request.SalaryPayRequest;
+import uz.imv.lmssystem.dto.response.SalaryPayResponse;
 
 public interface SalaryService {
 

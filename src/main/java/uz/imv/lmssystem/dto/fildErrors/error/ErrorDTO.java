@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ErrorDTO {
+public class ErrorDTO  {
 
     private int status;
     private String message;

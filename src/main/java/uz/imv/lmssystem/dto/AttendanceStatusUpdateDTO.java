@@ -6,10 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.imv.lmssystem.enums.AttendanceStatus;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AttendanceStatusUpdateDTO {
+public class AttendanceStatusUpdateDTO implements Serializable {
 
     @NotBlank
     private AttendanceStatus status;

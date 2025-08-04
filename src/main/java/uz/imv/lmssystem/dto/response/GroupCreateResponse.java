@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.enums.Schedule;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupCreateResponse {
+public class GroupCreateResponse implements Serializable {
 
 
     private String name;
