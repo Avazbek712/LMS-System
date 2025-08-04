@@ -25,7 +25,7 @@ import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.GroupMapper;
 import uz.imv.lmssystem.repository.*;
-import uz.imv.lmssystem.service.GroupService;
+import uz.imv.lmssystem.service.lessons.GroupService;
 import uz.imv.lmssystem.specifications.GroupSpecification;
 
 import java.util.List;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.imv.lmssystem.dto.DashboardDTO;
-import uz.imv.lmssystem.service.DashboardService;
+import uz.imv.lmssystem.service.dashboard.DashboardService;
 
 /**
  * Created by Avazbek on 31/07/25 11:25

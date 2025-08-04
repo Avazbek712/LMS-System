@@ -1,8 +1,7 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.lessons;
 
 import uz.imv.lmssystem.dto.AttendanceDTO;
 import uz.imv.lmssystem.dto.AttendanceStatusUpdateDTO;
-import uz.imv.lmssystem.dto.StudentDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.User;
 

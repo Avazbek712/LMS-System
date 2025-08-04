@@ -10,7 +10,7 @@ import uz.imv.lmssystem.dto.AttendanceDTO;
 import uz.imv.lmssystem.dto.AttendanceStatusUpdateDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.User;
-import uz.imv.lmssystem.service.AttendanceService;
+import uz.imv.lmssystem.service.lessons.AttendanceService;
 
 
 @RestController

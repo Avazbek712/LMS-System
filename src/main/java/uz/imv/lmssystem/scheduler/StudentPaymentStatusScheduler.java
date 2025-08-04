@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import uz.imv.lmssystem.service.StudentService;
+import uz.imv.lmssystem.service.users.StudentService;
 
 /**
  * Created by Avazbek on 30/07/25 09:33

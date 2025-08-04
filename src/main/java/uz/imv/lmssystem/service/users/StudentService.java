@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.users;
 
 import jakarta.transaction.Transactional;
 import uz.imv.lmssystem.dto.StudentDTO;

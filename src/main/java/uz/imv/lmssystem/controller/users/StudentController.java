@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.StudentDTO;
 import uz.imv.lmssystem.dto.filter.StudentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
-import uz.imv.lmssystem.service.PaymentService;
-import uz.imv.lmssystem.service.StudentService;
+import uz.imv.lmssystem.service.finances.PaymentService;
+import uz.imv.lmssystem.service.users.StudentService;
 
 
 @RestController

@@ -17,4 +17,6 @@ public interface AuthService extends UserDetailsService {
     TokenDTO refresh(RefreshTokenRequest token);
 
     boolean hasPermission(PermissionsEnum permission, User user);
+
+
 }

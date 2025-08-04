@@ -9,7 +9,7 @@ import uz.imv.lmssystem.dto.request.PaymentCreateRequest;
 import uz.imv.lmssystem.dto.response.PaymentCreateResponse;
 import uz.imv.lmssystem.dto.filter.PaymentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
-import uz.imv.lmssystem.service.PaymentService;
+import uz.imv.lmssystem.service.finances.PaymentService;
 
 /**
  * Created by Avazbek on 29/07/25 12:07

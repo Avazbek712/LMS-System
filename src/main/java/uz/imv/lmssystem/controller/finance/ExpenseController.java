@@ -11,7 +11,7 @@ import uz.imv.lmssystem.dto.response.CreateExpenseResponse;
 import uz.imv.lmssystem.dto.ExpenseDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.User;
-import uz.imv.lmssystem.service.ExpenseService;
+import uz.imv.lmssystem.service.finances.ExpenseService;
 
 /**
  * Created by Avazbek on 29/07/25 12:45

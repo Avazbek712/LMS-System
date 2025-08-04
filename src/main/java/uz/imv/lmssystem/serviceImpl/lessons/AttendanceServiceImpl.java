@@ -23,7 +23,7 @@ import uz.imv.lmssystem.mapper.resolvers.StudentResolver;
 import uz.imv.lmssystem.repository.AttendanceRepository;
 import uz.imv.lmssystem.repository.LessonRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
-import uz.imv.lmssystem.service.AttendanceService;
+import uz.imv.lmssystem.service.lessons.AttendanceService;
 import uz.imv.lmssystem.service.security.AuthService;
 import uz.imv.lmssystem.utils.AttendanceValidate;
 

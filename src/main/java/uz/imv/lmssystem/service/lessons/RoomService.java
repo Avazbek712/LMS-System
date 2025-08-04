@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.lessons;
 
 import uz.imv.lmssystem.dto.RoomDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;

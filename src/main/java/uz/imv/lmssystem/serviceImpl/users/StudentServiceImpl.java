@@ -20,7 +20,7 @@ import uz.imv.lmssystem.mapper.StudentMapper;
 import uz.imv.lmssystem.mapper.resolvers.GroupResolver;
 import uz.imv.lmssystem.repository.GroupRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
-import uz.imv.lmssystem.service.StudentService;
+import uz.imv.lmssystem.service.users.StudentService;
 import uz.imv.lmssystem.specifications.StudentSpecification;
 
 import java.time.LocalDate;

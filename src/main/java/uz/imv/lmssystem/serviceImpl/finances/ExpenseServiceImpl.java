@@ -18,8 +18,8 @@ import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.ExpenseMapper;
 import uz.imv.lmssystem.repository.ExpenseRepository;
 import uz.imv.lmssystem.repository.UserRepository;
-import uz.imv.lmssystem.service.BalanceService;
-import uz.imv.lmssystem.service.ExpenseService;
+import uz.imv.lmssystem.service.finances.BalanceService;
+import uz.imv.lmssystem.service.finances.ExpenseService;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import uz.imv.lmssystem.entity.Group;
 import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.repository.GroupRepository;
-import uz.imv.lmssystem.service.LessonService;
+import uz.imv.lmssystem.service.lessons.LessonService;
 
 import java.time.LocalDate;
 import java.util.List;
