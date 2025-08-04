@@ -2,6 +2,9 @@ package uz.imv.lmssystem.serviceImpl.lessons;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +34,9 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
+    @Transactional
+    @Cacheable(value = "rooms_list", key = "'page:' + #page + ':size:' + #size")
+
     public PageableDTO getAll(Integer page, Integer size) {
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -59,6 +65,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "rooms", key = "#id"),
+            @CacheEvict(value = "rooms_list", allEntries = true)
+    })
     public void deleteById(Long id) {
 
         roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Room with id : " + id + " not found!"));
@@ -68,6 +78,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "rooms_list", allEntries = true)
     public RoomResponseDTO save(RoomDTO roomDTO) {
         roomRepository.findByName(roomDTO.getName()).ifPresent(r -> {
             throw new EntityAlreadyExistsException("Room with name : " + roomDTO.getName() + " already exist!");
