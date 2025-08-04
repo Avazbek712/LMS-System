@@ -2,6 +2,9 @@ package uz.imv.lmssystem.serviceImpl.lessons;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +39,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Cacheable(value = "courses_list", key = "'page:' + #page + ':size:' + #size")
     public PageableDTO getAll(Integer page, Integer size) {
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -60,6 +64,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "courses_list", allEntries = true)
     public CourseResponseDTO save(CourseDTO dto) {
 
         courseRepository.findByName(dto.getName()).ifPresent(c -> {
@@ -95,8 +100,13 @@ public class CourseServiceImpl implements CourseService {
         return new CourseResponseDTO(course.getName(), course.getPrice());
     }
 
+
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "groups", key = "#id"),
+            @CacheEvict(value = "groups_list", allEntries = true)
+    })
     public void deleteById(Long id) {
 
         courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));

@@ -12,7 +12,7 @@ import uz.imv.lmssystem.service.DashboardService;
  */
 @Service
 @RequiredArgsConstructor
-public class DashboarServiceImpl implements DashboardService {
+public class DashboardServiceImpl implements DashboardService {
 
     private final DashboardRepository dashboardRepository;
 
