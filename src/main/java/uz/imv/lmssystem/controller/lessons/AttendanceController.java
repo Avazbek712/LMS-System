@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.controller;
+package uz.imv.lmssystem.controller.lessons;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
