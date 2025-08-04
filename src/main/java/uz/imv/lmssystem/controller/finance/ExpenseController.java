@@ -21,7 +21,6 @@ import uz.imv.lmssystem.service.finances.ExpenseService;
 @RequestMapping("/api/expenses")
 public class ExpenseController {
 
-
     private final ExpenseService expenseService;
 
     @GetMapping
