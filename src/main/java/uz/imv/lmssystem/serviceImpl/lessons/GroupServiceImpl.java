@@ -105,7 +105,6 @@ public class GroupServiceImpl implements GroupService {
             return new PageableDTO(size, 0L, 0, false, false, null);
         }
 
-
         List<GroupDTO> courseDTOS = content.stream().map(groupMapper::toDTO).toList();
 
         return new PageableDTO(
