@@ -51,6 +51,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDTO, e.getStatus());
     }
 
+    @ExceptionHandler(value = InvalidAttendanceTimeException.class)
+    public ResponseEntity<ErrorDTO> handle(InvalidAttendanceTimeException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
 
     @ExceptionHandler(value = UnknownRoleException.class)
     public ResponseEntity<ErrorDTO> handle(UnknownRoleException e) {

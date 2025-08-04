@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.AttendanceDTO;
 import uz.imv.lmssystem.dto.AttendanceStatusUpdateDTO;
@@ -26,6 +25,7 @@ import uz.imv.lmssystem.repository.LessonRepository;
 import uz.imv.lmssystem.repository.StudentRepository;
 import uz.imv.lmssystem.service.AttendanceService;
 import uz.imv.lmssystem.service.security.AuthService;
+import uz.imv.lmssystem.utils.AttendanceValidate;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,22 +43,21 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final StudentResolver studentResolver;
     private final LessonResolver lessonResolver;
     private final AuthService authService;
+    private final AttendanceValidate attendanceValidate;
 
 
     @Override
-    public AttendanceDTO getById(Long id) {
+    public AttendanceDTO getById(Long id, User currentUser) {
         Attendance attendance = attendanceRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Attendance with id : " + id + " not found!"));
-        checkTeacherAccessToAttendance(attendance);
+        attendanceValidate.checkTeacherAccessToAttendance(attendance,currentUser);
         return attendanceMapper.toDTO(attendance);
 
     }
 
     @Override
-    public PageableDTO getAll(Integer page, Integer size) {
+    public PageableDTO getAll(Integer page, Integer size, User currentUser) {
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = (User) authService.loadUserByUsername(username);
         Page<Attendance> attendancePage;
         if (authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_ALL, currentUser)) {
             attendancePage = attendanceRepository.findAll(pageable);
@@ -84,7 +83,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     @Transactional
-    public AttendanceDTO save(AttendanceDTO dto) {
+    public AttendanceDTO save(AttendanceDTO dto, User currentUser) {
         if (!studentRepository.existsById(dto.getStudentId())) {
             throw new EntityNotFoundException("Student with id : " + dto.getStudentId() + " not found!");
         }
@@ -97,14 +96,15 @@ public class AttendanceServiceImpl implements AttendanceService {
                                             + " and lesson with id : " + dto.getLessonId() + " already exists!");
         }
         Attendance attendance = attendanceMapper.toEntity(dto, studentResolver, lessonResolver);
-        checkTeacherAccessToAttendance(attendance);
+        attendanceValidate.checkTeacherAccessToAttendance(attendance, currentUser);
+        attendanceValidate.validateLessonTiming(attendance, false);
         Attendance savedAttendance = attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(savedAttendance);
     }
 
     @Override
     @Transactional
-    public AttendanceDTO update(Long id, AttendanceDTO dto) {
+    public AttendanceDTO update(Long id, AttendanceDTO dto, User currentUser) {
         Attendance attendance = attendanceRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Attendance with id : " + id + " not found!"));
 
         if (!studentRepository.existsById(dto.getStudentId())) {
@@ -118,21 +118,23 @@ public class AttendanceServiceImpl implements AttendanceService {
                                             + " and lesson with id : " + dto.getLessonId() + " already exists!");
         }
 
+        attendanceValidate.checkTeacherAccessToAttendance(attendance, currentUser);
         attendanceMapper.updateEntity(dto, attendance, studentResolver, lessonResolver);
-        checkTeacherAccessToAttendance(attendance);
         Attendance updatedAttendance = attendanceRepository.save(attendance);
+        attendanceValidate.validateLessonTiming(updatedAttendance, true);
         return attendanceMapper.toDTO(updatedAttendance);
 
     }
 
     @Override
     @Transactional
-    public AttendanceDTO updateStatus(Long id, AttendanceStatusUpdateDTO dto) {
+    public AttendanceDTO updateStatus(Long id, AttendanceStatusUpdateDTO dto,User currentUser) {
         Attendance attendance = attendanceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Attendance with id : " + id + " not found!"));
 
         attendance.setStatus(dto.getStatus());
-        checkTeacherAccessToAttendance(attendance);
+        attendanceValidate.checkTeacherAccessToAttendance(attendance, currentUser);
+        attendanceValidate.validateLessonTiming(attendance, true);
         attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(attendance);
     }
@@ -140,26 +142,15 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
+    public void deleteById(Long id, User currentUser) {
         Optional<Attendance> attendance = attendanceRepository.findById(id);
         if (attendance.isEmpty()) {
             throw new EntityNotFoundException("Attendance with id : " + id + " not found!");
         }
-        checkTeacherAccessToAttendance(attendance.get());
+        attendanceValidate.checkTeacherAccessToAttendance(attendance.get(), currentUser);
+        attendanceValidate.checkDeleteAccess(attendance.get(), currentUser);
         attendanceRepository.deleteById(id);
     }
 
-    private void checkTeacherAccessToAttendance(Attendance attendance) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = (User) authService.loadUserByUsername(username);
-        if (authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_ALL, currentUser)) {
-            return;
-        } if (authService.hasPermission(PermissionsEnum.ATTENDANCE_READ_OWN, currentUser)) {
-            if (!attendance.getLesson().getGroup().getTeacher().getId().equals(currentUser.getId())) {
-                throw new AccessDeniedException("You are not allowed to access this attendance with id: " + attendance.getId());
-            }
-        } else {
-            throw new AccessDeniedException("You are not allowed to access this attendance with id: " + attendance.getId());
-        }
-    }
+
 }
