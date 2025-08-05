@@ -4,32 +4,32 @@ databaseChangeLog:
   - include:
       file: 002-creation-of-role_permissions-table.yaml
   - include:
-      file: 003-creation-of-course-table.yaml
+      file: 003-creation-of-table-course.yaml
   - include:
-      file: 004-creation-of-user-table.yaml
+      file: 004-creation-of-table-users.yaml
   - include:
-      file: 005-creation-of-teacher-info-table.yaml
+      file: 005-creation-of-table-teacher-info.yaml
   - include:
-      file: 006-creation-of-room-table.yaml
+      file: 006-creation-of-table-room.yaml
   - include:
-      file: 007-creation-of-group-table.yaml
+      file: 007-creation-of-table-group.yaml
   - include:
-      file: 008-creation-of-lesson-table.yaml
+      file: 008-creation-of-table-group-schedule.yaml
   - include:
-      file: 009-creation-of-student-table.yaml
+      file: 009-creation-of-table-lesson.yaml
   - include:
-      file: 010-creation-of-attendance-table.yaml
+      file: 010-creation-of-table-student.yaml
   - include:
-      file: 011-creation-of-salary-table.yaml
+      file: 011-creation-of-table-attendance.yaml
   - include:
-      file: 012-creation-of-payment-table.yaml
+      file: 012-creation-of-table-salary.yaml
   - include:
-      file: 013-creation-of-expense-table.yaml
+      file: 013-creation-of-table-payment.yaml
   - include:
-      file: 014-creation-of-income-table.yaml
+      file: 014-creation-of-table-expense.yaml
   - include:
-      file: 015-creation-of-company-balance-table.yaml
+      file: 015-creation-of-table-income.yaml
   - include:
-      file: 016-creation-of-comment-table.yaml
+      file: 016-creation-of-table-company-balance.yaml
   - include:
-      file: 017-creation-of-rev-info-table.yaml
+      file: 017-creation-of-table-custom-revision.yaml
