@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: 013-create-payment
+      author: Abdulaziz
+      comment: "Create payment table with optional FK to student and cashier"
+      changes:
+        - createTable:
+            tableName: payment
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: student_id
+                  type: bigint
+              - column:
+                  name: cashier_id
+                  type: bigint
+              - column:
+                  name: amount
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_date
+                  type: timestamp
+                  defaultValueComputed: now()
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: payment
+            baseColumnNames: student_id
+            constraintName: fk_payment_student
+            referencedTableName: student
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: payment
+            baseColumnNames: cashier_id
+            constraintName: fk_payment_cashier
+            referencedTableName: users
+            referencedColumnNames: id
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON payment
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();
