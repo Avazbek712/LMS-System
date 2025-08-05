@@ -7,22 +7,44 @@ databaseChangeLog:
         - createTable:
             tableName: roles
             columns:
-              - column: { name: id, type: BIGSERIAL, constraints: { primaryKey: true, nullable: false } }
-              - column: { name: name, type: varchar(255), constraints: { nullable: false } }
-              - column: { name: created_at, type: timestamptz, defaultValueComputed: now(), constraints: { nullable: false } }
-              - column: { name: updated_at, type: timestamptz, defaultValueComputed: now(), constraints: { nullable: false } }
-              - column: { name: deleted, type: boolean, defaultValueBoolean: false, constraints: { nullable: false } }
-
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
         - sql:
-            sql: >
+            sql: |
               CREATE TRIGGER set_timestamp
               BEFORE UPDATE ON roles
               FOR EACH ROW
               EXECUTE PROCEDURE update_timestamp();
-
         - sql:
-            sql: >
+            sql: |
               CREATE UNIQUE INDEX uq_roles_name_not_deleted
               ON roles(name)
               WHERE deleted = false;
-
