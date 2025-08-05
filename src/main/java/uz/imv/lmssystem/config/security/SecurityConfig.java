@@ -26,17 +26,25 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http, SecurityAccessExceptionHandler accessDeniedHandler) throws Exception {
+//        http.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/api/auth/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler));
+//
+//        return http.build();
+//    }
+//
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, SecurityAccessExceptionHandler accessDeniedHandler) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler));
-
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
