@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-create-room
+      author: Abdulaziz
+      comment: "Create room table with unique name and roomNumber (soft delete aware)"
+      changes:
+        - createTable:
+            tableName: room
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: room_number
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: capacity
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: desks
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: chairs
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON room
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();
+
+        - sql:
+            sql: >
+              CREATE UNIQUE INDEX uq_room_name_not_deleted
+              ON room(name)
+              WHERE deleted = false;
+
+        - sql:
+            sql: >
+              CREATE UNIQUE INDEX uq_room_number_not_deleted
+              ON room(room_number)
+              WHERE deleted = false;
