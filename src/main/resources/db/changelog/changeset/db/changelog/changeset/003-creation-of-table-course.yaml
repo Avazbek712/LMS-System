@@ -1,8 +1,8 @@
 databaseChangeLog:
   - changeSet:
-      id: create-course-table
-      comment: "Create course table to store course information"
+      id: 003-create-course
       author: Abdulaziz
+      comment: "Create course table with soft delete and unique course name"
       changes:
         - createTable:
             tableName: course
@@ -13,6 +13,16 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal(19,2)
+                  constraints:
                     nullable: false
               - column:
                   name: created_at
@@ -32,22 +42,13 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
-              - column:
-                  name: name
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: price
-                  type: decimal(19,2)
-                  constraints:
-                    nullable: false
 
         - sql:
             sql: >
               CREATE TRIGGER set_timestamp
               BEFORE UPDATE ON course
-              FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();
 
         - sql:
             sql: >

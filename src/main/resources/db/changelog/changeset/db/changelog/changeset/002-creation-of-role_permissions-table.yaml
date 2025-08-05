@@ -1,8 +1,8 @@
 databaseChangeLog:
   - changeSet:
-      id: create-role-permissions-table
-      comment: "Create role_permissions table to manage permissions for each role"
+      id: 002-create-role-permissions
       author: Abdulaziz
+      comment: "Create role_permissions table for element collection"
       changes:
         - createTable:
             tableName: role_permissions
