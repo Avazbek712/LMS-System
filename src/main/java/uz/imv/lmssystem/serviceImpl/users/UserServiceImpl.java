@@ -3,8 +3,10 @@ package uz.imv.lmssystem.serviceImpl.users;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
@@ -12,13 +14,14 @@ import uz.imv.lmssystem.dto.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.Role;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.exceptions.EmptyFileException;
+import uz.imv.lmssystem.exceptions.PasswordMismatchException;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
 import uz.imv.lmssystem.mapper.UserMapper;
 import uz.imv.lmssystem.repository.RoleRepository;
 import uz.imv.lmssystem.repository.UserRepository;
-import uz.imv.lmssystem.service.FileStorageService;
-import uz.imv.lmssystem.service.UserService;
+import uz.imv.lmssystem.service.files.FileStorageService;
+import uz.imv.lmssystem.service.users.UserService;
 
 
 @Service
@@ -28,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final FileStorageService fileStorageService;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${minio.bucket.name}")
     private String bucketName;
@@ -114,6 +118,42 @@ public class UserServiceImpl implements UserService {
         employee.setPhotoUrl(avatarFileName);
 
         userRepository.save(employee);
+    }
+
+    @Override
+    public UserDTO updatePassword(User currentUser, UpdatePasswordDTO dto) {
+
+        String oldPassword = dto.getOldPassword();
+        String newPassword = dto.getNewPassword();
+        String confirmPassword = dto.getConfirmPassword();
+
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new PasswordMismatchException("Passwords don't match!");
+        }
+
+        if (oldPassword.equals(newPassword)) {
+            throw new PasswordMismatchException("New password cannot be the same as the old one");
+        }
+
+
+        if (!passwordEncoder.matches(oldPassword, currentUser.getPassword())) {
+            throw new PasswordMismatchException("Old password is incorrect");
+
+        }
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+
+        userRepository.save(currentUser);
+
+        return new UserDTO(
+                currentUser.getName(),
+                currentUser.getSurname(),
+                currentUser.getPhoneNumber(),
+                currentUser.getUsername(),
+                currentUser.getRole().getName(),
+                bucketName + currentUser.getPhotoUrl()
+        );
+
     }
 
 }

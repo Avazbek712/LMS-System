@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.imv.lmssystem.dto.RoomDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.dto.response.RoomResponseDTO;
-import uz.imv.lmssystem.service.RoomService;
+import uz.imv.lmssystem.service.lessons.RoomService;
 
 
 @RestController

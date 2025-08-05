@@ -1,16 +1,26 @@
 package uz.imv.lmssystem.serviceImpl.lessons;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import uz.imv.lmssystem.dto.LessonDTO;
+import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Group;
 import uz.imv.lmssystem.entity.Lesson;
 import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.Schedule;
+import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.exceptions.ScheduleConflictException;
+import uz.imv.lmssystem.mapper.LessonMapper;
 import uz.imv.lmssystem.repository.LessonRepository;
-import uz.imv.lmssystem.service.LessonService;
+import uz.imv.lmssystem.service.lessons.LessonService;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -29,6 +39,7 @@ import java.util.stream.Collectors;
 public class LessonServiceImpl implements LessonService {
 
     private final LessonRepository lessonRepository;
+    private final LessonMapper lessonMapper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -61,6 +72,64 @@ public class LessonServiceImpl implements LessonService {
         }
 
         lessonRepository.saveAll(newLessons);
+    }
+
+    @Override
+    @Transactional
+    @Cacheable(value = "lessons_list", key = "'page:' + #page + ':size:' + #size")
+    public PageableDTO lessonToTheDay(LocalDate date, int page, int size) {
+        Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Lesson> lessonPages = lessonRepository.findByDate(date, pageable);
+        List<Lesson> lessons = lessonPages.getContent();
+
+        if (lessons.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, List.of());
+        }
+
+        List<LessonDTO> lessonDTOs = lessons.stream().map(lessonMapper::toDTO).toList();
+
+        return new PageableDTO(
+                lessonPages.getSize(),
+                lessonPages.getTotalElements(),
+                lessonPages.getTotalPages(),
+                !lessonPages.isLast(),
+                !lessonPages.isFirst(),
+                lessonDTOs
+        );
+    }
+
+    @Override
+    @Cacheable(value = "lessons_list", key = "'page:' + #page + ':size:' + #size")
+    public PageableDTO getAll(int page, int size) {
+        Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Lesson> lessonsPage = lessonRepository.findAll(pageable);
+        List<Lesson> lessons = lessonsPage.getContent();
+
+
+        if (lessons.isEmpty()) {
+            return new PageableDTO(size, 0L, 0, false, false, List.of());
+        }
+
+        List<LessonDTO> lessonDTOS = lessons.stream().map(lessonMapper::toDTO).toList();
+
+        return new PageableDTO(
+                lessonsPage.getSize(),
+                lessonsPage.getTotalElements(),
+                lessonsPage.getTotalPages(),
+                !lessonsPage.isLast(),
+                !lessonsPage.isFirst(),
+                lessonDTOS
+        );
+    }
+
+    @Override
+    public LessonDTO getById(Long id) {
+
+        Lesson lesson = lessonRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Lesson id " + id + " not found"));
+
+        return lessonMapper.toDTO(lesson);
     }
 
     private List<Lesson> generateLessonsForPeriod(Group group, LocalDate startDate, LocalDate endDate) {

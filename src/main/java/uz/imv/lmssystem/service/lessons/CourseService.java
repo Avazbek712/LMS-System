@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.lessons;
 
 import uz.imv.lmssystem.dto.response.CourseResponseDTO;
 import uz.imv.lmssystem.dto.CourseDTO;

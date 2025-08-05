@@ -76,7 +76,13 @@ public enum PermissionsEnum {
     REPORT_VIEW_DEBTORS("Просмотр отчета по должникам"),
 
     // --- СИСТЕМНЫЕ РАЗРЕШЕНИЯ (МЕТА) ---
-    ROLE_MANAGE("Управление ролями и их разрешениями");
+    ROLE_MANAGE("Управление ролями и их разрешениями"),
+
+
+    LESSON_READ("Просмотр расписания"),
+    LESSON_CREATE("Создание занятия"),
+    LESSON_UPDATE("Редактирование занятия"),
+    LESSON_DELETE("Удаление занятия");
 
 
     private final String description;

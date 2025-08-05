@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # --- Сервис для базы данных PostgreSQL ---
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: lms_postgres
+    environment:
+      # === ВАШИ НАСТРОЙКИ ===
+      POSTGRES_DB: lms
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 071204
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # --- Сервис для файлового хранилища MinIO ---
+  minio:
+    image: minio/minio:RELEASE.2024-01-25T05-56-55Z
+    container_name: lms_minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    # Команда server указывает, где хранить данные (/data)
+    # и на каком порту будет веб-консоль (--console-address ":9001")
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"  # API порт
+      - "9001:9001"  # Порт для веб-консоли
+    volumes:
+      - minio-data:/data
+    restart: unless-stopped
+
+  # --- Сервис для кэш-хранилища Redis ---
+  redis:
+    image: redis:7-alpine
+    container_name: lms_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  minio-data:
+  redis-data:

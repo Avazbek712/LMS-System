@@ -25,7 +25,7 @@ import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.GroupMapper;
 import uz.imv.lmssystem.repository.*;
-import uz.imv.lmssystem.service.GroupService;
+import uz.imv.lmssystem.service.lessons.GroupService;
 import uz.imv.lmssystem.specifications.GroupSpecification;
 
 import java.util.List;
@@ -104,7 +104,6 @@ public class GroupServiceImpl implements GroupService {
         if (content.isEmpty()) {
             return new PageableDTO(size, 0L, 0, false, false, null);
         }
-
 
         List<GroupDTO> courseDTOS = content.stream().map(groupMapper::toDTO).toList();
 

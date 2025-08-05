@@ -17,7 +17,7 @@ import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.IncomeMapper;
 import uz.imv.lmssystem.repository.IncomeRepository;
 import uz.imv.lmssystem.repository.UserRepository;
-import uz.imv.lmssystem.service.IncomeService;
+import uz.imv.lmssystem.service.finances.IncomeService;
 
 import java.util.List;
 import java.util.stream.Collectors;

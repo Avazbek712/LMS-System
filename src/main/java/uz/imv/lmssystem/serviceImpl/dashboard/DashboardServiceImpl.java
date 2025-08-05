@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.DashboardDTO;
 import uz.imv.lmssystem.projection.DashboardStatsProjection;
 import uz.imv.lmssystem.repository.DashboardRepository;
-import uz.imv.lmssystem.service.DashboardService;
+import uz.imv.lmssystem.service.dashboard.DashboardService;
 
 /**
  * Created by Avazbek on 31/07/25 11:18

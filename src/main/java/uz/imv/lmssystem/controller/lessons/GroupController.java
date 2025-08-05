@@ -12,7 +12,7 @@ import uz.imv.lmssystem.dto.request.GroupCreateRequest;
 import uz.imv.lmssystem.dto.response.GroupCreateResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.User;
-import uz.imv.lmssystem.service.GroupService;
+import uz.imv.lmssystem.service.lessons.GroupService;
 
 /**
  * Created by Avazbek on 27/07/25 22:46

@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.service;
+package uz.imv.lmssystem.service.finances;
 
 import uz.imv.lmssystem.dto.request.IncomeCreateRequest;
 import uz.imv.lmssystem.dto.response.IncomeCreateResponse;

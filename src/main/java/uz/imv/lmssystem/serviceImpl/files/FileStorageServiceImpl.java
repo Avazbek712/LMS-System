@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import uz.imv.lmssystem.service.FileStorageService;
+import uz.imv.lmssystem.service.files.FileStorageService;
 
 import java.io.InputStream;
 import java.util.Objects;
