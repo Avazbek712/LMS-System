@@ -99,3 +99,8 @@ databaseChangeLog:
               CREATE UNIQUE INDEX uq_groups_name_not_deleted
               ON groups(name)
               WHERE deleted = false;
+        - sql:
+            sql: >
+              ALTER TABLE groups
+              ADD CONSTRAINT chk_groups_status_enum
+              CHECK (status IN ('OPEN', 'CLOSED', 'FINISHED'));
