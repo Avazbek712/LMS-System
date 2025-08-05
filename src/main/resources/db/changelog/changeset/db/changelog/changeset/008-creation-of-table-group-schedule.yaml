@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 008-create-group-schedule
       author: Abdulaziz
-      comment: "Create group_schedule table for storing enum values for group schedule"
+      comment: "Create group_schedule table for enum values with CHECK constraint"
       changes:
         - createTable:
             tableName: group_schedule
@@ -30,3 +30,13 @@ databaseChangeLog:
             referencedTableName: groups
             referencedColumnNames: id
             onDelete: CASCADE
+
+        - sql:
+            sql: >
+              ALTER TABLE group_schedule
+              ADD CONSTRAINT chk_group_schedule_enum
+              CHECK (schedule IN (
+                'MONDAY', 'TUESDAY', 'WEDNESDAY',
+                'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
+              ));
+    
