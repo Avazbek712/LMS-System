@@ -4,28 +4,32 @@ databaseChangeLog:
   - include:
       file: 002-creation-of-role_permissions-table.yaml
   - include:
-      file: changelog-07-room.yaml
+      file: 003-creation-of-course-table.yaml
   - include:
-      file: changelog-16-company-balance.yaml
+      file: 004-creation-of-user-table.yaml
   - include:
-      file: changelog-14-custom-revision-entity.yaml
+      file: 005-creation-of-teacher-info-table.yaml
   - include:
-      file: changelog-03-user.yaml
+      file: 006-creation-of-room-table.yaml
   - include:
-      file: changelog-12-group.yaml
+      file: 007-creation-of-group-table.yaml
   - include:
-      file: changelog-04-student.yaml
+      file: 008-creation-of-lesson-table.yaml
   - include:
-      file: changelog-05-teacher-info.yaml
+      file: 009-creation-of-student-table.yaml
   - include:
-      file: changelog-10-lesson.yaml
+      file: 010-creation-of-attendance-table.yaml
   - include:
-      file: changelog-17-attendance.yaml
+      file: 011-creation-of-salary-table.yaml
   - include:
-      file: changelog-09-payment.yaml
+      file: 012-creation-of-payment-table.yaml
   - include:
-      file: changelog-06-salary.yaml
+      file: 013-creation-of-expense-table.yaml
   - include:
-      file: changelog-11-income.yaml
+      file: 014-creation-of-income-table.yaml
   - include:
-      file: changelog-13-expense.yaml
+      file: 015-creation-of-company-balance-table.yaml
+  - include:
+      file: 016-creation-of-comment-table.yaml
+  - include:
+      file: 017-creation-of-rev-info-table.yaml
