@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-create-teacher-info
+      author: Abdulaziz
+      comment: "Create teacher_info table with FKs to users and course"
+      changes:
+        - createTable:
+            tableName: teacher_info
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: teacher_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: teacher_info
+            baseColumnNames: teacher_id
+            constraintName: fk_teacher_info_user
+            referencedTableName: users
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: teacher_info
+            baseColumnNames: course_id
+            constraintName: fk_teacher_info_course
+            referencedTableName: course
+            referencedColumnNames: id
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON teacher_info
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();
