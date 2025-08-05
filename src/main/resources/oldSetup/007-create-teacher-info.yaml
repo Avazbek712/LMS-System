@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-create-teacher-info
+      author: Abdulaziz
+      changes:
+        - createTable:
+            tableName: teacher_info
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: teacher_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_teacher_info_teacher
+                    references: users(id)
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_teacher_info_course
+                    references: course(id)
+              - column:
+                  name: created_at
+                  type: timestamptz
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamptz
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+        - sql:
+            sql: CREATE TRIGGER set_timestamp BEFORE UPDATE ON teacher_info FOR EACH ROW EXECUTE PROCEDURE update_timestamp();

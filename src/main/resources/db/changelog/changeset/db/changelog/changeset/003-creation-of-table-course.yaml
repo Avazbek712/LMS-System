@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-course-table
+      comment: "Create course table to store course information"
+      author: Abdulaziz
+      changes:
+        - createTable:
+            tableName: course
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON course
+              FOR EACH ROW EXECUTE PROCEDURE update_timestamp();
+
+        - sql:
+            sql: >
+              CREATE UNIQUE INDEX uq_course_name_not_deleted
+              ON course(name)
+              WHERE deleted = false;

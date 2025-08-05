@@ -1,9 +1,31 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/001-schema-base-tables.yaml
+      file: 001-creation-of-role-table.yaml
   - include:
-      file: db/changelog/002-schema-group-schedule-template.yaml
+      file: 002-creation-of-role_permissions-table.yaml
   - include:
-      file: db/changelog/003-schema-constraints-and-functions.yaml
+      file: changelog-07-room.yaml
   - include:
-      file: db/changelog/004-initial-data.yaml
+      file: changelog-16-company-balance.yaml
+  - include:
+      file: changelog-14-custom-revision-entity.yaml
+  - include:
+      file: changelog-03-user.yaml
+  - include:
+      file: changelog-12-group.yaml
+  - include:
+      file: changelog-04-student.yaml
+  - include:
+      file: changelog-05-teacher-info.yaml
+  - include:
+      file: changelog-10-lesson.yaml
+  - include:
+      file: changelog-17-attendance.yaml
+  - include:
+      file: changelog-09-payment.yaml
+  - include:
+      file: changelog-06-salary.yaml
+  - include:
+      file: changelog-11-income.yaml
+  - include:
+      file: changelog-13-expense.yaml
