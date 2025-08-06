@@ -18,7 +18,6 @@ import uz.imv.lmssystem.service.roles.RoleService;
 @PreAuthorize("hasAuthority('ROLE_MANAGE')")
 public class RoleController {
 
-
     private final RoleService roleService;
 
     @PostMapping

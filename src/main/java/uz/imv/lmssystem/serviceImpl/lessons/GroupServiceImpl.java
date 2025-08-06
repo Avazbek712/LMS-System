@@ -16,18 +16,17 @@ import uz.imv.lmssystem.dto.filter.GroupFilterDTO;
 import uz.imv.lmssystem.dto.request.GroupCreateRequest;
 import uz.imv.lmssystem.dto.response.GroupCreateResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
-import uz.imv.lmssystem.entity.Course;
-import uz.imv.lmssystem.entity.Group;
-import uz.imv.lmssystem.entity.Room;
-import uz.imv.lmssystem.entity.User;
+import uz.imv.lmssystem.entity.*;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.GroupStatus;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.GroupMapper;
 import uz.imv.lmssystem.repository.*;
 import uz.imv.lmssystem.service.lessons.GroupService;
+import uz.imv.lmssystem.service.lessons.LessonService;
 import uz.imv.lmssystem.specifications.GroupSpecification;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -41,6 +40,7 @@ public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final GroupMapper groupMapper;
+    private final LessonService lessonService;
 
 
     @Override
@@ -62,7 +62,6 @@ public class GroupServiceImpl implements GroupService {
                 .findById(dto.getRoomId())
                 .orElseThrow(() -> new EntityNotFoundException("Room with id : " + dto.getRoomId() + "not found!"));
 
-
         Group group = new Group();
 
         group.setName(dto.getName());
@@ -74,9 +73,22 @@ public class GroupServiceImpl implements GroupService {
         group.setRoom(room);
         group.setSchedule(dto.getSchedule());
         group.setStartDate(dto.getStartDate());
-        group.setEndDate(dto.getEndDate());
         group.setLessonStartTime(dto.getLessonStartTime());
         group.setLessonEndTime(dto.getLessonEndTime());
+
+        LocalDate firstWeekEndDate = dto.getStartDate().plusWeeks(1);
+
+        LocalDate validationEndDate = firstWeekEndDate.isAfter(dto.getEndDate()) ? dto.getEndDate() : firstWeekEndDate;
+
+        List<Lesson> firstWeekLessons = lessonService.generateLessonsForPeriod(group, dto.getStartDate(), validationEndDate);
+
+        if (!firstWeekLessons.isEmpty()) {
+            for (Lesson lesson : firstWeekLessons) {
+                lessonService.checkForConflicts(lesson);
+            }
+        }
+
+        group.setLessons(firstWeekLessons);
 
         groupRepository.save(group);
 
@@ -95,7 +107,6 @@ public class GroupServiceImpl implements GroupService {
     @Cacheable(value = "groups_list", key = "'page:' + #page + ':size:' + #size")
     public PageableDTO getAll(Integer page, Integer size) {
 
-        System.out.println("=== Идет запрос к бд!!!!!");
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Group> groups = groupRepository.findAll(pageable);
@@ -105,7 +116,7 @@ public class GroupServiceImpl implements GroupService {
             return new PageableDTO(size, 0L, 0, false, false, null);
         }
 
-        List<GroupDTO> courseDTOS = content.stream().map(groupMapper::toDTO).toList();
+        List<GroupCreateResponse> courseDTOS = content.stream().map(groupMapper::groupToCreateResponse).toList();
 
         return new PageableDTO(
                 groups.getSize(),
@@ -159,7 +170,7 @@ public class GroupServiceImpl implements GroupService {
         List<Group> content = groups.getContent();
 
         if (content.isEmpty()) {
-            return new PageableDTO(size, 0L, 0, false, false, null);
+            return new PageableDTO(size, 0L, 0, false, false, List.of());
         }
 
 

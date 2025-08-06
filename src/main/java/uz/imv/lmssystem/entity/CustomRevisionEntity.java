@@ -28,6 +28,7 @@ public class CustomRevisionEntity {
     @RevisionTimestamp
     private long timestamp;
 
-
     private Long userId;
+
+    private String entityName;
 }

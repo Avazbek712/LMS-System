@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.config.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +36,21 @@ public class SecurityConfig {
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(ex -> ex.accessDeniedHandler(accessDeniedHandler));
+                .exceptionHandling(ex -> ex
+                        .accessDeniedHandler(accessDeniedHandler)
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            var mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                            var errorDTO = new uz.imv.lmssystem.dto.fildErrors.error.ErrorDTO(
+                                    HttpServletResponse.SC_UNAUTHORIZED,
+                                    "Authentication required!"
+                            );
+                            String json = mapper.writeValueAsString(errorDTO);
+
+                            response.setContentType("application/json");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write(json);
+                        })
+                );
 
         return http.build();
     }
