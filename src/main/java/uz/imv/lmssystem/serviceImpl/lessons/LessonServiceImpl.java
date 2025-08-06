@@ -132,10 +132,9 @@ public class LessonServiceImpl implements LessonService {
         return lessonMapper.toDTO(lesson);
     }
 
-    
 
-
-    private List<Lesson> generateLessonsForPeriod(Group group, LocalDate startDate, LocalDate endDate) {
+    @Override
+    public List<Lesson> generateLessonsForPeriod(Group group, LocalDate startDate, LocalDate endDate) {
         List<Lesson> lessons = new ArrayList<>();
 
         Set<Schedule> scheduleEnums = group.getSchedule();
@@ -170,9 +169,8 @@ public class LessonServiceImpl implements LessonService {
     }
 
 
-
-
-    private void checkForConflicts(Lesson lessonToCheck) throws ScheduleConflictException {
+    @Override
+    public void checkForConflicts(Lesson lessonToCheck) throws ScheduleConflictException {
 
         List<Lesson> conflictingLessons = lessonRepository.findConflictingLessons(
                 lessonToCheck.getGroup().getRoom().getId(),
