@@ -119,9 +119,10 @@ public class AuthServiceImpl implements AuthService {
         log.info("User '{}' is registered successfully with role '{}' ", user.getUsername(), role.getName());
 
 
+
         return new NewEmployeeResponse(
                 user.getUsername(),
-                user.getPassword()
+                dto.getPassword()
         );
     }
 

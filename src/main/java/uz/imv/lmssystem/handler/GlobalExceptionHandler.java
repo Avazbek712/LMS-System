@@ -8,11 +8,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import uz.imv.lmssystem.dto.fildErrors.error.ErrorDTO;
 import uz.imv.lmssystem.dto.fildErrors.error.ErrorFieldsKeeperDTO;
 import uz.imv.lmssystem.dto.fildErrors.error.FieldErrorDTO;
-import uz.imv.lmssystem.enums.AttendanceStatus;
 import uz.imv.lmssystem.exceptions.*;
 
 import java.io.FileNotFoundException;
