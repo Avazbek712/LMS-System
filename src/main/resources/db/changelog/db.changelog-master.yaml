@@ -1,35 +1,37 @@
 databaseChangeLog:
   - include:
-      file: 001-creation-of-role-table.yaml
+      file: db/changelog/changes/000-create-update-timestamp-function.yaml
   - include:
-      file: 002-creation-of-role_permissions-table.yaml
+      file: db/changelog/changes/001-creation-of-role-table.yaml
   - include:
-      file: 003-creation-of-table-course.yaml
+      file: db/changelog/changes/002-creation-of-role_permissions-table.yaml
   - include:
-      file: 004-creation-of-table-users.yaml
+      file: db/changelog/changes/003-creation-of-table-course.yaml
   - include:
-      file: 005-creation-of-table-teacher-info.yaml
+      file: db/changelog/changes/004-creation-of-table-users.yaml
   - include:
-      file: 006-creation-of-table-room.yaml
+      file: db/changelog/changes/005-creation-of-table-teacher-info.yaml
   - include:
-      file: 007-creation-of-table-group.yaml
+      file: db/changelog/changes/006-creation-of-table-room.yaml
   - include:
-      file: 008-creation-of-table-group-schedule.yaml
+      file: db/changelog/changes/007-creation-of-table-group.yaml
   - include:
-      file: 009-creation-of-table-lesson.yaml
+      file: db/changelog/changes/008-creation-of-table-group-schedule.yaml
   - include:
-      file: 010-creation-of-table-student.yaml
+      file: db/changelog/changes/009-creation-of-table-lesson.yaml
   - include:
-      file: 011-creation-of-table-attendance.yaml
+      file: db/changelog/changes/010-creation-of-table-student.yaml
   - include:
-      file: 012-creation-of-table-salary.yaml
+      file: db/changelog/changes/011-creation-of-table-attendance.yaml
   - include:
-      file: 013-creation-of-table-payment.yaml
+      file: db/changelog/changes/012-creation-of-table-salary.yaml
   - include:
-      file: 014-creation-of-table-expense.yaml
+      file: db/changelog/changes/013-creation-of-table-payment.yaml
   - include:
-      file: 015-creation-of-table-income.yaml
+      file: db/changelog/changes/014-creation-of-table-expense.yaml
   - include:
-      file: 016-creation-of-table-company-balance.yaml
+      file: db/changelog/changes/015-creation-of-table-income.yaml
   - include:
-      file: 017-creation-of-table-custom-revision.yaml
+      file: db/changelog/changes/016-creation-of-table-company-balance.yaml
+  - include:
+      file: db/changelog/changes/017-creation-of-table-custom-revision.yaml
