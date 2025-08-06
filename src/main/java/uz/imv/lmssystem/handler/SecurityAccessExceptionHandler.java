@@ -16,10 +16,12 @@ public class SecurityAccessExceptionHandler implements AccessDeniedHandler {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+    public void handle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException {
         ErrorDTO errorDTO = new ErrorDTO(
-                401,
-                accessDeniedException.getMessage()
+                HttpServletResponse.SC_FORBIDDEN,
+                "Sorry,you do not have permission for this operation!"
         );
 
         String json = mapper.writeValueAsString(errorDTO);

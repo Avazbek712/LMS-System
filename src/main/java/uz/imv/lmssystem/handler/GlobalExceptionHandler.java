@@ -23,6 +23,53 @@ import java.util.List;
 @RestControllerAdvice(basePackages = "uz.imv")
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handle(UserNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(value = PasswordMismatchException.class)
+    public ResponseEntity<ErrorDTO> handle(PasswordMismatchException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+
+    @ExceptionHandler(value = InvalidTokenException.class)
+    public ResponseEntity<ErrorDTO> handle(InvalidTokenException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(value = EmptyFileException.class)
+    public ResponseEntity<ErrorDTO> handle(EmptyFileException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(value = CourseNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handle(CourseNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                HttpStatus.NOT_FOUND.value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
+
+
     @ExceptionHandler(value = RoleNotFoundException.class)
     public ResponseEntity<ErrorDTO> handle(RoleNotFoundException e) {
         ErrorDTO errorDTO = new ErrorDTO(
@@ -101,15 +148,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<ErrorDTO> handle(EntityNotFoundException e) {
-        ErrorDTO errorDTO = new ErrorDTO(
-                e.getStatus().value(),
-                e.getMessage()
-        );
-        return new ResponseEntity<>(errorDTO, e.getStatus());
-    }
-
-    @ExceptionHandler(value = EntityNotDeleteException.class)
-    public ResponseEntity<ErrorDTO> handle(EntityNotDeleteException e) {
         ErrorDTO errorDTO = new ErrorDTO(
                 e.getStatus().value(),
                 e.getMessage()

@@ -132,6 +132,9 @@ public class LessonServiceImpl implements LessonService {
         return lessonMapper.toDTO(lesson);
     }
 
+    
+
+
     private List<Lesson> generateLessonsForPeriod(Group group, LocalDate startDate, LocalDate endDate) {
         List<Lesson> lessons = new ArrayList<>();
 
@@ -165,6 +168,9 @@ public class LessonServiceImpl implements LessonService {
         }
         return lessons;
     }
+
+
+
 
     private void checkForConflicts(Lesson lessonToCheck) throws ScheduleConflictException {
 
