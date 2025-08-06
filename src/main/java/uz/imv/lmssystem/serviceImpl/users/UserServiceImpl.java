@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
+import uz.imv.lmssystem.dto.request.ChangedRoleRequest;
+import uz.imv.lmssystem.dto.request.RoleRequestDTO;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
 import uz.imv.lmssystem.dto.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.Role;
@@ -38,16 +40,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ChangedRoleResponse changeRole(Long userId, Long roleId) {
+    public ChangedRoleResponse changeRole(Long userId, ChangedRoleRequest dto) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         String oldRole = user.getRole().getName();
 
-        Role newRole = roleRepository.findById(roleId).orElseThrow(() -> new UnknownRoleException(roleId));
+        Role newRole = roleRepository.findById(dto.getRoleId()).orElseThrow(() -> new UnknownRoleException(dto.getRoleId()));
 
         user.setRole(newRole);
 
+        userRepository.save(user);
         userRepository.save(user);
 
         return new ChangedRoleResponse(

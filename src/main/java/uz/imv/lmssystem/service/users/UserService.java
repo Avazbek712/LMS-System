@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import uz.imv.lmssystem.dto.*;
 import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
+import uz.imv.lmssystem.dto.request.ChangedRoleRequest;
+import uz.imv.lmssystem.dto.request.RoleRequestDTO;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
 import uz.imv.lmssystem.dto.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.User;
@@ -12,7 +14,7 @@ import uz.imv.lmssystem.entity.User;
 public interface UserService {
 
 
-    ChangedRoleResponse changeRole(Long userId, Long roleId);
+    ChangedRoleResponse changeRole(Long userId , ChangedRoleRequest dto );
 
     void deleteById(long id);
 

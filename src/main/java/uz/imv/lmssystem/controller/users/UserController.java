@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
+import uz.imv.lmssystem.dto.request.ChangedRoleRequest;
+import uz.imv.lmssystem.dto.request.RoleRequestDTO;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.service.users.UserService;
 
@@ -30,9 +32,9 @@ public class UserController {
 
     @PatchMapping("change-role/{id}")
     @PreAuthorize("hasAuthority('ROLE_MANAGE')")
-    public ResponseEntity<?> changeRole(@PathVariable Long id, @Valid @RequestBody Long roleId) {
+    public ResponseEntity<?> changeRole(@PathVariable Long id, @Valid @RequestBody ChangedRoleRequest dto) {
 
-        return ResponseEntity.ok(userService.changeRole(id, roleId));
+        return ResponseEntity.ok(userService.changeRole(id, dto));
     }
 
     @PutMapping("update-user")

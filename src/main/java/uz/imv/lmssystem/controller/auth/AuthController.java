@@ -24,7 +24,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("register")
-    @PreAuthorize("hasPermission('EMPLOYEE_CREATE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE_CREATE')")
     public ResponseEntity<NewEmployeeResponse> createEmployee(@Valid @RequestBody RegisterDTO dto) {
 
         return ResponseEntity.ok(authService.createEmployee(dto));

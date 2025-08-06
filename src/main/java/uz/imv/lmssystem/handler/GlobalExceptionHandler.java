@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.handler;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,6 +21,14 @@ import java.util.List;
 
 @RestControllerAdvice(basePackages = "uz.imv")
 public class GlobalExceptionHandler {
+
+
+    @ExceptionHandler(org.springframework.security.authorization.AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorDTO> handleAuthorizationDenied() {
+        return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN)
+                .body(new ErrorDTO(403, "Sorry, you do not have permission for this operation!"));
+    }
+
 
     @ExceptionHandler(value = UserNotFoundException.class)
     public ResponseEntity<ErrorDTO> handle(UserNotFoundException e) {
