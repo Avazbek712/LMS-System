@@ -14,7 +14,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ChangedRoleResponse implements Serializable {
 
-
     private String username;
 
     private String oldRole;

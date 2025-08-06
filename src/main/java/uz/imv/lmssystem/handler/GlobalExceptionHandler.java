@@ -23,6 +23,16 @@ import java.util.List;
 @RestControllerAdvice(basePackages = "uz.imv")
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(value = RoleNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handle(RoleNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                HttpStatus.NOT_FOUND.value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
+
+
     @ExceptionHandler(value = FileNotFoundException.class)
     public ResponseEntity<ErrorDTO> handle(FileNotFoundException e) {
         ErrorDTO errorDTO = new ErrorDTO(
