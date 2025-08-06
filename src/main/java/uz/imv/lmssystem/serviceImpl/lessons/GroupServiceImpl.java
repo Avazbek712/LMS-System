@@ -41,7 +41,6 @@ public class GroupServiceImpl implements GroupService {
     private final RoomRepository roomRepository;
     private final GroupMapper groupMapper;
     private final LessonService lessonService;
-    private final LessonRepository lessonRepository;
 
 
     @Override
@@ -171,7 +170,7 @@ public class GroupServiceImpl implements GroupService {
         List<Group> content = groups.getContent();
 
         if (content.isEmpty()) {
-            return new PageableDTO(size, 0L, 0, false, false, null);
+            return new PageableDTO(size, 0L, 0, false, false, List.of());
         }
 
 
