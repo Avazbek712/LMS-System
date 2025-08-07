@@ -3,6 +3,7 @@ package uz.imv.lmssystem.serviceImpl.lessons;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
@@ -84,6 +85,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
+    @CachePut(value = "courses_list" , key = "'id:' +  #id")
     public CourseResponseDTO update(Long id, CourseDTO dto) {
 
         courseRepository.findByName(dto.getName()).ifPresent(c -> {

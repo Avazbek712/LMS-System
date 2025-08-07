@@ -41,7 +41,7 @@ public class TeacherInfoServiceImpl implements TeacherInfoService {
     private final TeacherInfoMapper teacherInfoMapper;
 
     @Override
-    @CacheEvict(value = "groups_list", allEntries = true)
+    @CacheEvict(value = "teacher-info_list", allEntries = true)
     public TeacherInfoDTO createInfo(TeacherInfoRequest dto) {
 
 
@@ -65,7 +65,7 @@ public class TeacherInfoServiceImpl implements TeacherInfoService {
     }
 
     @Override
-    @Cacheable(value = "teacher_info_list", key = "'teacher:' + #teacherId + ':page:' + #page + ':size:' + #size")
+    @Cacheable(value = "teacher_info_list", key = "'teacher_id:' + #teacherId + ':page:' + #page + ':size:' + #size")
     public PageableDTO getInfo(Long teacherId, int page, int size) {
 
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
@@ -130,8 +130,8 @@ public class TeacherInfoServiceImpl implements TeacherInfoService {
     @Override
     @Transactional
     @Caching(evict = {
-            @CacheEvict(value = "groups", key = "#id"),
-            @CacheEvict(value = "groups_list", allEntries = true)
+            @CacheEvict(value = "teacher-info", key = "#id"),
+            @CacheEvict(value = "teacher-info_list", allEntries = true)
     })
     public void deleteById(Long id) {
 

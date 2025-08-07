@@ -76,7 +76,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    @Cacheable(value = "lessons_list", key = "'page:' + #page + ':size:' + #size")
+    @Cacheable(value = "lessons_list", key = "'date:' + #date + 'page:' + #page + ':size:' + #size")
     public PageableDTO lessonToTheDay(LocalDate date, int page, int size) {
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);

@@ -1,6 +1,9 @@
 package uz.imv.lmssystem.serviceImpl.finances;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,8 +47,10 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
 
 
+
     @Override
     @Transactional
+    @CacheEvict(value = "students_list", allEntries = true)
     public PaymentCreateResponse create(PaymentCreateRequest request) {
 
         Student student = studentRepository.
@@ -90,9 +95,12 @@ public class PaymentServiceImpl implements PaymentService {
         );
     }
 
-
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "students", key = "#id"),
+            @CacheEvict(value = "students_list", allEntries = true)
+    })
     public void delete(Long id) {
         paymentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Payment with ID : " + id + " not found!"));
 
@@ -115,6 +123,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Cacheable(value = "students_list", key = "'page:' + #page + ':size:' + #size")
     public PageableDTO getAll(Integer page, Integer size) {
 
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
