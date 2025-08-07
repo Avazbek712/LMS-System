@@ -12,6 +12,7 @@ import uz.imv.lmssystem.dto.StudentDTO;
 import uz.imv.lmssystem.dto.StudentDebtors;
 import uz.imv.lmssystem.dto.filter.StudentFilterDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
+import uz.imv.lmssystem.entity.Group;
 import uz.imv.lmssystem.entity.Student;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
@@ -64,13 +65,22 @@ public class StudentServiceImpl implements StudentService {
         if (studentRepository.existsByPhoneNumber(dto.getPhoneNumber())) {
             throw new EntityAlreadyExistsException("Student with phone number : " + dto.getPhoneNumber() + " already exists!");
         }
-        if (!groupRepository.existsById(dto.getGroupId())) {
-            throw new EntityNotFoundException("Group with id : " + dto.getGroupId() + " not found!");
-        }
+        Group group = groupRepository.findById(dto.getGroupId()).orElseThrow(() -> new EntityNotFoundException("Group with id : " + dto.getGroupId() + " not found!"));
 
-        Student student = studentMapper.toEntity(dto, groupResolver);
-        Student savedStudent = studentRepository.save(student);
-        return studentMapper.toDTO(savedStudent);
+
+        Student student = new Student();
+
+        student.setPhoneNumber(dto.getPhoneNumber());
+        student.setName(dto.getName());
+        student.setSurname(dto.getSurname());
+        student.setGroup(group);
+        student.setPaymentStatus(false);
+
+        studentRepository.save(student);
+
+
+        return studentMapper.toDTO(student);
+
     }
 
     @Override
