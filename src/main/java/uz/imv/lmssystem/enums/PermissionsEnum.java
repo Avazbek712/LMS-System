@@ -82,7 +82,10 @@ public enum PermissionsEnum {
     LESSON_READ("Просмотр расписания"),
     LESSON_CREATE("Создание занятия"),
     LESSON_UPDATE("Редактирование занятия"),
-    LESSON_DELETE("Удаление занятия");
+    LESSON_DELETE("Удаление занятия"),
+
+    TEACHER_INFO_CREATE("Создание информации про учителя"),
+    TEACHER_INFO_READ("Просмотр информации об учителе");
 
 
     private final String description;
