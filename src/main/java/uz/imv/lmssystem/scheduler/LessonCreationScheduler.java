@@ -24,6 +24,7 @@ public class LessonCreationScheduler {
     private final LessonService lessonService;
 
     @Scheduled(cron = "0 0 2 * * *")
+//    @Scheduled(cron = "0 * * * * *")
     public void generateUpcomingLessons() {
 
         log.info("--- Запуск ежедневной задачи по генерации уроков ---");

@@ -29,7 +29,7 @@ public class SalaryServiceImpl implements SalaryService {
     @Override
     public SalaryPayResponse pay(SalaryPayRequest request) {
 
-        BigDecimal currentBalance = balanceService.getCurrentBalance();
+        BigDecimal currentBalance = balanceService.getCurrentBalance().getCurrentBalanceInBigDecimal();
 
         if (currentBalance.compareTo(request.getAmount()) < 0) {
             throw new IllegalArgumentException("Not enough money.Current balance : " + currentBalance);

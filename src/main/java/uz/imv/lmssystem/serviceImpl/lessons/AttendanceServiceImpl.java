@@ -11,12 +11,14 @@ import uz.imv.lmssystem.dto.AttendanceDTO;
 import uz.imv.lmssystem.dto.AttendanceStatusUpdateDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Attendance;
+import uz.imv.lmssystem.entity.Student;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.enums.PermissionsEnum;
 import uz.imv.lmssystem.exceptions.AccessDeniedException;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.exceptions.EntityUniqueException;
+import uz.imv.lmssystem.exceptions.PaymentStatusException;
 import uz.imv.lmssystem.mapper.AttendanceMapper;
 import uz.imv.lmssystem.mapper.resolvers.LessonResolver;
 import uz.imv.lmssystem.mapper.resolvers.StudentResolver;
@@ -107,6 +109,10 @@ public class AttendanceServiceImpl implements AttendanceService {
     public AttendanceDTO update(Long id, AttendanceDTO dto, User currentUser) {
         Attendance attendance = attendanceRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Attendance with id : " + id + " not found!"));
 
+        Student student = studentRepository.findById(dto.getStudentId()).orElseThrow(() -> new EntityNotFoundException("Student with id : " + dto.getStudentId() + " not found!"));
+
+        if(!student.getPaymentStatus()) throw new PaymentStatusException("The student did not pay!");
+
         if (!studentRepository.existsById(dto.getStudentId())) {
             throw new EntityNotFoundException("Student with id : " + dto.getStudentId() + " not found!");
         }
@@ -117,6 +123,8 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new EntityUniqueException("Attendance for student with id : " + dto.getStudentId()
                                             + " and lesson with id : " + dto.getLessonId() + " already exists!");
         }
+
+
 
         attendanceValidate.checkTeacherAccessToAttendance(attendance, currentUser);
         attendanceMapper.updateEntity(dto, attendance, studentResolver, lessonResolver);

@@ -24,10 +24,6 @@ public class CreateExpenseRequest implements Serializable {
     @NotBlank(message = "Description cannot be blank")
     private String description;
 
-    @NotNull(message = "Date cannot be null")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime date;
-
     @Positive(message = "Amount must be positive")
     private BigDecimal amount;
 
