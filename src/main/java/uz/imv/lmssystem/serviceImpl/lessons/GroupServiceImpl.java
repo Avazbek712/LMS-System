@@ -161,7 +161,7 @@ public class GroupServiceImpl implements GroupService {
 
 
     @Override
-    @Cacheable(value = "groups_list", key = "'page:' + #page + ':size:' + #size")
+    @Cacheable(value = "groups_list", key = "'user:' + #user.id +  'page:' + #page + ':size:' + #size")
     public PageableDTO getMyGroups(User user, Integer page, Integer size) {
 
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
