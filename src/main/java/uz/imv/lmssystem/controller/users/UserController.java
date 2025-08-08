@@ -10,8 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
+import uz.imv.lmssystem.dto.filter.GroupFilterDTO;
+import uz.imv.lmssystem.dto.filter.UserFilterDTO;
+import uz.imv.lmssystem.dto.response.PageableDTO;
+import uz.imv.lmssystem.dto.response.RespUserDTO;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.service.users.UserService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -63,6 +69,14 @@ public class UserController {
     public ResponseEntity<?> updatePassword(@AuthenticationPrincipal User currentUser, @Valid @RequestBody UpdatePasswordDTO dto) {
 
         return ResponseEntity.ok(userService.updatePassword(currentUser, dto));
+    }
+
+    @PreAuthorize("hasAuthority('EMPLOYEE_READ')")
+    @GetMapping("/filter")
+    public PageableDTO filterGroups(@Valid @RequestBody UserFilterDTO filter,
+                                    @RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "10") int size) {
+        return userService.getFilteredEmployees(filter, page, size);
     }
 
 }
