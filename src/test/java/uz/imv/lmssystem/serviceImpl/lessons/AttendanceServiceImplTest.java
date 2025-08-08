@@ -16,9 +16,9 @@ import uz.imv.lmssystem.exceptions.EntityUniqueException;
 import uz.imv.lmssystem.mapper.AttendanceMapper;
 import uz.imv.lmssystem.mapper.resolvers.LessonResolver;
 import uz.imv.lmssystem.mapper.resolvers.StudentResolver;
-import uz.imv.lmssystem.repository.AttendanceRepository;
-import uz.imv.lmssystem.repository.LessonRepository;
-import uz.imv.lmssystem.repository.StudentRepository;
+import uz.imv.lmssystem.repository.lessons.AttendanceRepository;
+import uz.imv.lmssystem.repository.lessons.LessonRepository;
+import uz.imv.lmssystem.repository.users.StudentRepository;
 import uz.imv.lmssystem.utils.AttendanceValidate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

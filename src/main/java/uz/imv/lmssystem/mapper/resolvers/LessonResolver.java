@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uz.imv.lmssystem.entity.Lesson;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
-import uz.imv.lmssystem.repository.LessonRepository;
+import uz.imv.lmssystem.repository.lessons.LessonRepository;
 
 @Component
 @RequiredArgsConstructor

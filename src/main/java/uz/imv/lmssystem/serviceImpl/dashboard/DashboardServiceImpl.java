@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.imv.lmssystem.dto.DashboardDTO;
 import uz.imv.lmssystem.projection.DashboardStatsProjection;
-import uz.imv.lmssystem.repository.DashboardRepository;
+import uz.imv.lmssystem.repository.dashboard.DashboardRepository;
 import uz.imv.lmssystem.service.dashboard.DashboardService;
 
 /**

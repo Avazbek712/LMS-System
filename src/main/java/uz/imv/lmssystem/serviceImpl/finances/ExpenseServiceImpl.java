@@ -16,8 +16,8 @@ import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.ExpenseMapper;
-import uz.imv.lmssystem.repository.ExpenseRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.finances.ExpenseRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.finances.BalanceService;
 import uz.imv.lmssystem.service.finances.ExpenseService;
 

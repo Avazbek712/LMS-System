@@ -1,12 +1,10 @@
-package uz.imv.lmssystem.repository;
+package uz.imv.lmssystem.repository.users;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 import uz.imv.lmssystem.entity.User;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository

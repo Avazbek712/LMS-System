@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.repository;
+package uz.imv.lmssystem.repository.users;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import uz.imv.lmssystem.entity.Student;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long>, JpaSpecificationExecutor<Student> {
 

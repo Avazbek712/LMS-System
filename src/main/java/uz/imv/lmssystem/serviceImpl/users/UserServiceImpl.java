@@ -10,7 +10,6 @@ import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
 import uz.imv.lmssystem.dto.request.ChangedRoleRequest;
-import uz.imv.lmssystem.dto.request.RoleRequestDTO;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
 import uz.imv.lmssystem.dto.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.Role;
@@ -19,8 +18,8 @@ import uz.imv.lmssystem.exceptions.EmptyFileException;
 import uz.imv.lmssystem.exceptions.PasswordMismatchException;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
-import uz.imv.lmssystem.repository.RoleRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.users.RoleRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.files.FileStorageService;
 import uz.imv.lmssystem.service.users.UserService;
 
@@ -114,7 +113,7 @@ public class UserServiceImpl implements UserService {
                 currentUser.getPhoneNumber(),
                 currentUser.getUsername(),
                 currentUser.getRole().getName(),
-                bucketName + currentUser.getPhotoUrl()
+                bucketName + "/" + currentUser.getPhotoUrl()
         );
     }
 
@@ -180,7 +179,7 @@ public class UserServiceImpl implements UserService {
                 currentUser.getPhoneNumber(),
                 currentUser.getUsername(),
                 currentUser.getRole().getName(),
-                bucketName + currentUser.getPhotoUrl()
+                bucketName +  "/" + currentUser.getPhotoUrl()
         );
     }
 

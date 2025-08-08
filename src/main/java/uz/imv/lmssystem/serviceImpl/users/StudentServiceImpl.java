@@ -19,8 +19,8 @@ import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.StudentMapper;
 import uz.imv.lmssystem.mapper.resolvers.GroupResolver;
-import uz.imv.lmssystem.repository.GroupRepository;
-import uz.imv.lmssystem.repository.StudentRepository;
+import uz.imv.lmssystem.repository.lessons.GroupRepository;
+import uz.imv.lmssystem.repository.users.StudentRepository;
 import uz.imv.lmssystem.service.users.StudentService;
 import uz.imv.lmssystem.specifications.StudentSpecification;
 
