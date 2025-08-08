@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final FileStorageService fileStorageService;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Value("${minio.bucket.name}")
     private String bucketName;
@@ -75,6 +76,11 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+
+    @Override
+    public ChangedRoleResponse changeRole(Long userId, Long roleId) {
+        return null;
+    }
 
     @Override
     @Transactional
