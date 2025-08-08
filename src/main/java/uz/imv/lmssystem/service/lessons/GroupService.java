@@ -18,4 +18,5 @@ public interface GroupService {
 
     PageableDTO getMyGroups(User user, Integer page, Integer size);
 
-    PageableDTO getFilteredGroups(GroupFilterDTO filter, int page, int size);}
+    PageableDTO getFilteredGroups(GroupFilterDTO filter, int page, int size);
+}
