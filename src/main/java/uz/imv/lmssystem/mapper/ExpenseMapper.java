@@ -15,5 +15,5 @@ public interface ExpenseMapper {
 
     @Mapping(target = "employeeName", source = "employee.name")
     @Mapping(target = "employeeSurname", source = "employee.surname")
-    ExpenseDTO toDto(Expense expense);
+    ExpenseDTO toDTO(Expense expense);
 }
