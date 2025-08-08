@@ -35,3 +35,5 @@ databaseChangeLog:
       file: db/changelog/changes/016-creation-of-table-company-balance.yaml
   - include:
       file: db/changelog/changes/017-creation-of-table-custom-revision.yaml
+  - include:
+      file: db/changelog/changes/018-removing-chek-constraint-from-expense-table.yaml

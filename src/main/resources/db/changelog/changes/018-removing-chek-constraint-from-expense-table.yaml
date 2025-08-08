@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 018-remove-expense-category-check
+      author: Abdulaziz
+      comment: "Remove CHECK constraint from expense.category"
+      changes:
+        - sql:
+            sql: >
+              ALTER TABLE expense DROP CONSTRAINT IF EXISTS chk_expense_category_enum;
