@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import uz.imv.lmssystem.dto.filter.ExpenseFilterDTO;
 import uz.imv.lmssystem.dto.request.CreateExpenseRequest;
 import uz.imv.lmssystem.dto.response.CreateExpenseResponse;
 import uz.imv.lmssystem.dto.ExpenseDTO;
@@ -29,6 +30,14 @@ public class ExpenseController {
                                               @RequestParam(value = "size", defaultValue = "10") Integer size) {
 
         return ResponseEntity.ok(expenseService.getAll(page, size));
+    }
+
+    @GetMapping("/filter")
+    @PreAuthorize("hasAuthority('EXPENSE_READ')")
+    public PageableDTO filterExpenses(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                      @RequestParam(value = "size", defaultValue = "10") Integer size, @Valid @RequestBody ExpenseFilterDTO filter) {
+
+        return expenseService.filter(filter, page, size);
     }
 
     @GetMapping("{id}")
