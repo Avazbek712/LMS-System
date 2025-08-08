@@ -7,11 +7,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
+import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
+import uz.imv.lmssystem.dto.filter.UserFilterDTO;
 import uz.imv.lmssystem.dto.request.ChangedRoleRequest;
-import uz.imv.lmssystem.dto.request.RoleRequestDTO;
+import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.service.users.UserService;
 
@@ -67,4 +68,11 @@ public class UserController {
         return ResponseEntity.ok(userService.updatePassword(currentUser, dto));
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE_READ')")
+    @GetMapping("/filter")
+    public PageableDTO filterGroups(@Valid @RequestBody UserFilterDTO filter,
+                                    @RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "10") int size) {
+        return userService.getFilteredEmployees(filter, page, size);
+    }
 }

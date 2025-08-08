@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-create-student
+      author: Abdulaziz
+      comment: "Create student table with FK to group, phone unique index on not-deleted"
+      changes:
+        - createTable:
+            tableName: student
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_status
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: group_id
+                  type: bigint
+              - column:
+                  name: paid_until_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: student
+            baseColumnNames: group_id
+            constraintName: fk_student_group
+            referencedTableName: groups
+            referencedColumnNames: id
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON student
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();
+
+        - sql:
+            sql: >
+              CREATE UNIQUE INDEX uq_student_phone_not_deleted
+              ON student(phone_number)
+              WHERE deleted = false;
+ 

@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * Created by Avazbek on 28/07/25 14:52
+ * Created by Uzbek on 28/07/25 14:52
  */
 @Entity
 @Audited

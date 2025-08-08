@@ -5,9 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.imv.lmssystem.dto.ExpenseDTO;
+import uz.imv.lmssystem.dto.filter.ExpenseFilterDTO;
 import uz.imv.lmssystem.dto.request.CreateExpenseRequest;
 import uz.imv.lmssystem.dto.response.CreateExpenseResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
@@ -20,12 +22,13 @@ import uz.imv.lmssystem.repository.finances.ExpenseRepository;
 import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.finances.BalanceService;
 import uz.imv.lmssystem.service.finances.ExpenseService;
+import uz.imv.lmssystem.specifications.ExpenseSpecification;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by Avazbek on 28/07/25 15:21
+ * Created by Uzbek on 28/07/25 15:21
  */
 @Service
 @RequiredArgsConstructor
@@ -77,7 +80,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         Expense expense = expenseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Expense with id : " + id + " not found"));
 
-        return expenseMapper.toDto(expense);
+        return expenseMapper.toDTO(expense);
     }
 
 
@@ -89,7 +92,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         Page<Expense> pageInfo = expenseRepository.findAll(pageable);
         List<Expense> content = pageInfo.getContent();
 
-        List<ExpenseDTO> list = content.stream().map(expenseMapper::toDto).toList();
+        List<ExpenseDTO> list = content.stream().map(expenseMapper::toDTO).toList();
 
         if (list.isEmpty()) return new PageableDTO(size, 0L, 0, false, false, null);
 
@@ -100,6 +103,23 @@ public class ExpenseServiceImpl implements ExpenseService {
                 !pageInfo.isLast(),
                 !pageInfo.isFirst(),
                 list
+        );
+    }
+
+    @Override
+    public PageableDTO filter(ExpenseFilterDTO filter, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Expense> spec = ExpenseSpecification.filterBy(filter);
+        Page<Expense> expensePage = expenseRepository.findAll(spec, pageable);
+        List<ExpenseDTO> expenseDTOS = expensePage.map(expenseMapper::toDTO).getContent();
+
+        return new PageableDTO(
+                expensePage.getSize(),
+                expensePage.getTotalElements(),
+                expensePage.getTotalPages(),
+                expensePage.hasNext(),
+                expensePage.hasPrevious(),
+                expenseDTOS
         );
     }
 }

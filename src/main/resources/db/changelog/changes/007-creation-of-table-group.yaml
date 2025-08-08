@@ -1,0 +1,106 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-create-group
+      author: Abdulaziz
+      comment: "Create groups table with soft delete and FKs to course, teacher, room"
+      changes:
+        - createTable:
+            tableName: groups
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: date
+              - column:
+                  name: end_date
+                  type: date
+              - column:
+                  name: status
+                  type: varchar(50)
+              - column:
+                  name: course_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: teacher_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: room_id
+                  type: bigint
+              - column:
+                  name: lesson_start_time
+                  type: time
+              - column:
+                  name: lesson_end_time
+                  type: time
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: groups
+            baseColumnNames: course_id
+            constraintName: fk_groups_course
+            referencedTableName: course
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: groups
+            baseColumnNames: teacher_id
+            constraintName: fk_groups_teacher
+            referencedTableName: users
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: groups
+            baseColumnNames: room_id
+            constraintName: fk_groups_room
+            referencedTableName: room
+            referencedColumnNames: id
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON groups
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();
+
+        - sql:
+            sql: >
+              CREATE UNIQUE INDEX uq_groups_name_not_deleted
+              ON groups(name)
+              WHERE deleted = false;
+        - sql:
+            sql: >
+              ALTER TABLE groups
+              ADD CONSTRAINT chk_groups_status_enum
+              CHECK (status IN ('OPEN', 'CLOSED', 'FINISHED'));

@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-role-permissions
+      author: Abdulaziz
+      comment: "Create role_permissions table for element collection"
+      changes:
+        - createTable:
+            tableName: role_permissions
+            columns:
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_role_permissions_role
+                    references: roles(id)
+              - column:
+                  name: permission
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    primaryKey: true

@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011-create-attendance
+      author: Abdulaziz
+      comment: "Create attendance table with FKs and CHECK for enum status"
+      changes:
+        - createTable:
+            tableName: attendance
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+              - column:
+                  name: student_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: lesson_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: attendance
+            baseColumnNames: student_id
+            constraintName: fk_attendance_student
+            referencedTableName: student
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            baseTableName: attendance
+            baseColumnNames: lesson_id
+            constraintName: fk_attendance_lesson
+            referencedTableName: lesson
+            referencedColumnNames: id
+
+        - sql:
+            sql: >
+              ALTER TABLE attendance
+              ADD CONSTRAINT chk_attendance_status_enum
+              CHECK (status IN ('PRESENT', 'ABSENT', 'LATE', 'SICK'));
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON attendance
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();

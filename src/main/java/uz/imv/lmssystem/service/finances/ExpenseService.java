@@ -1,5 +1,7 @@
 package uz.imv.lmssystem.service.finances;
 
+import uz.imv.lmssystem.dto.filter.ExpenseFilterDTO;
+import uz.imv.lmssystem.dto.filter.GroupFilterDTO;
 import uz.imv.lmssystem.dto.request.CreateExpenseRequest;
 import uz.imv.lmssystem.dto.response.CreateExpenseResponse;
 import uz.imv.lmssystem.dto.ExpenseDTO;
@@ -15,4 +17,7 @@ public interface ExpenseService {
     ExpenseDTO findById(Long id);
 
     PageableDTO getAll(Integer page, Integer size);
+
+    PageableDTO filter(ExpenseFilterDTO filter, int page, int size);
+
 }

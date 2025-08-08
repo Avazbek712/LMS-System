@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-alter-student-table-fix
+      author: Abdulaziz
+      comment: "Remove balance column and add payment_status"
+      changes:
+        - dropColumn:
+            columnName: balance
+            tableName: student
+        - addColumn:
+            tableName: student
+            columns:
+              - column:
+                  name: payment_status
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false

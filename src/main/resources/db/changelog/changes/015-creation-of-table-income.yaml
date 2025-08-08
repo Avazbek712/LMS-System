@@ -1,0 +1,90 @@
+databaseChangeLog:
+  - changeSet:
+      id: 015-create-income
+      author: Abdulaziz
+      comment: "Create income table with FK to employee and category check"
+      changes:
+        - createTable:
+            tableName: income
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: date
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: employee_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: income
+            baseColumnNames: employee_id
+            constraintName: fk_income_employee
+            referencedTableName: users
+            referencedColumnNames: id
+
+        - sql:
+            sql: >
+              ALTER TABLE income
+              ADD CONSTRAINT chk_income_category_enum
+              CHECK (category IN (
+                'ASSET_SALE',
+                'SUBLETTING_INCOME',
+                'REFERRAL_BONUS',
+                'PARTNER_COMMISSION',
+                'CONSULTING_SERVICES',
+                'MERCHANDISE_SALES',
+                'EVENT_TICKETS_SALES',
+                'GRANTS_AND_SPONSORSHIP',
+                'INTEREST_INCOME',
+                'FORFEIT_INCOME',
+                'OTHER_INCOME'
+              ));
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON income
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();

@@ -134,7 +134,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional
-    @Caching(evict = {
+        @Caching(evict = {
             @CacheEvict(value = "groups", key = "#id"),
             @CacheEvict(value = "groups_list", allEntries = true)
     })

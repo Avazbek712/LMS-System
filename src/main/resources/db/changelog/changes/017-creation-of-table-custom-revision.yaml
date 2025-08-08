@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 017-create-rev-info
+      author: Abdulaziz
+      comment: "Create Envers revision table rev_info"
+      changes:
+        - createSequence:
+            sequenceName: revinfo_seq
+            startValue: 1
+            incrementBy: 1
+
+        - createTable:
+            tableName: rev_info
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint

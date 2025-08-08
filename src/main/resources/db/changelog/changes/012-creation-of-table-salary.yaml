@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 012-create-salary
+      author: Abdulaziz
+      comment: "Create salary table with FK to user (employee)"
+      changes:
+        - createTable:
+            tableName: salary
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: employee_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(1024)
+              - column:
+                  name: date
+                  type: date
+                  defaultValueComputed: now()
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: salary
+            baseColumnNames: employee_id
+            constraintName: fk_salary_employee
+            referencedTableName: users
+            referencedColumnNames: id
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON salary
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();

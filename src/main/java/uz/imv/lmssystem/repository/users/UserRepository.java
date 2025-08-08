@@ -1,6 +1,9 @@
 package uz.imv.lmssystem.repository.users;
 
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import uz.imv.lmssystem.entity.User;
@@ -14,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(@NotBlank(message = "username must not be blank") String username);
 
     Optional<User> findByName(String name);
+
+    Page<User> findAll(Specification<User> specification, Pageable pageable);
 }

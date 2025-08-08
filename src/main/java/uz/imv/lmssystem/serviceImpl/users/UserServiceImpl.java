@@ -3,14 +3,21 @@ package uz.imv.lmssystem.serviceImpl.users;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
+import uz.imv.lmssystem.dto.filter.UserFilterDTO;
 import uz.imv.lmssystem.dto.request.ChangedRoleRequest;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
+import uz.imv.lmssystem.dto.response.PageableDTO;
+import uz.imv.lmssystem.dto.response.RespUserDTO;
 import uz.imv.lmssystem.dto.response.UserInfoUpdateResponse;
 import uz.imv.lmssystem.entity.Role;
 import uz.imv.lmssystem.entity.User;
@@ -18,11 +25,14 @@ import uz.imv.lmssystem.exceptions.EmptyFileException;
 import uz.imv.lmssystem.exceptions.PasswordMismatchException;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
+import uz.imv.lmssystem.mapper.UserMapper;
 import uz.imv.lmssystem.repository.users.RoleRepository;
 import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.files.FileStorageService;
 import uz.imv.lmssystem.service.users.UserService;
+import uz.imv.lmssystem.specifications.EmployeeSpecification;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -33,6 +43,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final FileStorageService fileStorageService;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Value("${minio.bucket.name}")
     private String bucketName;
@@ -180,6 +191,24 @@ public class UserServiceImpl implements UserService {
                 currentUser.getUsername(),
                 currentUser.getRole().getName(),
                 bucketName +  "/" + currentUser.getPhotoUrl()
+        );
+
+    }
+
+    @Override
+    public PageableDTO getFilteredEmployees(UserFilterDTO filter, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<User> specification = EmployeeSpecification.filterBy(filter);
+        Page<User> employeePage = userRepository.findAll(specification, pageable);
+        List<RespUserDTO> employeeDTOS = employeePage.map(userMapper::toRespDTO).getContent();
+
+        return new PageableDTO(
+                employeePage.getSize(),
+                employeePage.getTotalElements(),
+                employeePage.getTotalPages(),
+                employeePage.hasNext(),
+                employeePage.hasPrevious(),
+                employeeDTOS
         );
     }
 

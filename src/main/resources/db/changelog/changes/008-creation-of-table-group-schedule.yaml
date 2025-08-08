@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-create-group-schedule
+      author: Abdulaziz
+      comment: "Create group_schedule table for enum values with CHECK constraint"
+      changes:
+        - createTable:
+            tableName: group_schedule
+            columns:
+              - column:
+                  name: group_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: schedule
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: group_schedule
+            columnNames: group_id, schedule
+            constraintName: pk_group_schedule
+
+        - addForeignKeyConstraint:
+            baseTableName: group_schedule
+            baseColumnNames: group_id
+            constraintName: fk_group_schedule_group
+            referencedTableName: groups
+            referencedColumnNames: id
+            onDelete: CASCADE
+
+        - sql:
+            sql: >
+              ALTER TABLE group_schedule
+              ADD CONSTRAINT chk_group_schedule_enum
+              CHECK (schedule IN (
+                'MONDAY', 'TUESDAY', 'WEDNESDAY',
+                'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
+              ));
+    

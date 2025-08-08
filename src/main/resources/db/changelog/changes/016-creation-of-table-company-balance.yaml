@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 016-create-company-balance
+      author: Abdulaziz
+      comment: "Create company_balance table to store initial capital"
+      changes:
+        - createTable:
+            tableName: company_balance
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: initial_capital
+                  type: decimal(19,2)

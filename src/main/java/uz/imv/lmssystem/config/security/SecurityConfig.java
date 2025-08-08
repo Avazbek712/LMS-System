@@ -19,9 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import uz.imv.lmssystem.handler.SecurityAccessExceptionHandler;
 
 
-/**
- * Created by Avazbek on 19/06/25 14:21
- */
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -57,6 +55,14 @@ public class SecurityConfig {
 
         return http.build();
     }
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+//                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        return http.build();
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

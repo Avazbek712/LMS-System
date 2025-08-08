@@ -1,0 +1,15 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 008-remove-unique-and-add-constraint-student-phone
+      author: Abdulaziz
+      comment: "Ensure student phone number is unique only when deleted=false"
+      changes:
+        - dropUniqueConstraint:
+            constraintName: uq_student_phone_number
+            tableName: student
+        - sql:
+            sql: >
+              CREATE UNIQUE INDEX uq_student_phone_not_deleted
+              ON student(phone_number)
+              WHERE deleted = false;

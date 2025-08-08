@@ -1,0 +1,80 @@
+databaseChangeLog:
+  - changeSet:
+      id: 014-create-expense
+      author: Abdulaziz
+      comment: "Create expense table with enum category and FK to employee"
+      changes:
+        - createTable:
+            tableName: expense
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: date
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: employee_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: expense
+            baseColumnNames: employee_id
+            constraintName: fk_expense_employee
+            referencedTableName: users
+            referencedColumnNames: id
+
+        - sql:
+            sql: >
+              ALTER TABLE expense
+              ADD CONSTRAINT chk_expense_category_enum
+              CHECK (category IN (
+                'RENT', 'EQUIPMENT', 'SUPPLIES', 'SALARY', 'UTILITIES', 'OTHER'
+              ));
+
+        - sql:
+            sql: >
+              CREATE TRIGGER set_timestamp
+              BEFORE UPDATE ON expense
+              FOR EACH ROW
+              EXECUTE PROCEDURE update_timestamp();

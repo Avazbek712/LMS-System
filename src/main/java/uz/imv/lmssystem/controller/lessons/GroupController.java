@@ -20,7 +20,7 @@ import uz.imv.lmssystem.service.lessons.GroupService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/groups")
-public class GroupController {
+public class  GroupController {
 
 
     private final GroupService groupService;
