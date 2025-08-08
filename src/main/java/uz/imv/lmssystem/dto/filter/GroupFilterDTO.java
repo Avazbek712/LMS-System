@@ -3,6 +3,8 @@ package uz.imv.lmssystem.dto.filter;
 import lombok.Data;
 import uz.imv.lmssystem.enums.GroupStatus;
 
+import java.time.LocalDate;
+
 @Data
 public class GroupFilterDTO {
 
@@ -13,5 +15,9 @@ public class GroupFilterDTO {
     private Long courseId;
 
     private GroupStatus status;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
 }
