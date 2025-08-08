@@ -6,6 +6,7 @@ import uz.imv.lmssystem.dto.*;
 import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
 import uz.imv.lmssystem.dto.filter.GroupFilterDTO;
 import uz.imv.lmssystem.dto.filter.UserFilterDTO;
+import uz.imv.lmssystem.dto.request.ChangedRoleRequest;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.dto.response.RespUserDTO;
@@ -18,7 +19,7 @@ import java.util.List;
 public interface UserService {
 
 
-    ChangedRoleResponse changeRole(Long userId, Long roleId);
+    ChangedRoleResponse changeRole(Long userId, ChangedRoleRequest dto);
 
     void deleteById(long id);
 

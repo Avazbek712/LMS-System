@@ -76,12 +76,6 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-
-    @Override
-    public ChangedRoleResponse changeRole(Long userId, Long roleId) {
-        return null;
-    }
-
     @Override
     @Transactional
     public void deleteById(long id) {
