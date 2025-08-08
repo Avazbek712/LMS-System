@@ -1,10 +1,9 @@
-package uz.imv.lmssystem.repository;
+package uz.imv.lmssystem.repository.lessons;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import uz.imv.lmssystem.entity.Course;
-import uz.imv.lmssystem.entity.Room;
 
 import java.util.Optional;
 

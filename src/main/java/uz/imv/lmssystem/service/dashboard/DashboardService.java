@@ -4,5 +4,5 @@ import uz.imv.lmssystem.dto.DashboardDTO;
 
 public interface DashboardService {
 
-    public DashboardDTO getStatistics();
+    DashboardDTO getStatistics();
 }

@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uz.imv.lmssystem.dto.CurrentBalanceDTO;
 import uz.imv.lmssystem.service.finances.BalanceService;
 
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ public class CurrentBalanceController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('SEE_CURRENT_BALANCE')")
-    public ResponseEntity<BigDecimal> getCurrentBalance() {
+    public ResponseEntity<CurrentBalanceDTO> getCurrentBalance() {
         return ResponseEntity.ok(balanceService.getCurrentBalance());
     }
 

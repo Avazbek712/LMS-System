@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.repository;
+package uz.imv.lmssystem.repository.finances;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

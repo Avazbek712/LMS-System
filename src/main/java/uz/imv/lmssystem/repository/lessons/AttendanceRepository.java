@@ -1,4 +1,4 @@
-package uz.imv.lmssystem.repository;
+package uz.imv.lmssystem.repository.lessons;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

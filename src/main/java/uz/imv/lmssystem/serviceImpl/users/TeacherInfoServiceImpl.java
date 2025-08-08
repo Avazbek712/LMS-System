@@ -19,9 +19,9 @@ import uz.imv.lmssystem.entity.TeacherInfoMapper;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
-import uz.imv.lmssystem.repository.CourseRepository;
-import uz.imv.lmssystem.repository.TeacherInfoRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.lessons.CourseRepository;
+import uz.imv.lmssystem.repository.users.TeacherInfoRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.users.TeacherInfoService;
 
 import java.util.List;

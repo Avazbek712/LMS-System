@@ -7,17 +7,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uz.imv.lmssystem.dto.ExpenseDTO;
 import uz.imv.lmssystem.dto.request.CreateExpenseRequest;
 import uz.imv.lmssystem.dto.response.CreateExpenseResponse;
-import uz.imv.lmssystem.dto.ExpenseDTO;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.entity.Expense;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.ExpenseMapper;
-import uz.imv.lmssystem.repository.ExpenseRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.finances.ExpenseRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.finances.BalanceService;
 import uz.imv.lmssystem.service.finances.ExpenseService;
 
@@ -44,7 +44,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         User employee = userRepository.findById(currentUser.getId()).orElseThrow(() -> new EntityNotFoundException("User with id : " + "not found"));
 
 
-        BigDecimal currentBalance = balanceService.getCurrentBalance();
+        BigDecimal currentBalance = balanceService.getCurrentBalance().getCurrentBalanceInBigDecimal();
 
         BigDecimal requestedAmount = request.getAmount();
 
@@ -57,7 +57,6 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.setEmployee(employee);
         expense.setCategory(request.getCategory());
         expense.setAmount(requestedAmount);
-        expense.setDate(request.getDate());
 
         expenseRepository.save(expense);
 

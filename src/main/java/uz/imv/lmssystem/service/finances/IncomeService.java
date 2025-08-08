@@ -12,4 +12,6 @@ public interface IncomeService {
     IncomeDTO getById(Long id);
 
     PageableDTO getAll(Integer page, Integer size);
+
+    void deleteById(Long id);
 }

@@ -7,7 +7,7 @@ import uz.imv.lmssystem.dto.RoleDTO;
 import uz.imv.lmssystem.dto.request.RoleRequestDTO;
 import uz.imv.lmssystem.entity.Role;
 import uz.imv.lmssystem.exceptions.RoleNotFoundException;
-import uz.imv.lmssystem.repository.RoleRepository;
+import uz.imv.lmssystem.repository.users.RoleRepository;
 import uz.imv.lmssystem.service.roles.RoleService;
 
 /**

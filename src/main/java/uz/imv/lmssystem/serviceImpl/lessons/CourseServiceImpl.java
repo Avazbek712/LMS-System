@@ -19,7 +19,7 @@ import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.CourseNotFoundException;
 import uz.imv.lmssystem.exceptions.EntityAlreadyExistsException;
 import uz.imv.lmssystem.mapper.CourseMapper;
-import uz.imv.lmssystem.repository.CourseRepository;
+import uz.imv.lmssystem.repository.lessons.CourseRepository;
 import uz.imv.lmssystem.service.lessons.CourseService;
 
 import java.util.List;
