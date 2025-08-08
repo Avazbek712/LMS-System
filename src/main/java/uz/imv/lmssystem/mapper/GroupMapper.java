@@ -7,8 +7,11 @@ import uz.imv.lmssystem.dto.GroupDTO;
 import uz.imv.lmssystem.dto.response.GroupCreateResponse;
 import uz.imv.lmssystem.entity.Group;
 import uz.imv.lmssystem.entity.Student;
+import uz.imv.lmssystem.enums.Schedule;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface GroupMapper {
@@ -27,12 +30,21 @@ public interface GroupMapper {
     @Mapping(target = "endTime", source = "lessonStartTime")
     @Mapping(target = "teacherName", source = "teacher.name")
     @Mapping(target = "courseName", source = "course.name")
+    @Mapping(target = "schedule", expression = "java(mapSchedule(group.getSchedule()))")
     GroupDTO toDTO(Group group);
 
-    @Named("studentsCount")
-    static int studentsCount(List<Student> students) {
+    default String mapSchedule(Set<Schedule> schedule) {
+        if (schedule == null || schedule.isEmpty()) {
+            return null;
+        }
+        return schedule.stream()
+                .map(Enum::name)
+                .collect(Collectors.joining(", "));
+    }
 
-        return students.size();
+    @Named("studentsCount")
+    default int studentsCount(List<Student> students) {
+        return students != null ? students.size() : 0;
     }
 
 

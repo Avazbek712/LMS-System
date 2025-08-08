@@ -15,6 +15,9 @@ import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
 import uz.imv.lmssystem.dto.UserDTO;
 import uz.imv.lmssystem.dto.UserUpdateDTO;
 import uz.imv.lmssystem.dto.filter.UserFilterDTO;
+import uz.imv.lmssystem.dto.auth.UpdatePasswordDTO;
+import uz.imv.lmssystem.dto.request.ChangedRoleRequest;
+import uz.imv.lmssystem.dto.request.RoleRequestDTO;
 import uz.imv.lmssystem.dto.response.ChangedRoleResponse;
 import uz.imv.lmssystem.dto.response.PageableDTO;
 import uz.imv.lmssystem.dto.response.RespUserDTO;
@@ -36,13 +39,14 @@ import uz.imv.lmssystem.specifications.GroupSpecification;
 
 import java.util.List;
 
+import java.util.Objects;
+
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UserMapper userMapper;
     private final FileStorageService fileStorageService;
     private final PasswordEncoder passwordEncoder;
 
@@ -51,16 +55,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ChangedRoleResponse changeRole(Long userId, Long roleId) {
+    public ChangedRoleResponse changeRole(Long userId, ChangedRoleRequest dto) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         String oldRole = user.getRole().getName();
 
-        Role newRole = roleRepository.findById(roleId).orElseThrow(() -> new UnknownRoleException(roleId));
+        Role newRole = roleRepository.findById(dto.getRoleId()).orElseThrow(() -> new UnknownRoleException(dto.getRoleId()));
 
         user.setRole(newRole);
 
+        userRepository.save(user);
         userRepository.save(user);
 
         return new ChangedRoleResponse(
@@ -104,6 +109,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getAboutMe(User currentUser) {
+
+        if (Objects.isNull(currentUser.getPhotoUrl())) {
+
+            return new UserDTO(
+                    currentUser.getName(),
+                    currentUser.getSurname(),
+                    currentUser.getPhoneNumber(),
+                    currentUser.getUsername(),
+                    currentUser.getRole().getName(),
+                    null
+            );
+        }
+
 
         return new UserDTO(
                 currentUser.getName(),
@@ -157,6 +175,19 @@ public class UserServiceImpl implements UserService {
         currentUser.setPassword(passwordEncoder.encode(newPassword));
 
         userRepository.save(currentUser);
+
+        if (Objects.isNull(currentUser.getPhotoUrl())) {
+
+            return new UserDTO(
+                    currentUser.getName(),
+                    currentUser.getSurname(),
+                    currentUser.getPhoneNumber(),
+                    currentUser.getUsername(),
+                    currentUser.getRole().getName(),
+                    null
+            );
+        }
+
 
         return new UserDTO(
                 currentUser.getName(),

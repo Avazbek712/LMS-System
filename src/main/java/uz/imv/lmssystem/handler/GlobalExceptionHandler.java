@@ -1,5 +1,6 @@
 package uz.imv.lmssystem.handler;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -8,11 +9,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import uz.imv.lmssystem.dto.fildErrors.error.ErrorDTO;
 import uz.imv.lmssystem.dto.fildErrors.error.ErrorFieldsKeeperDTO;
 import uz.imv.lmssystem.dto.fildErrors.error.FieldErrorDTO;
-import uz.imv.lmssystem.enums.AttendanceStatus;
 import uz.imv.lmssystem.exceptions.*;
 
 import java.io.FileNotFoundException;
@@ -22,6 +21,61 @@ import java.util.List;
 
 @RestControllerAdvice(basePackages = "uz.imv")
 public class GlobalExceptionHandler {
+
+
+    @ExceptionHandler(org.springframework.security.authorization.AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorDTO> handleAuthorizationDenied() {
+        return ResponseEntity.status(HttpServletResponse.SC_FORBIDDEN)
+                .body(new ErrorDTO(403, "Sorry, you do not have permission for this operation!"));
+    }
+
+
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handle(UserNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(value = PasswordMismatchException.class)
+    public ResponseEntity<ErrorDTO> handle(PasswordMismatchException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+
+    @ExceptionHandler(value = InvalidTokenException.class)
+    public ResponseEntity<ErrorDTO> handle(InvalidTokenException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(value = EmptyFileException.class)
+    public ResponseEntity<ErrorDTO> handle(EmptyFileException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                e.getStatus().value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, e.getStatus());
+    }
+
+    @ExceptionHandler(value = CourseNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handle(CourseNotFoundException e) {
+        ErrorDTO errorDTO = new ErrorDTO(
+                HttpStatus.NOT_FOUND.value(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
+    }
+
 
     @ExceptionHandler(value = RoleNotFoundException.class)
     public ResponseEntity<ErrorDTO> handle(RoleNotFoundException e) {
@@ -101,15 +155,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<ErrorDTO> handle(EntityNotFoundException e) {
-        ErrorDTO errorDTO = new ErrorDTO(
-                e.getStatus().value(),
-                e.getMessage()
-        );
-        return new ResponseEntity<>(errorDTO, e.getStatus());
-    }
-
-    @ExceptionHandler(value = EntityNotDeleteException.class)
-    public ResponseEntity<ErrorDTO> handle(EntityNotDeleteException e) {
         ErrorDTO errorDTO = new ErrorDTO(
                 e.getStatus().value(),
                 e.getMessage()

@@ -37,9 +37,11 @@ public class FileStorageServiceImpl implements FileStorageService {
         if (file.isEmpty() || Objects.isNull(file.getOriginalFilename()))
             throw new IllegalArgumentException("File not found!");
 
-
         try (InputStream inputStream = file.getInputStream()) {
 
+            if (Objects.isNull(file.getOriginalFilename())) {
+                return null;
+            }
             String fileExtension = getFileExtension(file.getOriginalFilename());
             String uniqueFileName = UUID.randomUUID() + "." + fileExtension;
 

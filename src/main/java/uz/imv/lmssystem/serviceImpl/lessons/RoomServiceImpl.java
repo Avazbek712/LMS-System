@@ -3,6 +3,7 @@ package uz.imv.lmssystem.serviceImpl.lessons;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
@@ -100,6 +101,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
+    @CachePut(value = "rooms_list" , key = "'id:' +  #id")
     public RoomResponseDTO update(Long id, RoomDTO roomDTO) {
 
         roomRepository.findByName(roomDTO.getName()).ifPresent(r -> {

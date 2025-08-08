@@ -14,10 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -67,12 +64,12 @@ public class User extends AbsLongEntity implements UserDetails {
         if (Objects.isNull(role) || Objects.isNull(role.getPermissions())) {
             return Collections.emptySet();
         }
-        // 1. Взять разрешения из ОДНОЙ роли (this.role.getPermissions())
-        // 2. Превратить каждое разрешение (Enum) в объект SimpleGrantedAuthority
-        // 3. Собрать все в коллекцию (Set)
-        return role.getPermissions().stream()
+
+        Set<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
                 .map(permissionEnum -> new SimpleGrantedAuthority(permissionEnum.name()))
                 .collect(Collectors.toSet());
+        System.out.println(">>> USER: " + username + " AUTHORITIES: " + authorities);
+        return authorities;
     }
 
 }

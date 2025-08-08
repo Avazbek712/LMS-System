@@ -76,7 +76,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional
-    @Cacheable(value = "lessons_list", key = "'page:' + #page + ':size:' + #size")
+    @Cacheable(value = "lessons_list", key = "'date:' + #date + 'page:' + #page + ':size:' + #size")
     public PageableDTO lessonToTheDay(LocalDate date, int page, int size) {
         Sort sort = Sort.by(AbsLongEntity.Fields.id).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -132,7 +132,9 @@ public class LessonServiceImpl implements LessonService {
         return lessonMapper.toDTO(lesson);
     }
 
-    private List<Lesson> generateLessonsForPeriod(Group group, LocalDate startDate, LocalDate endDate) {
+
+    @Override
+    public List<Lesson> generateLessonsForPeriod(Group group, LocalDate startDate, LocalDate endDate) {
         List<Lesson> lessons = new ArrayList<>();
 
         Set<Schedule> scheduleEnums = group.getSchedule();
@@ -166,7 +168,9 @@ public class LessonServiceImpl implements LessonService {
         return lessons;
     }
 
-    private void checkForConflicts(Lesson lessonToCheck) throws ScheduleConflictException {
+
+    @Override
+    public void checkForConflicts(Lesson lessonToCheck) throws ScheduleConflictException {
 
         List<Lesson> conflictingLessons = lessonRepository.findConflictingLessons(
                 lessonToCheck.getGroup().getRoom().getId(),
