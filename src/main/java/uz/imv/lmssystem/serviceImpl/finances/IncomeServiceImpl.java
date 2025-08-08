@@ -15,8 +15,8 @@ import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.IncomeMapper;
-import uz.imv.lmssystem.repository.IncomeRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.finances.IncomeRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.finances.IncomeService;
 
 import java.util.List;
@@ -81,6 +81,14 @@ public class IncomeServiceImpl implements IncomeService {
                 incomeDTOs
         );
 
+
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Income income = incomeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Income with ID : " + id + " not found"));
+
+        incomeRepository.delete(income);
 
     }
 

@@ -23,8 +23,8 @@ import uz.imv.lmssystem.exceptions.InvalidTokenException;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserAlreadyExistException;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
-import uz.imv.lmssystem.repository.RoleRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.users.RoleRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.security.AuthService;
 import uz.imv.lmssystem.service.security.JwtService;
 

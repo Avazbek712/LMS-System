@@ -8,8 +8,8 @@ import uz.imv.lmssystem.entity.Salary;
 import uz.imv.lmssystem.mapper.SalaryMapper;
 import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
-import uz.imv.lmssystem.repository.SalaryRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.finances.SalaryRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.finances.BalanceService;
 import uz.imv.lmssystem.service.finances.SalaryService;
 
@@ -29,7 +29,7 @@ public class SalaryServiceImpl implements SalaryService {
     @Override
     public SalaryPayResponse pay(SalaryPayRequest request) {
 
-        BigDecimal currentBalance = balanceService.getCurrentBalance();
+        BigDecimal currentBalance = balanceService.getCurrentBalance().getCurrentBalanceInBigDecimal();
 
         if (currentBalance.compareTo(request.getAmount()) < 0) {
             throw new IllegalArgumentException("Not enough money.Current balance : " + currentBalance);

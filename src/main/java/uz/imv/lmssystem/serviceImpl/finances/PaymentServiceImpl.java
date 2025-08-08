@@ -23,9 +23,9 @@ import uz.imv.lmssystem.entity.User;
 import uz.imv.lmssystem.entity.template.AbsLongEntity;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.mapper.PaymentMapper;
-import uz.imv.lmssystem.repository.PaymentRepository;
-import uz.imv.lmssystem.repository.StudentRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.finances.PaymentRepository;
+import uz.imv.lmssystem.repository.users.StudentRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.finances.PaymentService;
 import uz.imv.lmssystem.specifications.PaymentSpecification;
 

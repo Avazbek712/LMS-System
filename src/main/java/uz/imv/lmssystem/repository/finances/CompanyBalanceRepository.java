@@ -1,9 +1,7 @@
-package uz.imv.lmssystem.repository;
+package uz.imv.lmssystem.repository.finances;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uz.imv.lmssystem.entity.CompanyBalance;
 

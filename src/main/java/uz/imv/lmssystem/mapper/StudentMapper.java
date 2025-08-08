@@ -22,8 +22,6 @@ public interface StudentMapper {
     @Mapping(target = "debtAmount", source = "group.course.price")
     StudentDebtors toDebtors(Student students);
 
-    @Mapping(target = "group", expression = "java(groupResolver.resolve(dto.getGroupId()))")
-    Student toEntity(StudentDTO dto, @Context GroupResolver groupResolver);
 
     @Mapping(target = "group", expression = "java(groupResolver.resolve(dto.getGroupId()))")
     void updateEntity(StudentDTO dto, @MappingTarget Student entity, @Context GroupResolver groupResolver);

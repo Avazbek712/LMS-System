@@ -2,10 +2,12 @@ package uz.imv.lmssystem.serviceImpl.finances;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.imv.lmssystem.repository.*;
+import uz.imv.lmssystem.dto.CurrentBalanceDTO;
+import uz.imv.lmssystem.repository.finances.*;
 import uz.imv.lmssystem.service.finances.BalanceService;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * Created by Avazbek on 28/07/25 16:28
@@ -21,7 +23,7 @@ public class BalanceServiceImpl implements BalanceService {
     private final SalaryRepository salaryRepository;
 
     @Override
-    public BigDecimal getCurrentBalance() {
+    public CurrentBalanceDTO getCurrentBalance() {
 
         BigDecimal initialBalance = companyBalanceRepository.getInitialBalance()
                 .orElse(BigDecimal.ZERO);
@@ -34,6 +36,11 @@ public class BalanceServiceImpl implements BalanceService {
 
         BigDecimal totalSalaries = salaryRepository.getTotalSalaries();
 
-        return initialBalance.add(studentPayments).add(totalIncome).subtract(totalExpense).subtract(totalSalaries);
+        BigDecimal balance = initialBalance.add(studentPayments).add(totalIncome).subtract(totalExpense).subtract(totalSalaries);
+
+        return new CurrentBalanceDTO(
+                balance,
+                LocalDateTime.now()
+        );
     }
 }

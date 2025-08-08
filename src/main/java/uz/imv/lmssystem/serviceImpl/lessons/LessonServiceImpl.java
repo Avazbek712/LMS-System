@@ -19,7 +19,7 @@ import uz.imv.lmssystem.enums.Schedule;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
 import uz.imv.lmssystem.exceptions.ScheduleConflictException;
 import uz.imv.lmssystem.mapper.LessonMapper;
-import uz.imv.lmssystem.repository.LessonRepository;
+import uz.imv.lmssystem.repository.lessons.LessonRepository;
 import uz.imv.lmssystem.service.lessons.LessonService;
 
 import java.time.DayOfWeek;

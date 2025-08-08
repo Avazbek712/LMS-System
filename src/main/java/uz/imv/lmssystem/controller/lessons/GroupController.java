@@ -33,7 +33,7 @@ public class  GroupController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAnyAuthority(' GROUP_READ')")
+    @PreAuthorize("hasAnyAuthority('GROUP_READ')")
     ResponseEntity<GroupDTO> getById(@PathVariable("id") Long id) {
 
         return ResponseEntity.ok(groupService.getById(id));

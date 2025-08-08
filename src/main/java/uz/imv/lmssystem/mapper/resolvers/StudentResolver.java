@@ -2,11 +2,9 @@ package uz.imv.lmssystem.mapper.resolvers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import uz.imv.lmssystem.entity.Group;
 import uz.imv.lmssystem.entity.Student;
 import uz.imv.lmssystem.exceptions.EntityNotFoundException;
-import uz.imv.lmssystem.repository.GroupRepository;
-import uz.imv.lmssystem.repository.StudentRepository;
+import uz.imv.lmssystem.repository.users.StudentRepository;
 
 @Component
 @RequiredArgsConstructor

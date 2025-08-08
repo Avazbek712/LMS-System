@@ -29,9 +29,8 @@ import uz.imv.lmssystem.exceptions.EmptyFileException;
 import uz.imv.lmssystem.exceptions.PasswordMismatchException;
 import uz.imv.lmssystem.exceptions.UnknownRoleException;
 import uz.imv.lmssystem.exceptions.UserNotFoundException;
-import uz.imv.lmssystem.mapper.UserMapper;
-import uz.imv.lmssystem.repository.RoleRepository;
-import uz.imv.lmssystem.repository.UserRepository;
+import uz.imv.lmssystem.repository.users.RoleRepository;
+import uz.imv.lmssystem.repository.users.UserRepository;
 import uz.imv.lmssystem.service.files.FileStorageService;
 import uz.imv.lmssystem.service.users.UserService;
 import uz.imv.lmssystem.specifications.EmployeeSpecification;
@@ -49,7 +48,6 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final FileStorageService fileStorageService;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
 
     @Value("${minio.bucket.name}")
     private String bucketName;
@@ -75,6 +73,7 @@ public class UserServiceImpl implements UserService {
                 user.getRole().getName()
         );
     }
+
 
     @Override
     @Transactional
@@ -129,7 +128,7 @@ public class UserServiceImpl implements UserService {
                 currentUser.getPhoneNumber(),
                 currentUser.getUsername(),
                 currentUser.getRole().getName(),
-                bucketName + currentUser.getPhotoUrl()
+                bucketName + "/" + currentUser.getPhotoUrl()
         );
     }
 
@@ -195,7 +194,7 @@ public class UserServiceImpl implements UserService {
                 currentUser.getPhoneNumber(),
                 currentUser.getUsername(),
                 currentUser.getRole().getName(),
-                bucketName + currentUser.getPhotoUrl()
+                bucketName +  "/" + currentUser.getPhotoUrl()
         );
 
     }
