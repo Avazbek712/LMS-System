@@ -29,6 +29,14 @@ public class GroupSpecification {
             if (filter.getStatus() != null) {
                 predicates.add(cb.equal(root.get("status"), filter.getStatus()));
             }
+            if (filter.getStartDate() != null && filter.getEndDate() != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("startDate"), filter.getStartDate()));
+                predicates.add(cb.lessThanOrEqualTo(root.get("endDate"), filter.getEndDate()));
+            } else if (filter.getStartDate() != null) {
+                predicates.add(cb.equal(root.get("startDate"), filter.getStartDate()));
+            } else if (filter.getEndDate() != null) {
+                predicates.add(cb.equal(root.get("endDate"), filter.getEndDate()));
+            }
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
