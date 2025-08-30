@@ -4,9 +4,9 @@ spring:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}
     username: ${DB_USER_NAME}
     password: ${DB_PASSWORD}
-#  liquibase:
-#    analytics-enabled: true
-#    change-log: classpath:/db/changelog/db.changelog-master.yaml
+  #  liquibase:
+  #    analytics-enabled: true
+  #    change-log: classpath:/db/changelog/db.changelog-master.yaml
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,9 +17,25 @@ spring:
   banner:
     location: classpath:prod-banner.txt
 
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 5m
+      cache-null-values: false
+      key-prefix: ${REDIS_PREFIX}
+
 minio:
-  endpoint: http://localhost:9001
-  access-key: minioadmin
-  secret-key: minioadmin
+  endpoint: ${MINIO_URL}
+  access-key: ${MINIO_ACCESS_KEY}
+  secret-key: ${MINIO_SECRET_KEY}
   bucket:
-    name: employee
+    name: ${MINIO_BUCKET_NAME}
+
+logging:
+  level:
+    org.springframework.cache: DEBUG
