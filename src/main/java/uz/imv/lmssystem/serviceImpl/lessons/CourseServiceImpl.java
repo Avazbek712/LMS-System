@@ -47,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
         Page<Course> coursePage = courseRepository.findAll(pageable);
         List<Course> courses = coursePage.getContent();
 
-        if (courses.isEmpty()) {
+        if (courses.isEmpty() && courses != null) {
             return new PageableDTO(size, 0L, 0, false, false, null);
         }
 
